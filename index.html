@@ -63,15 +63,15 @@
         <img src="joebart.jpg" alt="The Bart" width="device-width" height="500">
 </article>
 
-<!-- Image that will fly and bounce -->
+<!-- fly img -->
 <script>
-    let animationFrames = []; // Store animation frames for all images
-    let imageCount = 0; // Counter for unique image IDs
+    let animationFrames = []; 
+    let imageCount = 0; 
 
     function createAndMoveImage() {
-        // Create a new image element
+        
         const image = document.createElement('img');
-        image.src = 'partycrasherimg/blux.png'; // Set the image source
+        image.src = 'partycrasherimg/blux.png'; 
         image.alt = 'Flying Picture';
         image.style.position = 'absolute';
         image.style.width = '100px';
@@ -81,42 +81,42 @@
         image.style.transform = 'translate(-50%, -50%)';
         document.body.appendChild(image);
 
-        // Set initial position and velocity
+        
         let x = Math.random() * (window.innerWidth - 100);
         let y = Math.random() * (window.innerHeight - 100);
-        let dx = Math.random() * 6 - 3; // Random velocity between -3 and 3
-        let dy = Math.random() * 6 - 3; // Random velocity between -3 and 3
+        let dx = Math.random() * 6 - 3; 
+        let dy = Math.random() * 6 - 3; 
 
         function moveImage() {
-            // Update position
+            
             x += dx;
             y += dy;
 
-            // Check for collisions with window edges
+            
             if (x + image.offsetWidth >= window.innerWidth || x <= 0) {
-                dx = -dx; // Reverse direction on X-axis
+                dx = -dx; 
             }
             if (y + image.offsetHeight >= window.innerHeight || y <= 0) {
-                dy = -dy; // Reverse direction on Y-axis
+                dy = -dy; 
             }
 
-            // Apply new position
+            
             image.style.left = x + 'px';
             image.style.top = y + 'px';
 
-            // Request next animation frame
+            
             const frame = requestAnimationFrame(moveImage);
-            animationFrames.push(frame); // Store the frame ID
+            animationFrames.push(frame);
         }
 
-        moveImage(); // Start animation
+        moveImage(); 
     }
 
-    // Listen for the spacebar key press
+    
     document.addEventListener('keydown', (event) => {
         if (event.code === 'Space') {
-            event.preventDefault(); // Prevent default spacebar behavior (e.g., scrolling)
-            createAndMoveImage(); // Create and animate a new image
+            event.preventDefault(); 
+            createAndMoveImage(); 
         }
     });
 </script>
