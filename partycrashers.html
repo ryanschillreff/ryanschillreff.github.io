@@ -67,6 +67,25 @@
             display: block;
             margin-bottom: 6px;
         }
+
+        .charimg {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .charimg .mainart {
+            max-width: 250px;
+            border: 1px solid #aaa;
+        }
+
+        .charimg .gameicon {
+            width: 48px;
+            height: 125px;
+            border: 1px solid #aaa;
+            background: #fff;
+        }
     </style>
 </head>
 
@@ -84,7 +103,7 @@
         </nav>
         <article>
             <h1>here you will find info on characters, maps, abilities and more!</h1>
-                        <p><i>The OFFICIAL Wiki for Party Crashers!</i></p>
+            <p><i>The OFFICIAL Wiki for Party Crashers!</i></p>
             <div
                 style="font-family: Arial, Helvetica, sans-serif; background:#ffffff; color:#000000; padding:10px; border:1px solid #aaa; max-width:900px;">
 
@@ -124,9 +143,16 @@
                     </tr>
                 </table>
 
-                <a href="confront.html"><img src="partycrasherimg/lux.png" alt="Lux character artwork"
-                        style="border:1px solid #aaa; max-width:250px;"></a>
-                <p style="font-size:85%; color:#555;">"What is this place?"</p>
+                <div class="charimg">
+
+                    <a href="confront.html">
+                        <img src="partycrasherimg/lux.png" alt="Lux character artwork" class="mainart">
+                    </a>
+
+                    <img src="partycrasherimg/lux_icons.png" alt="Lux game icon" class="gameicon">
+
+                </div>
+
 
                 <p><b>Overview:</b> Lux is a small child trapped inside PARTY CRASHERS after entering through a dream.
                     They rely on hope and survival instincts rather than strength, shown by their survivalist kit.</p>
@@ -520,7 +546,7 @@
                         This mostly comes from developer jokes and strange lore hints, but people still debate it.</li>
 
                     <li><b>Reset Awareness:</b> [EDIT NOTE: theory removed]
-</li>
+                    </li>
 
                     <li><b>Blux Rumors:</b> Even though Blux is confirmed as a developer-only character, rumors about
                         secret unlock methods
