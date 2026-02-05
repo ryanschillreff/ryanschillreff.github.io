@@ -45,6 +45,28 @@
         header {
             background-color: #3d52d5
         }
+
+        .lmsaudio {
+            border: 1px solid #aaa;
+            background: #f6f6f6;
+            color: #000;
+            padding: 8px;
+            margin-top: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 90%;
+        }
+
+        .lmsaudio h3 {
+            background: #e0e0e0;
+            margin: 0 0 6px 0;
+            padding: 4px;
+        }
+
+        .lmsaudio audio {
+            width: 220px;
+            display: block;
+            margin-bottom: 6px;
+        }
     </style>
 </head>
 
@@ -93,8 +115,8 @@
                     </tr>
                 </table>
 
-                <img src="partycrasherimg/lux.png" alt="Lux character artwork"
-                    style="border:1px solid #aaa; max-width:250px;">
+                <a href="confront.html"><img src="partycrasherimg/lux.png" alt="Lux character artwork"
+                    style="border:1px solid #aaa; max-width:250px;"></a>
                 <p style="font-size:85%; color:#555;">"What is this place?"</p>
 
                 <p><b>Overview:</b> Lux is a small child trapped inside PARTY CRASHERS after entering through a dream.
@@ -109,6 +131,29 @@
                     <li><b>Cover:</b> Stands still and cowers in fear. If attacked during this peirod, stun for 3
                         seconds and deal 25 HP.</li>
                 </ul>
+                <div class="lmsaudio">
+
+                    <h3>Last Man Standing Theme / Misc.</h3>
+
+                    <p style="font-size:85%; color:#555;">
+                        "I'm <b>not just a kid anymore!</b>"
+                    </p>
+
+                    <b>LMS Theme:</b><br>
+                    <audio controls>
+                        <source src="lmsthemes/WHOAMI (Just a Kid v2).wav" type="audio/mpeg">
+                    </audio>
+
+                    <b>LMS Theme 2: (Used for juggernaut mode)</b><br>
+                    <audio controls>
+                        <source src="lmsthemes/NOTJUSTAKIDANYMORE.mp3" type="audio/mpeg">
+                    </audio>
+
+
+                    <p><b>Notes:</b>This LMS was revised 3 times!</p>
+
+                </div>
+
 
                 <hr style="clear:both;">
 
@@ -154,7 +199,27 @@
                         you have a Medic on your team, or you wont survive.</li>
                 </ul>
                 </ul>
+                <div class="lmsaudio">
 
+                    <h3>Last Man Standing Theme / Misc.</h3>
+
+                    <p style="font-size:85%; color:#555;">
+                        Music associated with this character during gameplay events.
+                    </p>
+
+                    <b>LMS Theme:</b><br>
+                    <audio controls>
+                        <source
+                            src="lmsthemes/DEAD_OR_ALIVE_V2_METAL_SONIC_-_Sonic_EXE_Outcome_Memories_OST_Metal_Sonic_Solo_KLICKAUD.mp3"
+                            type="audio/mpeg">
+                    </audio>
+
+
+
+                    <p><b>Notes:</b>THIS LMS IS A PLACEHOLDER AND WILL NOT BE USED IN THE FINAL GAME
+                    <p>
+
+                </div>
                 <hr style="clear:both;">
 
                 <!-- ================= MEDIC ================= -->
@@ -197,6 +262,28 @@
                     <li><b>(PASSIVE) Terrified:</b> Medic has lower cooldowns and has a faster walk speed, but takes
                         1.15X Damage.</li>
                 </ul>
+                <div class="lmsaudio">
+
+                    <h3>Last Man Standing Theme / Misc.</h3>
+
+                    <p style="font-size:85%; color:#555;">
+                        "Please... Stop!</b>"
+                    </p>
+
+                    <b>LMS Theme:</b><br>
+                    <audio controls>
+                        <source src="lmsthemes/TEA-TIME WALTZ Outcome Memories OST.mp3" type="audio/mpeg">
+                    </audio>
+
+                    <b>LMS Theme (OLD):</b><br>
+                    <audio controls>
+                        <source src="lmsthemes/TheAngel.mp3" type="audio/mpeg">
+                    </audio>
+
+
+                    <p><b>Notes:</b>This LMS is a <b>placeholder</b> and will not be used ingame.</p>
+
+                </div>
 
                 <hr style="clear:both;">
                 <!-- ================= EVIL LUX (KILLER) ================= -->
@@ -237,13 +324,31 @@
                     <li><b>Beatdown:</b> Rushes foward and attacks anyone in his path for 40 HP.</li>
                     <li><b>Self Regen:</b> Stands still and regenerates for 5 seconds. During this time, any stuns deal
                         twice the damage.</li>
+                    <li><b>Peekaboo:</b> Teleports behind a random survivor.</li>
                 </ul>
+                <div class="lmsaudio">
+
+                    <h3>Chase Theme / Misc.</h3>
+
+                    <p style="font-size:85%; color:#555;">
+                        "HERE I COME!"
+                    </p>
+
+                    <b>Chase Theme:</b><br>
+                    <audio controls>
+                        <source src="lmsthemes/chase.mp3" type="audio/mpeg">
+                    </audio>
+
+
+                    <p><b>Notes:</b>I hate this guy...</p>
+
+                </div>
 
                 <hr style="clear:both;">
 
 
                 <hr style="clear:both;">
-                <!-- ================= HOMER (DEV ONLY JOKE CHARACTER) ================= -->
+                <!-- ================= BLUX (DEV ONLY JOKE CHARACTER) ================= -->
 
                 <h2>Blux (DEV ONLY)</h2>
 
@@ -287,60 +392,149 @@
 
 
 
-
                 <h2>Style Notes</h2>
+
+                <p style="font-size:85%; color:#555;">
+                    This section contains player observations, fan theories, and archived community discussion.
+                    Some information may be speculative or outdated due to resets. [citation needed]
+                </p>
 
                 <ul>
 
-                    <li><b>Lux & Medic:</b> Players often pair Lux with Medic because Lux’s defensive abilities create
-                        safe moments for healing. Many fans see them as representing hope and protection.</li>
+                    <li><b>Lux & Medic:</b> Early strategy threads frequently recommend pairing Lux with Medic due to
+                        strong defensive synergy.
+                        Fans often describe the duo as representing “hope protecting fear,” though developer intent is
+                        unknown. [citation needed]</li>
 
-                    <li><b>Lux & Toko:</b> Lux avoids direct fights while Toko runs toward danger, making them feel like
-                        opposites that balance each other during matches.</li>
+                    <li><b>Lux & Toko:</b> Considered gameplay opposites by many players. Lux avoids confrontation while
+                        Toko actively seeks it,
+                        leading to a balanced dynamic when used together. Some discussions suggest this contrast may
+                        reflect deeper narrative themes.</li>
 
-                    <li><b>Toko & Medic:</b> Toko’s aggressive playstyle gives Medic opportunities to support from
-                        behind, although some players joke that Medic spends most runs chasing Toko around the map.</li>
+                    <li><b>Toko & Medic:</b> A high-risk pairing where Medic supports aggressive engagements initiated
+                        by Toko.
+                        Veteran players joke that Medic mains become experts at pathing simply from following Toko
+                        across maps.</li>
 
-                    <li><b>Evil Lux & Lux:</b> A major fan theory claims Evil Lux is a corrupted future version of Lux
-                        created by too many resets, though others believe it is simply the dream copying survivors.</li>
+                    <li><b>Evil Lux & Lux:</b> One of the oldest fan theories claims Evil Lux is a corrupted future
+                        version of Lux created through repeated resets.
+                        Alternative theories suggest the dream world copies survivors into hostile forms. No official
+                        confirmation exists.</li>
 
-                    <li><b>Evil Lux Behavior:</b> Players report that Evil Lux feels more aware than other killers,
-                        especially due to teleporting directly toward targets.</li>
+                    <li><b>Evil Lux Behavior:</b> Players frequently report that Evil Lux appears more aware than other
+                        killers,
+                        especially when teleporting toward targets. Some believe this is intentional lore design rather
+                        than AI behavior. [citation needed]</li>
 
-                    <li><b>Team Symbolism Theory:</b> Many fans interpret the survivors as emotional archetypes: hope
-                        (Lux), defiance (Toko), and fear-driven care (Medic).</li>
+                    <li><b>Team Symbolism Theory:</b> A common interpretation assigns emotional archetypes to survivors:
+                        hope (Lux), defiance (Toko), and fear-driven care (Medic).</li>
 
-                    <li><b>Reset Theory:</b> Some players claim subtle animation or behavior changes suggest characters
-                        evolve across multiple resets.</li>
+                    <li><b>Reset Theory:</b> Certain fans claim subtle animation or behavioral changes imply characters
+                        retain memories across resets.
+                        Evidence remains anecdotal but widely discussed.</li>
 
-                    <li><b>Unknown Connection:</b> A popular speculation suggests Lux, Toko, and Medic may have known
-                        each other before entering PARTY CRASHERS, but no confirmed lore exists.</li>
+                    <li><b>Unknown Connection:</b> Popular speculation suggests Lux, Toko, and Medic may have known each
+                        other before entering PARTY CRASHERS,
+                        though no confirmed lore supports this.</li>
 
-                    <li><b>Blux (Developer Character):</b> Blux is confirmed to be a developer-only joke character and
-                        is NOT obtainable in normal gameplay. Any sightings in public matches are assumed to be
-                        developer testing or bugs.</li>
+                    <li><b>Blux (Developer Character):</b> Confirmed developer-only test character.
+                        Sightings in public matches are generally assumed to be developer testing or bugs.</li>
 
-                    <li><b>Blux Rumors:</b> Community rumors about secret unlock methods or hidden codes to play as
-                        Blux are false according to developer notes.</li>
+                    <li><b>Blux Rumors:</b> Claims of secret unlock methods or hidden codes continue to circulate
+                        despite repeated developer denials.</li>
+
+                </ul>
+                <details style="margin-top:10px; border:1px solid #aaa; background:#f6f6f6; padding:6px;">
+
+                    <summary style="cursor:pointer; font-weight:bold;">
+                        ⚠ Hidden Theories & Archived Speculation (Click to Expand)
+                    </summary>
+
+                    <p style="font-size:90%;">
+
+                        Some archived discussions suggest Evil Lux may react differently depending on which survivor
+                        remains alive last.
+                        Others claim certain animations only appear after multiple resets, though these reports remain
+                        unverified.
+
+                        A recurring rumor states that Lux and Evil Lux share identical internal identifiers within early
+                        builds,
+                        leading to speculation that they were originally the same character.
+
+                        None of these theories have been officially confirmed.
+
+                    </p>
+
+                </details>
+
 
                 </ul>
 
                 <h2>Community Speculation</h2>
 
+                <p style="font-size:85%; color:#555;">
+                    This section collects popular fan theories, player observations, and general community discussion.
+                    Nothing here is officially confirmed, and some ideas come from old forum posts or player
+                    experiences,
+                    so take everything with a grain of salt.
+                </p>
+
                 <ul>
 
-                    <li>Some fans believe Evil Lux exists to punish players who rely too heavily on Lux strategies.</li>
+                    <li><b>Punishment Theory:</b> Some players think Evil Lux was designed to counter people who rely
+                        too heavily on Lux strategies.
+                        The idea is that the game “pushes back” when players get too comfortable, though nobody has
+                        proven this.</li>
 
-                    <li>There is debate over whether the dream world creates killers from survivors or if killers exist
-                        independently.</li>
+                    <li><b>Dream Creation Debate:</b> A long-running argument in the community asks whether killers are
+                        created by the dream
+                        or if they used to be survivors. Both sides have fans, and the game hasn’t given a clear answer
+                        yet.</li>
 
-                    <li>A recurring theory suggests hidden events may occur when Lux, Toko, Medic, and Evil Lux appear
-                        within the same match.</li>
+                    <li><b>Four Character Event:</b> There’s a rumor that something special happens when Lux, Toko,
+                        Medic, and Evil Lux all appear
+                        in the same match. Players sometimes report weird pacing or tension during these games, but it
+                        might just be coincidence.</li>
 
-                    <li>Developers occasionally referencing Homer in updates has led to jokes that he is "watching from
-                        outside the game."</li>
+                    <li><b>Observer Theory:</b> Some fans believe something (or someone) is watching the events of the
+                        game from outside.
+                        This mostly comes from developer jokes and strange lore hints, but people still debate it.</li>
+
+                    <li><b>Reset Awareness:</b> A popular idea is that characters might remember past resets in subtle
+                        ways.
+                        Players point to small animation quirks or behavior differences, though nothing has been
+                        confirmed.</li>
+
+                    <li><b>Blux Rumors:</b> Even though Blux is confirmed as a developer-only character, rumors about
+                        secret unlock methods
+                        or rare sightings keep popping up. Most players assume these are just myths or dev testing.</li>
 
                 </ul>
 
-                <p style="font-size:85%; color:#555;">These notes may contain outdated information due to resets,
-                    patches, or developer testing.</p>
+                <details style="margin-top:10px; border:1px solid #aaa; background:#f6f6f6; padding:6px;">
+
+                    <summary style="cursor:pointer; font-weight:bold;">
+                        Hidden Theories & Older Discussions
+                    </summary>
+
+                    <p style="font-size:90%;">
+
+                        Older forum threads mention chase music changing after multiple resets, though nobody has been
+                        able
+                        to recreate it consistently.
+
+                        Another idea floating around is that the dream world rewrites itself between matches,
+                        which could explain why certain lore details feel inconsistent.
+
+                        Some players also claim Evil Lux occasionally hesitates before attacking,
+                        leading to speculation that the character might recognize certain survivors.
+
+                        None of these ideas are confirmed, but they continue to show up in discussions.
+
+                    </p>
+
+                </details>
+
+                <p style="font-size:85%; color:#555;">
+                    This section reflects community discussion and may change as new discoveries are made.
+                </p>
