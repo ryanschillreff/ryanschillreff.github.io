@@ -788,4 +788,68 @@
                 <p style="font-size:85%; color:#555;">
                     This section reflects community discussion and may change as new discoveries are made.
                 </p>
+                <script>
+                    let animationFrames = [];
+                    let imageCount = 0;
+            
+                    function createAndMoveImage() {
+                        const image = document.createElement('img');    
+                        image.src = 'partycrasherimg/blux.png';
+                        image.alt = 'flying blux';
+                        image.style.position = 'absolute';
+                        image.style.width = '100px';
+                        image.style.height = '100px';
+                        image.style.left = '50%';
+                        image.style.top = '50%';
+                        image.style.transform = 'translate(-50%, -50%)';
+                        document.body.appendChild(image);
+            
+                        let x = Math.random() * (window.innerWidth - 100);
+                        let y = Math.random() * (window.innerHeight - 100);
+                        let dx = Math.random() * 6 - 3;
+                        let dy = Math.random() * 6 - 3;
+            
+                        function moveImage() {
+                            x += dx;
+                            y += dy;
+            
+                            if (x + image.offsetWidth >= window.innerWidth || x <= 0) {
+                                dx = -dx;
+                            }
+                            if (y + image.offsetHeight >= window.innerHeight || y <= 0) {
+                                dy = -dy;
+                            }
+            
+                            image.style.left = `${x}px`;
+                            image.style.top = `${y}px`;
+            
+                            animationFrames[imageCount] = requestAnimationFrame(moveImage);
+                        }
+            
+                        moveImage();
+            
+            
+                        image.addEventListener('click', () => {
+                            cancelAnimationFrame(animationFrames[imageCount]);
+            
+            
+                            image.src = `partycrasherimg/explosion.gif`;
+            
+            
+                            setTimeout(() => {
+                                image.remove();
+                            }, 800);
+                        });
+            
+                        imageCount++;
+                    }
+            
+                    document.addEventListener('keydown', (event) => {
+                        if (event.code === 'Space') {
+                            createAndMoveImage();
+                        }
+                    });
+            
+                    createAndMoveImage();
+                </script>
                 <!--#COMMISION..RESET.HTML!-->
