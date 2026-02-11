@@ -107,7 +107,7 @@
             <div
                 style="font-family: Arial, Helvetica, sans-serif; background:#ffffff; color:#000000; padding:10px; border:1px solid #aaa; max-width:900px;">
 
-                <h1>PARTY CRASHERS Characters</h1>
+                <h1>Characters</h1>
                 <h2>Survivors</h2>
                 <p>Lux</p>
                 <p>Toko</p>
@@ -234,7 +234,7 @@
                     <tr>
                         <td><b>Role</b></td>
                         <td>Fighter</td>
-                        
+
                     </tr>
                     <tr>
                         <td><b>Release</b></td>
@@ -425,7 +425,7 @@
                     <p><b>Notes:</b>This LMS is a <b>preview</b> and will not be used ingame.</p>
 
                 </div>
-                   <!--=============================RUNI===============================-->
+                <!--=============================RUNI===============================-->
                 <hr style="clear:both;">
                 <h2>Runi</h2>
 
@@ -457,12 +457,14 @@
                     style="border:1px solid #aaa; max-width:250px;">
                 <p style="font-size:85%; color:#555;">"..."</p>
 
-                <p><b>Overview:</b> Runi will be a character that uses flight and invisibillity to get away from the killer.</p>
+                <p><b>Overview:</b> Runi will be a character that uses flight and invisibillity to get away from the
+                    killer.</p>
 
                 <p><b>Lore:</b> Not much is known about Runi, and how they got here.</p>
 
                 <ul>
-                    <li><b>Cover: </b>Runi will cover themselves with their wings, causing them to be invisible to the killer.</li>
+                    <li><b>Cover: </b>Runi will cover themselves with their wings, causing them to be invisible to the
+                        killer.</li>
                     <li><b>Ability 2: </b>N/A, Working on it!</li>
                     <li><b>(PASSIVE) Flight: </b> Runi will have lower gravity than anyone else.</li>
                 </ul>
@@ -788,12 +790,83 @@
                 <p style="font-size:85%; color:#555;">
                     This section reflects community discussion and may change as new discoveries are made.
                 </p>
+                <h1>Maps</h1>
+
+                <h2>TestMap</h2>
+
+                <table border="1" cellpadding="6" cellspacing="0"
+                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
+                    <tr>
+                        <th colspan="2" style="background:#e0e0e0;">Map Info</th>
+                    </tr>
+                    <tr>
+                        <td><b>Name</b></td>
+                        <td>Test Map</td>
+                    </tr>
+                    <tr>
+                        <td><b>Acts</b></td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td><b>Size</b></td>
+                        <td>Tiny</td>
+                    </tr>
+                    <tr>
+                        <td><b>Release</b></td>
+                        <td>N/A</td>
+                    </tr>
+                </table>
+
+                <div class="charimg">
+
+
+                    <img src="partycrasherimg/mapplaceholder.png" alt="Placeholder artwork." class="mainart">
+                    </a>
+
+                   
+
+                </div>
+                <p style="font-size:85%; color:#555;">"Some king of...Testmap..."</p>
+
+                <p><b>Overview:</b> The Test Map is a place where devs test movesets before they are released to the public. Unplayable for public matches, but can be selected by a developer.</p>
+
+                <p><b>Lore:</b> There is no official lore for this map.</p>
+
+                <ul>
+                    <li><b>Normal:</b> The normal variation of the test map.</li>
+                    <li><b>Rainy:</b> Adds a rain effect to the map. Cosmetic only.</li>
+                    <li><b>Snowy:</b> Adds a snow effect to the map. Cosmetic only.</li>
+                    <li><b>Mist:</b> Adds the mist effect to the map. Killer has a speed and attack buff, while survivors are weaker.</li>
+                </ul>
+                <div class="lmsaudio">
+
+                    <h3>Map Music</h3>
+
+                    <p style="font-size:85%; color:#555;">
+                        "I don't know if this is a real map, but it sure is a testy one!"
+                    </p>
+                    <b>Map Music (Default):</b><br>
+                    <audio controls>
+                        <source src="mapthemes/03 - Tidal Tempest Zone Past - Masafumi Ogata.mp3" type="audio/mpeg">
+                    </audio>
+
+                    <b>Map Music (Mist):</b><br>
+                    <audio controls>
+                        <source src="mapthemes/1-17 Tidal Tempest 'B' Mix JP.mp3" type="audio/mpeg">
+                    </audio>
+
+
+                    <p><b>Notes:</b> This map music is going to be repurposed for a diffrent map in the future.</p>
+
+                </div>
+
+                <hr style="clear:both;">
                 <script>
                     let animationFrames = [];
                     let imageCount = 0;
-            
+
                     function createAndMoveImage() {
-                        const image = document.createElement('img');    
+                        const image = document.createElement('img');
                         image.src = 'partycrasherimg/blux.png';
                         image.alt = 'flying blux';
                         image.style.position = 'absolute';
@@ -803,52 +876,52 @@
                         image.style.top = '50%';
                         image.style.transform = 'translate(-50%, -50%)';
                         document.body.appendChild(image);
-            
+
                         let x = Math.random() * (window.innerWidth - 100);
                         let y = Math.random() * (window.innerHeight - 100);
                         let dx = Math.random() * 6 - 3;
                         let dy = Math.random() * 6 - 3;
-            
+
                         function moveImage() {
                             x += dx;
                             y += dy;
-            
+
                             if (x + image.offsetWidth >= window.innerWidth || x <= 0) {
                                 dx = -dx;
                             }
                             if (y + image.offsetHeight >= window.innerHeight || y <= 0) {
                                 dy = -dy;
                             }
-            
+
                             image.style.left = `${x}px`;
                             image.style.top = `${y}px`;
-            
+
                             animationFrames[imageCount] = requestAnimationFrame(moveImage);
                         }
-            
+
                         moveImage();
-            
-            
+
+
                         image.addEventListener('click', () => {
                             cancelAnimationFrame(animationFrames[imageCount]);
-            
-            
+
+
                             image.src = `partycrasherimg/explosion.gif`;
-            
-            
+
+
                             setTimeout(() => {
                                 image.remove();
                             }, 800);
                         });
-            
+
                         imageCount++;
                     }
-            
+
                     document.addEventListener('keydown', (event) => {
                         if (event.code === 'Space') {
                             createAndMoveImage();
                         }
                     });
-            
+
                     createAndMoveImage();
-                </script>     
+                </script>
