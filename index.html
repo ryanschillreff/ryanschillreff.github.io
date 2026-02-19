@@ -36,6 +36,19 @@
         header {
             background-color: #3d52d5
         }
+
+        #article1 {
+            background-color: #0444b9;
+            padding: 10px;
+        }
+        .emp {
+            color: #00c3ff;
+            font-weight: bold;
+        }
+        .blue {
+            color: #3d52d5;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -48,24 +61,26 @@
         <a href="game/index.html">RPGMaker Game</a> |
         <a href="partycrashers.html">Party Crashers Wiki</a>
     </nav>
+    <div id="article1">
+        <article>
+            <header>
+                <h2>welcome to my website</h2>
+                <p>hi! my name is ryan and this is my website, I am 14 and enjoy making video games!</p>
+            </header>
+            <p>
+                Heres some more info...
+            </p>
+            <p>Creator of <span id="emp">PARTY</span> <span id="blue">CRASHERS</span>, a work in progress 2D ASYM game, see some more info
+                <a href="partycrashers.html">here!</a></p>
+            <p>Creator of <strong>LUX AND THE LIGHTSHARD</strong>, its just a <span id="emp">demo</span> though so be careful.
+                Will likely never
+                be finished. Play <a href="lux.html">here!</a></p>
+            <p>all in all i am the best coder of all time.</p>
 
-    <article>
-        <header>
-            <h2>welcome to my website</h2>
-            <p>hi! my name is ryan and this is my website, I am 14 and enjoy making video games!</p>
-        </header>
-        <p>
-            Heres some more info...
-        </p>
-        <p>Creator of <strong>PARTY CRASHERS</strong>, a work in progress 2D ASYM game, see some more info <a
-                href="partycrashers.html">here!</a></p>
-        <p>Creator of <strong>LUX AND THE LIGHTSHARD</strong>, its just a demo though so be careful. Will likely never
-            be finished. Play <a href="lux.html">here!</a></p>
-        <p>all in all i am the best coder of all time.</p>
-
-        <a href="https://asa-db.github.io/evilryanschillreff/"><img src="joebart.jpg" alt="The Bart"
-                width="device-width" height="500"></a>
-    </article>
+            <a href="https://asa-db.github.io/evilryanschillreff/"><img src="joebart.jpg" alt="The Bart"
+                    width="device-width" height="500"></a>
+        </article>
+    </div>
 
     <!-- fly img -->
     <script>
@@ -73,7 +88,7 @@
         let imageCount = 0;
 
         function createAndMoveImage() {
-            const image = document.createElement('img');    
+            const image = document.createElement('img');
             image.src = 'partycrasherimg/blux.png';
             image.alt = 'flying blux';
             image.style.position = 'absolute';
