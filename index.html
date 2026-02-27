@@ -87,56 +87,7 @@
         </article>
     </div>
 
-    <!-- fly img -->
-    <script>
-        function createFly(x, y) {
-            const fly = document.createElement('div');
-            fly.style.width = '75px';
-            fly.style.height = '110px';
-            fly.style.backgroundImage = 'url("./partycrasherimg/blux.png")';
-            fly.style.backgroundSize = 'cover';
-            fly.style.position = 'absolute';
-            fly.style.top = `${y}px`;
-            fly.style.left = `${x}px`;
-            document.body.appendChild(fly);
 
-            let posX = x;
-            let posY = y;
-            let velocityX = (Math.random() - 0.5) * 10;
-            let velocityY = (Math.random() - 0.5) * 10;
-            const gravity = 0.6;
-            const bounceFactor = 1.00;
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
-
-            function animateFly() {
-                velocityY += gravity;
-                posX += velocityX;
-                posY += velocityY;
-
-                if (posX <= 0 || posX + 40 >= screenWidth) {
-                    velocityX = -velocityX * bounceFactor;
-                    posX = Math.max(0, Math.min(posX, screenWidth - 40));
-                }
-
-                if (posY <= 0 || posY + 40 >= screenHeight) {
-                    velocityY = -velocityY * bounceFactor;
-                    posY = Math.max(0, Math.min(posY, screenHeight - 40));
-                }
-
-                fly.style.left = `${posX}px`;
-                fly.style.top = `${posY}px`;
-
-                requestAnimationFrame(animateFly);
-            }
-
-            animateFly();
-        }
-
-        document.addEventListener('click', (event) => {
-            createFly(event.clientX, event.clientY);
-        });
-    </script>
 </body>
 
 </html>

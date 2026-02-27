@@ -848,7 +848,6 @@
                     <img src="partycrasherimg/mapplaceholder.png" alt="Placeholder artwork." class="mainart">
                     </a>
 
-                   
 
                 </div>
                 <p style="font-size:85%; color:#555;">"Some king of...Testmap..."</p>
@@ -886,67 +885,53 @@
                 </div>
 
                 <hr style="clear:both;">
-                <script>
-                    let animationFrames = [];
-                    let imageCount = 0;
+    <!-- fly img -->
+    <script>
+        function createFly(x, y) {
+            const fly = document.createElement('div');
+            fly.style.width = '75px';
+            fly.style.height = '110px';
+            fly.style.backgroundImage = 'url("./partycrasherimg/blux.png")';
+            fly.style.backgroundSize = 'cover';
+            fly.style.position = 'absolute';
+            fly.style.top = `${y}px`;
+            fly.style.left = `${x}px`;
+            document.body.appendChild(fly);
 
-                    function createAndMoveImage() {
-                        const image = document.createElement('img');
-                        image.src = 'partycrasherimg/blux.png';
-                        image.alt = 'flying blux';
-                        image.style.position = 'absolute';
-                        image.style.width = '100px';
-                        image.style.height = '100px';
-                        image.style.left = '50%';
-                        image.style.top = '50%';
-                        image.style.transform = 'translate(-50%, -50%)';
-                        document.body.appendChild(image);
+            let posX = x;
+            let posY = y;
+            let velocityX = (Math.random() - 0.5) * 10;
+            let velocityY = (Math.random() - 0.5) * 10;
+            const gravity = 0.6;
+            const bounceFactor = 1.01;
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
 
-                        let x = Math.random() * (window.innerWidth - 100);
-                        let y = Math.random() * (window.innerHeight - 100);
-                        let dx = Math.random() * 6 - 3;
-                        let dy = Math.random() * 6 - 3;
+            function animateFly() {
+                velocityY += gravity;
+                posX += velocityX;
+                posY += velocityY;
 
-                        function moveImage() {
-                            x += dx;
-                            y += dy;
+                if (posX <= 0 || posX + 40 >= screenWidth) {
+                    velocityX = -velocityX
+                    posX = Math.max(0, Math.min(posX, screenWidth - 40));
+                }
 
-                            if (x + image.offsetWidth >= window.innerWidth || x <= 0) {
-                                dx = -dx;
-                            }
-                            if (y + image.offsetHeight >= window.innerHeight || y <= 0) {
-                                dy = -dy;
-                            }
+                if (posY <= 0 || posY + 40 >= screenHeight) {
+                    velocityY = -velocityY
+                    posY = Math.max(0, Math.min(posY, screenHeight - 40));
+                }
 
-                            image.style.left = `${x}px`;
-                            image.style.top = `${y}px`;
+                fly.style.left = `${posX}px`;
+                fly.style.top = `${posY}px`;
 
-                            animationFrames[imageCount] = requestAnimationFrame(moveImage);
-                        }
+                requestAnimationFrame(animateFly);
+            }
 
-                        moveImage();
+            animateFly();
+        }
 
-
-                        image.addEventListener('click', () => {
-                            cancelAnimationFrame(animationFrames[imageCount]);
-
-
-                            image.src = `partycrasherimg/explosion.gif`;
-
-
-                            setTimeout(() => {
-                                image.remove();
-                            }, 800);
-                        });
-
-                        imageCount++;
-                    }
-
-                    document.addEventListener('keydown', (event) => {
-                        if (event.code === 'Space') {
-                            createAndMoveImage();
-                        }
-                    });
-
-                    createAndMoveImage();
-                </script>
+        document.addEventListener('click', (event) => {
+            createFly(event.clientX, event.clientY);
+        });
+    </script>
