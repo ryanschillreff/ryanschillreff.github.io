@@ -297,11 +297,6 @@
             const MAP_H = 540;
             const keys = new Set();
             let animTime = 0;
-            const bluxSecret = {
-                seq: ["b", "l", "u", "x"],
-                idx: 0,
-                unlocked: false
-            };
 
             function makeImage(src) {
                 const img = new Image();
@@ -354,16 +349,6 @@
                     ],
                     dash: makeImage("partycrashers_assets/ea8d45c9a33974bc547f7ef74c83d18a.svg")
                 },
-                blux: {
-                    stand: makeImage("partycrasherimg/blux.png"),
-                    jump: makeImage("partycrasherimg/blux.png"),
-                    fall: makeImage("partycrasherimg/blux.png"),
-                    walk: [
-                        makeImage("partycrasherimg/blux.png"),
-                        makeImage("partycrasherimg/blux.png")
-                    ],
-                    dash: makeImage("partycrasherimg/blux.png")
-                },
                 evil: {
                     stand: makeImage("partycrashers_assets/ac6073110e6652c335401834396da6a7.svg"),
                     jump: makeImage("partycrashers_assets/ea1991ccba643d5bd0419ab7cca1371d.svg"),
@@ -390,20 +375,11 @@
                         makeImage("partycrashers_assets/cd5265571b9126d4e09ca911af4ecf19.svg"),
                         makeImage("partycrashers_assets/bb55fc783168a4b7383138a9411e283f.svg")
                     ],
-                    healthToko: [
-                        makeImage("partycrashers_assets/33029568a9bc443834b4b473fa6a011a.svg")
-                    ],
                     abilityLux: {
                         ready: makeImage("partycrashers_assets/25dc94b051784ca544ad244bd11b86d9.png"),
                         a1: makeImage("partycrashers_assets/2a7a5e8da2c777e29b3736445d66e1a0.png"),
                         a2: makeImage("partycrashers_assets/c2eab3094606fcee656a5ec9607ab0e3.png"),
                         both: makeImage("partycrashers_assets/106b09bf8a671b67bb4c999635719546.png")
-                    },
-                    abilityToko: {
-                        ready: makeImage("partycrashers_assets/2860e5ad43838705850ff2c839ba167d.png"),
-                        a1: makeImage("partycrashers_assets/ec8fbc75057a54e0e5026a4dfd1a5c9b.png"),
-                        a2: makeImage("partycrashers_assets/73eeb89b0fef8f302b508fc6673bff7f.png"),
-                        both: makeImage("partycrashers_assets/ed77a438213f8384e77e18ffa0bb91c5.png")
                     }
                 }
             };
@@ -481,22 +457,6 @@
                     ability2Cd: 10.2,
                     color: "#9cffba",
                     tint: "rgba(160, 255, 194, 0.27)"
-                },
-                blux: {
-                    label: "Blux",
-                    speed: 345,
-                    sprintBonus: 220,
-                    jump: 700,
-                    hp: 1200,
-                    stamina: 145,
-                    boostDuration: 3.1,
-                    boostBonus: 210,
-                    boostBurst: 220,
-                    boostStaminaGain: 45,
-                    ability1Cd: 13,
-                    ability2Cd: 18,
-                    color: "#5ec9ff",
-                    tint: "rgba(94, 201, 255, 0.36)"
                 }
             };
 
@@ -674,7 +634,6 @@
             }
 
             function setSurvivor(id) {
-                if (id === "blux" && !bluxSecret.unlocked) return;
                 roleState.survivorId = SURVIVORS[id] ? id : "lux";
                 survivorLuxBtn.classList.toggle("active", roleState.survivorId === "lux");
                 survivorTokoBtn.classList.toggle("active", roleState.survivorId === "toko");
@@ -811,7 +770,7 @@
             }
 
             function makeActor(type, x, y) {
-                if (type === "lux" || type === "toko" || type === "blux") {
+                if (type === "lux" || type === "toko") {
                     const survivor = SURVIVORS[type] || SURVIVORS.lux;
                     return {
                         type: "lux",
@@ -841,8 +800,6 @@
                         parryTime: 0,
                         dashHitDone: false,
                         slashHitDone: false,
-                        bluxPhaseTime: 0,
-                        bluxHealGlow: 0,
                         escaped: false,
                         cowerTime: 0,
                         regenTime: 0,
@@ -983,13 +940,6 @@
                 return true;
             }
 
-            function spendStamina(actor, amount) {
-                if (!actor || actor.type !== "lux") return true;
-                if ((actor.stamina || 0) < amount) return false;
-                actor.stamina = Math.max(0, actor.stamina - amount);
-                return true;
-            }
-
             function tryDefensiveCounter(defender, attacker) {
                 if (!defender || !attacker) return false;
                 if (defender.type !== "lux" || attacker.type !== "evil") return false;
@@ -1019,11 +969,7 @@
                 actor.coyote = wasGround ? 0.1 : Math.max(0, actor.coyote - dt);
                 actor.onGround = false;
 
-                let gravityScale = 1;
-                if (actor.type === "lux" && actor.survivorId === "blux" && actor.bluxPhaseTime > 0) {
-                    gravityScale = 0.08;
-                }
-                actor.vy += world.gravity * gravityScale * dt;
+                actor.vy += world.gravity * dt;
                 actor.vx *= wasGround ? world.frictionGround : world.frictionAir;
 
                 // Sub-stepping prevents tunneling through thin/edge surfaces.
@@ -1073,7 +1019,6 @@
 
             function basicAttack(attacker, target) {
                 if (attacker.m1Cd > 0) return;
-                if (attacker.type === "lux" && !spendStamina(attacker, 8)) return;
                 attacker.m1Cd = attacker.type === "lux" ? 0.66 : 0.9;
                 attacker.hitboxTime = 0.08;
                 playSfx(sfx.hit, 0.25, attacker.type === "lux" ? 1.05 : 0.95);
@@ -1105,7 +1050,6 @@
 
                 if (actor.type === "lux") {
                     if (actor.survivorId === "toko") {
-                        if (!spendStamina(actor, 34)) return;
                         // Toko Slash: windup slash that heavily stuns/damages if it lands.
                         actor.ability1Cd = actor.ability1BaseCd || 7.2;
                         actor.tokoSlashTime = 0.55;
@@ -1113,18 +1057,7 @@
                         actor.slashHitDone = false;
                         actor.vx = 0;
                         playSfx(sfx.dash, 0.22, 0.92);
-                    } else if (actor.survivorId === "blux") {
-                        if (!spendStamina(actor, 28)) return;
-                        // Blux dev ability: flight phase with flashing.
-                        actor.ability1Cd = actor.ability1BaseCd || 13;
-                        actor.bluxPhaseTime = 3.25;
-                        actor.chargeTime = 0.2;
-                        actor.boostTime = 1.6;
-                        actor.vx = actor.facing * 520;
-                        actor.vy = -180;
-                        playSfx(sfx.dash, 0.24, 1.16);
                     } else {
-                        if (!spendStamina(actor, 26)) return;
                         // Lux Dash: burst forward, hit deals 25 and stuns 3s.
                         actor.ability1Cd = actor.ability1BaseCd || 8;
                         actor.luxDashTime = 0.32;
@@ -1156,21 +1089,12 @@
 
                 if (actor.type === "lux") {
                     if (actor.survivorId === "toko") {
-                        if (!spendStamina(actor, 20)) return;
                         // Toko Parry: block incoming attacks for 4 seconds.
                         actor.ability2Cd = actor.ability2BaseCd || 10.2;
                         actor.parryTime = 4;
                         actor.vx = 0;
                         playSfx(sfx.ring, 0.2, 0.88);
-                    } else if (actor.survivorId === "blux") {
-                        if (!spendStamina(actor, 24)) return;
-                        // Blux dev ability: huge self-heal.
-                        actor.ability2Cd = actor.ability2BaseCd || 18;
-                        actor.hp = Math.min(actor.maxHp, actor.hp + 500);
-                        actor.bluxHealGlow = 2.4;
-                        playSfx(sfx.jump, 0.26, 1.26);
                     } else {
-                        if (!spendStamina(actor, 18)) return;
                         // Lux Cover: cower counter stance.
                         actor.ability2Cd = actor.ability2BaseCd || 11;
                         actor.cowerTime = 3;
@@ -1203,8 +1127,6 @@
                     actor.parryTime = Math.max(0, actor.parryTime - dt);
                     actor.luxDashTime = Math.max(0, actor.luxDashTime - dt);
                     actor.tokoSlashTime = Math.max(0, actor.tokoSlashTime - dt);
-                    actor.bluxPhaseTime = Math.max(0, actor.bluxPhaseTime - dt);
-                    actor.bluxHealGlow = Math.max(0, actor.bluxHealGlow - dt);
                     actor.boostTime = Math.max(0, actor.boostTime - dt);
                     if (actor.survivorId === "toko") {
                         actor.hp = Math.max(0, actor.hp - 0.55 * dt);
@@ -1221,7 +1143,6 @@
                 const left = keyDown("a") || keyDown("arrowleft");
                 const right = keyDown("d") || keyDown("arrowright");
                 const jump = keyDown("w") || keyDown(" ") || keyDown("arrowup");
-                const down = keyDown("s") || keyDown("arrowdown");
                 const sprint = keyDown("shift");
                 const attack = keyDown("j") || keyDown("/");
                 const ability1 = keyDown("k");
@@ -1247,14 +1168,6 @@
                         actor.vx = 0;
                     } else {
                         actor.vx = dir * speed;
-                    }
-                    if (actor.survivorId === "blux" && actor.bluxPhaseTime > 0) {
-                        let vdir = 0;
-                        if (jump) vdir -= 1;
-                        if (down) vdir += 1;
-                        actor.vy += vdir * 1700 * dt;
-                        actor.vx = dir * (speed + 220);
-                        actor.invuln = Math.max(actor.invuln, 0.08);
                     }
 
                     // Proximity repair: standing near a generator repairs it.
@@ -1332,17 +1245,7 @@
                         actor.vx = 0;
                     } else {
                         actor.facing = gdir || actor.facing;
-                        const distGoal = Math.abs(goalX - axc);
-                        const nearThreat = Math.abs((target.x + target.w * 0.5) - axc) < 240;
-                        const shouldSprint = actor.stamina > 16 && (distGoal > 260 || nearThreat);
-                        let moveSpeed = actor.speed * 0.9;
-                        if (shouldSprint) {
-                            moveSpeed += actor.sprintBonus * 0.72;
-                            actor.stamina = Math.max(0, actor.stamina - 26 * dt);
-                        } else {
-                            actor.stamina = Math.min(100, actor.stamina + 22 * dt);
-                        }
-                        actor.vx = gdir * moveSpeed;
+                        actor.vx = gdir * actor.speed * 0.9;
                     }
 
                     if (target.x > actor.x - 40 && target.x < actor.x + 60 && Math.abs(target.y - actor.y) < 40) {
@@ -1366,28 +1269,18 @@
             }
 
             function updateWinConditions() {
-                const team = survivors();
-                const alive = team.filter(a => a.hp > 0 && !a.escaped);
-                if (team.some(a => a.hp <= 0 && !a.escaped)) {
-                    endMatch("Evil Lux", "A survivor was eliminated. All survivors must escape.");
+                const alive = aliveSurvivors();
+                if (!alive.length) {
+                    endMatch("Evil Lux", "Both survivors were eliminated.");
                     return;
                 }
 
                 if (world.gensDone >= world.gensRequired) {
                     world.gate.active = true;
-                    for (const s of alive) {
-                        if (!rectsOverlap(actorRect(s), world.gate)) continue;
-                        s.escaped = true;
-                        s.invuln = Math.max(s.invuln, 999);
-                        s.vx = 0;
-                        s.vy = 0;
-                        if (s === world.lux) {
-                            status.textContent = "You escaped. Spectating teammates (Tab to switch).";
-                        }
-                    }
-
-                    if (team.length && team.every(a => a.escaped)) {
-                        endMatch("Survivors", "All survivors escaped.");
+                    const escaped = alive.find(a => rectsOverlap(actorRect(a), world.gate));
+                    if (escaped) {
+                        const name = survivorLabel(escaped.survivorId);
+                        endMatch("Survivors", `All generators active. ${name} escaped.`);
                         return;
                     }
                 }
@@ -1404,30 +1297,28 @@
                 world.timeLeft = Math.max(0, world.timeLeft - dt);
 
                 if (roleState.playerRole === "lux") {
-                    if (world.lux.hp > 0 && !world.lux.escaped) {
+                    if (world.lux.hp > 0) {
                         updateHuman(world.lux, world.evil, dt);
                     }
                     for (const b of world.bots) {
-                        if (b && b.hp > 0 && !b.escaped) updateAI(b, world.evil, dt);
+                        if (b && b.hp > 0) updateAI(b, world.evil, dt);
                     }
                     updateAI(world.evil, aliveSurvivors(), dt);
                 } else {
                     const chase = nearestSurvivor(world.evil) || world.lux;
                     updateHuman(world.evil, chase, dt);
-                    if (world.lux.hp > 0 && !world.lux.escaped) updateAI(world.lux, world.evil, dt);
+                    if (world.lux.hp > 0) updateAI(world.lux, world.evil, dt);
                     for (const b of world.bots) {
-                        if (b && b.hp > 0 && !b.escaped) updateAI(b, world.evil, dt);
+                        if (b && b.hp > 0) updateAI(b, world.evil, dt);
                     }
                 }
 
-                if (!world.lux.escaped) applyPhysics(world.lux, dt);
-                for (const b of world.bots) {
-                    if (!b.escaped) applyPhysics(b, dt);
-                }
+                applyPhysics(world.lux, dt);
+                for (const b of world.bots) applyPhysics(b, dt);
                 applyPhysics(world.evil, dt);
 
                 const dashAttack = s => {
-                    if (!s || s.hp <= 0 || s.escaped) return;
+                    if (!s || s.hp <= 0) return;
                     if (s.survivorId === "lux" && s.luxDashTime > 0 && !s.dashHitDone) {
                         if (rectsOverlap(hitbox(s, 58), actorRect(world.evil))) {
                             s.dashHitDone = true;
@@ -1543,7 +1434,6 @@
 
             function drawActor(a) {
                 if (!a) return;
-                if (a.type === "lux" && a.escaped) return;
                 if (roleState.playerRole === "lux" && a === world.lux && a.hp <= 0) return;
                 const x = a.x - world.cameraX;
                 const set = a.type === "evil"
@@ -1617,16 +1507,13 @@
 
             function drawBottomBars() {
                 // Blue meter is sprint stamina only.
-                const isToko = world.lux && world.lux.survivorId === "toko";
-                const healthSet = isToko ? (art.hud.healthToko || art.hud.healthLux) : art.hud.healthLux;
-                const abilitySet = isToko ? (art.hud.abilityToko || art.hud.abilityLux) : art.hud.abilityLux;
-                const healthFrame = healthSet[0] || art.hud.healthLux[0];
+                const healthFrame = art.hud.healthLux[0];
                 const staminaRatio = Math.max(0, Math.min(1, world.lux.stamina / 100));
 
-                let abilityFrame = abilitySet.ready;
-                if (world.lux.ability1Cd > 0 && world.lux.ability2Cd > 0) abilityFrame = abilitySet.both;
-                else if (world.lux.ability1Cd > 0) abilityFrame = abilitySet.a1;
-                else if (world.lux.ability2Cd > 0) abilityFrame = abilitySet.a2;
+                let abilityFrame = art.hud.abilityLux.ready;
+                if (world.lux.ability1Cd > 0 && world.lux.ability2Cd > 0) abilityFrame = art.hud.abilityLux.both;
+                else if (world.lux.ability1Cd > 0) abilityFrame = art.hud.abilityLux.a1;
+                else if (world.lux.ability2Cd > 0) abilityFrame = art.hud.abilityLux.a2;
 
                 const healthX = -8;
                 const healthW = 248;
@@ -1694,8 +1581,8 @@
                     { label: "Evil Lux", actor: world.evil }
                 ];
 
-                const x = 14;
-                let y = 56;
+                const x = W - 270;
+                let y = 14;
                 const rowH = 24;
                 const boxW = 256;
                 const boxH = roster.length * rowH + 14;
@@ -1712,7 +1599,7 @@
                     if (!a) continue;
                     const hp = Math.max(0, Math.ceil(a.hp));
                     const stamina = a.type === "lux" ? Math.max(0, Math.ceil(a.stamina || 0)) : "--";
-                    const dead = a.escaped ? " [ESCAPED]" : (a.hp <= 0 ? " [DOWN]" : "");
+                    const dead = a.hp <= 0 ? " [DOWN]" : "";
                     ctx.fillStyle = a.type === "evil" ? "#ff8ea6" : "#c9f1ff";
                     ctx.fillText(`${row.label}${dead}`, x, y + 10);
                     ctx.fillStyle = "#f0f6ff";
@@ -1767,7 +1654,7 @@
             window.addEventListener("keydown", e => {
                 const key = e.key.toLowerCase();
                 keys.add(key);
-                if (key === "tab" && roleState.gameState === GAME.PLAYING && roleState.playerRole === "lux" && world.lux && (world.lux.hp <= 0 || world.lux.escaped)) {
+                if (key === "tab" && roleState.gameState === GAME.PLAYING && roleState.playerRole === "lux" && world.lux && world.lux.hp <= 0) {
                     const targets = spectateTargets();
                     if (targets.length > 1) {
                         world.spectateIndex = (world.spectateIndex + 1) % targets.length;
