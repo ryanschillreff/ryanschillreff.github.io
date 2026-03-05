@@ -1,0 +1,1822 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Party Crashers - ASYM Platformer (No Scratch)</title>
+    <style>
+        :root {
+            --bg: #090d16;
+            --panel: #121b2c;
+            --line: #2a385a;
+            --text: #ebf2ff;
+            --muted: #9db2db;
+            --lux: #70dcff;
+            --evil: #ff6a89;
+            --ok: #68f2a6;
+            --warn: #ffc764;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+            padding: 0;
+            overflow: hidden;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 620px at 15% 0%, #1d2f56 0%, transparent 60%),
+                radial-gradient(900px 540px at 90% 100%, #3a1f46 0%, transparent 55%),
+                var(--bg);
+        }
+
+        .app {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .viewport {
+            position: relative;
+            border: 0;
+            border-radius: 0;
+            overflow: hidden;
+            background: #060a13;
+            box-shadow: none;
+        }
+
+        canvas {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            background: #5f003b;
+        }
+
+        .hud {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            top: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            pointer-events: none;
+            font-size: 13px;
+            text-shadow: 0 1px 1px #000;
+            display: none;
+        }
+
+        .chip {
+            background: rgba(8, 12, 20, 0.7);
+            border: 1px solid #334163;
+            color: var(--muted);
+            border-radius: 999px;
+            padding: 6px 10px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chip strong {
+            color: var(--text);
+        }
+
+        aside {
+            position: fixed;
+            right: 14px;
+            top: 14px;
+            width: min(320px, calc(100vw - 28px));
+            max-height: calc(100vh - 28px);
+            overflow: auto;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: rgba(18, 27, 44, 0.88);
+            backdrop-filter: blur(6px);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 5;
+        }
+
+        body.playing aside {
+            display: none;
+        }
+
+        body.playing .hud {
+            display: grid;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 0.2px;
+        }
+
+        .sub {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        button {
+            border: 1px solid #395079;
+            background: #172645;
+            color: var(--text);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 120ms ease;
+        }
+
+        button:hover {
+            border-color: #5b85c2;
+        }
+
+        button.active {
+            border-color: #7dc9ff;
+            box-shadow: 0 0 0 2px rgba(103, 198, 255, 0.3) inset;
+            background: #153756;
+        }
+
+        button.warn {
+            border-color: #7d5c2f;
+            background: #3c2a15;
+            color: #ffe6c0;
+        }
+
+        .small {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 6px 10px;
+            align-items: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 99px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dot.lux {
+            background: var(--lux);
+        }
+
+        .dot.evil {
+            background: var(--evil);
+        }
+
+        .dot.obj {
+            background: #79ffb9;
+        }
+
+        .dot.exit {
+            background: #ffe57b;
+        }
+
+        @media (max-width: 960px) {
+            .hud {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            aside {
+                right: 8px;
+                top: 8px;
+                width: min(320px, calc(100vw - 16px));
+                max-height: calc(100vh - 16px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+        <section class="viewport">
+            <canvas id="game" width="960" height="540" aria-label="Party Crashers game"></canvas>
+            <div class="hud">
+                <div class="chip">Role: <strong id="hud-role">Survivor</strong></div>
+                <div class="chip">State: <strong id="hud-state">Menu</strong></div>
+                <div class="chip">Objective: <strong id="hud-objective">Activate 0 / 3</strong></div>
+                <div class="chip">Time: <strong id="hud-time">180</strong></div>
+            </div>
+        </section>
+
+        <aside>
+            <h1>Party Crashers</h1>
+            <p class="sub">One side survives, one side hunts.</p>
+
+            <div>
+                <p class="small">Choose your side</p>
+                <div class="row">
+                    <button id="play-lux" class="active" type="button">Survivor</button>
+                    <button id="play-evil" type="button">Killer (Evil Lux)</button>
+                </div>
+            </div>
+
+            <div>
+                <p class="small">Survivor character</p>
+                <div class="row">
+                    <button id="survivor-lux" class="active" type="button">Lux</button>
+                    <button id="survivor-toko" type="button">Toko</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <button id="start" type="button">Start Match</button>
+                <button id="pause" type="button">Pause</button>
+            </div>
+            <button id="restart" class="warn" type="button">Reset Match</button>
+
+            <p class="small"><strong>Survivor (Lux/Toko):</strong> activate 3 generators, then reach the gate.</p>
+            <p class="small"><strong>Killer (Evil Lux):</strong> burn Lux's HP to 0 before escape.</p>
+            <p class="small"><strong>Controls:</strong> A/D move, W or Space jump, Shift sprint, J attack, K ability1, L
+                ability2.</p>
+
+            <div class="legend">
+                <span class="dot lux"></span><span>Survivor (Lux or Toko)</span>
+                <span class="dot evil"></span><span>Evil Lux (P2HP 666)</span>
+                <span class="dot obj"></span><span>Generator</span>
+                <span class="dot exit"></span><span>Exit Gate</span>
+            </div>
+
+            <p class="small" id="status">Ready.</p>
+        </aside>
+    </main>
+
+    <script>
+        (() => {
+            const canvas = document.getElementById("game");
+            const ctx = canvas.getContext("2d");
+
+            const hudRole = document.getElementById("hud-role");
+            const hudState = document.getElementById("hud-state");
+            const hudObjective = document.getElementById("hud-objective");
+            const hudTime = document.getElementById("hud-time");
+            const status = document.getElementById("status");
+
+            const playLuxBtn = document.getElementById("play-lux");
+            const playEvilBtn = document.getElementById("play-evil");
+            const survivorLuxBtn = document.getElementById("survivor-lux");
+            const survivorTokoBtn = document.getElementById("survivor-toko");
+            const startBtn = document.getElementById("start");
+            const pauseBtn = document.getElementById("pause");
+            const restartBtn = document.getElementById("restart");
+            const appRoot = document.querySelector(".app");
+
+            const W = canvas.width;
+            const H = canvas.height;
+            const MAP_W = 5200;
+            const MAP_H = 540;
+            const keys = new Set();
+            let animTime = 0;
+            const bluxSecret = {
+                seq: ["b", "l", "u", "x"],
+                idx: 0,
+                unlocked: false
+            };
+
+            function makeImage(src) {
+                const img = new Image();
+                img.src = src;
+                return img;
+            }
+
+            function imageReady(img) {
+                return Boolean(img && img.complete && img.naturalWidth > 0 && img.naturalHeight > 0);
+            }
+
+            const art = {
+                sky: makeImage("partycrashers_assets/bb23bddbc34c4e9ba671aa6af2846ccc.png"),
+                levelVisual: makeImage("partycrashers_assets/625673f048915d67af78215b980c3c19.png"),
+                levelHitbox: makeImage("partycrashers_assets/b247be3096c33b918e3b1faf2e1566a5.png"),
+                lux: {
+                    stand: makeImage("partycrashers_assets/62369e6f42a5076f4ddb41b6e03695af.svg"),
+                    jump: makeImage("partycrashers_assets/40f3e11a3e5bc9958324a2d3f87c69fb.svg"),
+                    fall: makeImage("partycrashers_assets/99f87e15a32304d09e65219ded309669.svg"),
+                    walk: [
+                        makeImage("partycrashers_assets/d6506716ea382959d334b479c7dc7342.svg"),
+                        makeImage("partycrashers_assets/cfa61f4e16fadae5769dbfcdb2eb5af8.svg"),
+                        makeImage("partycrashers_assets/4048c57a335b6c1b46d0c1781b5d8077.svg"),
+                        makeImage("partycrashers_assets/4048c57a335b6c1b46d0c1781b5d8077.svg"),
+                        makeImage("partycrashers_assets/cfa61f4e16fadae5769dbfcdb2eb5af8.svg"),
+                        makeImage("partycrashers_assets/145ee1d6ea53defb0670261379155458.svg"),
+                        makeImage("partycrashers_assets/84b1891af63454be4ffb7942a4b3c9f5.svg"),
+                        makeImage("partycrashers_assets/bdd175aa450ee00d8b278d009f604a5e.svg")
+                    ],
+                    dash: makeImage("partycrashers_assets/810af607d15b415321fc0b25d21bb998.svg"),
+                    cower: [
+                        makeImage("partycrashers_assets/bf2d2cefc3764a0d49156c9da7947afc.png"),
+                        makeImage("partycrashers_assets/1c7cc1bc61781663b63509196e9440d9.png")
+                    ],
+                    dead: makeImage("partycrashers_assets/e988ceb69d0280883c9b0967f12c9005.svg")
+                },
+                toko: {
+                    stand: makeImage("partycrashers_assets/50486341cf97aad91b6cd08b7237713c.svg"),
+                    jump: makeImage("partycrashers_assets/a3ed87d9b77f90df073ce725f838fd97.svg"),
+                    fall: makeImage("partycrashers_assets/68b61111f6ebe7c9948945ecf0fe2906.svg"),
+                    walk: [
+                        makeImage("partycrashers_assets/e8200d77c306476d2d7ceb9c56072a8f.svg"),
+                        makeImage("partycrashers_assets/e8200d77c306476d2d7ceb9c56072a8f.svg"),
+                        makeImage("partycrashers_assets/f58d5266ce04deeec19c02c0edbcbffd.svg"),
+                        makeImage("partycrashers_assets/f58d5266ce04deeec19c02c0edbcbffd.svg"),
+                        makeImage("partycrashers_assets/e8200d77c306476d2d7ceb9c56072a8f.svg"),
+                        makeImage("partycrashers_assets/e8200d77c306476d2d7ceb9c56072a8f.svg"),
+                        makeImage("partycrashers_assets/f58d5266ce04deeec19c02c0edbcbffd.svg"),
+                        makeImage("partycrashers_assets/f58d5266ce04deeec19c02c0edbcbffd.svg")
+                    ],
+                    dash: makeImage("partycrashers_assets/ea8d45c9a33974bc547f7ef74c83d18a.svg")
+                },
+                blux: {
+                    stand: makeImage("partycrasherimg/blux.png"),
+                    jump: makeImage("partycrasherimg/blux.png"),
+                    fall: makeImage("partycrasherimg/blux.png"),
+                    walk: [
+                        makeImage("partycrasherimg/blux.png"),
+                        makeImage("partycrasherimg/blux.png")
+                    ],
+                    dash: makeImage("partycrasherimg/blux.png")
+                },
+                evil: {
+                    stand: makeImage("partycrashers_assets/ac6073110e6652c335401834396da6a7.svg"),
+                    jump: makeImage("partycrashers_assets/ea1991ccba643d5bd0419ab7cca1371d.svg"),
+                    fall: makeImage("partycrashers_assets/d9730e2165000a2a0424c44d9f8d661f.svg"),
+                    walk: [
+                        makeImage("partycrashers_assets/93ddb5829e4af4604e1386bcaffa986a.svg"),
+                        makeImage("partycrashers_assets/6163adaeaa11eaed53259204b8d3c8f7.svg"),
+                        makeImage("partycrashers_assets/c0180ab66ef1967a94cbb02c81e5bbe1.svg"),
+                        makeImage("partycrashers_assets/6f21147560d70f32ba0bc344f5d8b60f.svg"),
+                        makeImage("partycrashers_assets/c0180ab66ef1967a94cbb02c81e5bbe1.svg"),
+                        makeImage("partycrashers_assets/285a877622bab6f9cfb04423739889f4.svg"),
+                        makeImage("partycrashers_assets/cb3b7cadfad0423ae4d8fe46c5502749.svg"),
+                        makeImage("partycrashers_assets/07012c8fb7b51e91653ab1bcf9c0af00.svg")
+                    ],
+                    charge: makeImage("partycrashers_assets/a3cfa83b3e7632a96dcffc106b8007fe.svg"),
+                    regen: makeImage("partycrashers_assets/d52129904c4ac69e67e101a87c2c5b68.svg")
+                },
+                hud: {
+                    healthLux: [
+                        makeImage("partycrashers_assets/192b566b7c2f8067da203f97de075e4c.svg"),
+                        makeImage("partycrashers_assets/717cd1235eaa4f7fe9972b208cc1209d.svg"),
+                        makeImage("partycrashers_assets/d0aceffabe02a0b01ee4934ad3cf5105.svg"),
+                        makeImage("partycrashers_assets/e0c36796be5496d73e61b16de6d82ba8.svg"),
+                        makeImage("partycrashers_assets/cd5265571b9126d4e09ca911af4ecf19.svg"),
+                        makeImage("partycrashers_assets/bb55fc783168a4b7383138a9411e283f.svg")
+                    ],
+                    healthToko: [
+                        makeImage("partycrashers_assets/33029568a9bc443834b4b473fa6a011a.svg")
+                    ],
+                    abilityLux: {
+                        ready: makeImage("partycrashers_assets/25dc94b051784ca544ad244bd11b86d9.png"),
+                        a1: makeImage("partycrashers_assets/2a7a5e8da2c777e29b3736445d66e1a0.png"),
+                        a2: makeImage("partycrashers_assets/c2eab3094606fcee656a5ec9607ab0e3.png"),
+                        both: makeImage("partycrashers_assets/106b09bf8a671b67bb4c999635719546.png")
+                    },
+                    abilityToko: {
+                        ready: makeImage("partycrashers_assets/2860e5ad43838705850ff2c839ba167d.png"),
+                        a1: makeImage("partycrashers_assets/ec8fbc75057a54e0e5026a4dfd1a5c9b.png"),
+                        a2: makeImage("partycrashers_assets/73eeb89b0fef8f302b508fc6673bff7f.png"),
+                        both: makeImage("partycrashers_assets/ed77a438213f8384e77e18ffa0bb91c5.png")
+                    }
+                }
+            };
+
+            const sfx = {
+                jump: "partycrashers_assets/58047e520156dd7c7b118c56184d5b9b.wav",
+                fall: "partycrashers_assets/0b1c2ad6aaaefa4f2389976b1b4c0da0.wav",
+                hit: "partycrashers_assets/4706418695b4e7320282f4dfe14d7f55.mp3",
+                ring: "partycrashers_assets/4782f476e9c2d99232e52832299d509d.mp3",
+                dash: "partycrashers_assets/4706418695b4e7320282f4dfe14d7f55.mp3"
+            };
+
+            function playSfx(path, volume = 0.45, rate = 1) {
+                const a = new Audio(path);
+                a.volume = Math.max(0, Math.min(1, volume * 0.12));
+                a.playbackRate = rate;
+                a.play().catch(() => { });
+            }
+
+            const bgMusic = new Audio("partycrashers_assets/367e5f79b437aa5a014e1eac913253c7.mp3");
+            bgMusic.loop = true;
+            bgMusic.volume = 0.35;
+
+            function startMusic() {
+                bgMusic.play().catch(() => { });
+            }
+
+            function pauseMusic() {
+                bgMusic.pause();
+            }
+
+            function enterFullscreen() {
+                const el = appRoot;
+                if (!document.fullscreenElement && el && el.requestFullscreen) {
+                    el.requestFullscreen().catch(() => { });
+                }
+            }
+
+            const GAME = {
+                MENU: "menu",
+                PLAYING: "playing",
+                PAUSED: "paused",
+                OVER: "over"
+            };
+
+            const SURVIVORS = {
+                lux: {
+                    label: "Lux",
+                    speed: 295,
+                    sprintBonus: 170,
+                    jump: 620,
+                    hp: 100,
+                    stamina: 100,
+                    boostDuration: 2.7,
+                    boostBonus: 120,
+                    boostBurst: 120,
+                    boostStaminaGain: 40,
+                    ability1Cd: 8,
+                    ability2Cd: 11,
+                    color: "#70dcff",
+                    tint: "rgba(112, 220, 255, 0.2)"
+                },
+                toko: {
+                    label: "Toko",
+                    speed: 320,
+                    sprintBonus: 145,
+                    jump: 640,
+                    hp: 95,
+                    stamina: 100,
+                    boostDuration: 2.4,
+                    boostBonus: 145,
+                    boostBurst: 145,
+                    boostStaminaGain: 34,
+                    ability1Cd: 7.2,
+                    ability2Cd: 10.2,
+                    color: "#9cffba",
+                    tint: "rgba(160, 255, 194, 0.27)"
+                },
+                blux: {
+                    label: "Blux",
+                    speed: 345,
+                    sprintBonus: 220,
+                    jump: 700,
+                    hp: 1200,
+                    stamina: 145,
+                    boostDuration: 3.1,
+                    boostBonus: 210,
+                    boostBurst: 220,
+                    boostStaminaGain: 45,
+                    ability1Cd: 13,
+                    ability2Cd: 18,
+                    color: "#5ec9ff",
+                    tint: "rgba(94, 201, 255, 0.36)"
+                }
+            };
+
+            const LEVEL_DRAW_W = 637;
+            const LEVEL_DRAW_H = 201;
+            const LEVEL_DRAW_X = 0;
+            const LEVEL_DRAW_Y = 205;
+
+            // Exact solid geometry from Level HITBOX costume2.
+            const LEVEL_SOLID_RECTS = [
+                { x: 261, y: 0, w: 218, h: 55 },
+                { x: 261, y: 55, w: 280, h: 15 },
+                { x: 206, y: 70, w: 335, h: 49 },
+                { x: 0, y: 119, w: 637, h: 82 }
+            ];
+
+            const MAP_VARIANTS = [
+                {
+                    name: "Classic Shore",
+                    gens: [
+                        { x: 88 },
+                        { x: 340 },
+                        { x: 620 },
+                        { x: 920 },
+                        { x: 1240 },
+                        { x: 1567 },
+                        { x: 1860 },
+                        { x: 2170 },
+                        { x: 2470 },
+                        { x: 2780 },
+                        { x: 3030 }
+                    ],
+                    gate: { x: 2940, y: 205, w: 58, h: 70 },
+                    survivorSpawn: { x: 60, y: 288 },
+                    botSpawn: { x: 295, y: 165 },
+                    killerSpawn: { x: 2200, y: 165 },
+                    extras: [
+                        { x: 520, y: 262, w: 88, h: 14 },
+                        { x: 540, y: 230, w: 72, h: 14 },
+                        { x: 700, y: 286, w: 80, h: 14 },
+                        { x: 780, y: 252, w: 74, h: 14 },
+                        { x: 1012, y: 222, w: 78, h: 14 },
+                        { x: 1240, y: 286, w: 100, h: 14 }
+                    ]
+                },
+                {
+                    name: "Split Falls",
+                    gens: [
+                        { x: 110 },
+                        { x: 360 },
+                        { x: 650 },
+                        { x: 905 },
+                        { x: 1210 },
+                        { x: 1608 },
+                        { x: 1900 },
+                        { x: 2200 },
+                        { x: 2480 },
+                        { x: 2750 },
+                        { x: 3000 }
+                    ],
+                    gate: { x: 2890, y: 205, w: 58, h: 70 },
+                    survivorSpawn: { x: 55, y: 288 },
+                    botSpawn: { x: 360, y: 165 },
+                    killerSpawn: { x: 2230, y: 165 },
+                    extras: [
+                        { x: 500, y: 286, w: 92, h: 14 },
+                        { x: 552, y: 254, w: 72, h: 14 },
+                        { x: 184, y: 230, w: 66, h: 14 },
+                        { x: 780, y: 220, w: 70, h: 14 },
+                        { x: 1012, y: 286, w: 88, h: 14 },
+                        { x: 1188, y: 250, w: 80, h: 14 },
+                        { x: 1460, y: 220, w: 76, h: 14 }
+                    ]
+                },
+                {
+                    name: "Cliff Thread",
+                    gens: [
+                        { x: 120 },
+                        { x: 290 },
+                        { x: 560 },
+                        { x: 880 },
+                        { x: 1180 },
+                        { x: 1520 },
+                        { x: 1870 },
+                        { x: 2190 },
+                        { x: 2460 },
+                        { x: 2780 },
+                        { x: 3020 }
+                    ],
+                    gate: { x: 2960, y: 254, w: 58, h: 70 },
+                    survivorSpawn: { x: 70, y: 288 },
+                    botSpawn: { x: 270, y: 205 },
+                    killerSpawn: { x: 2208, y: 165 },
+                    extras: [
+                        { x: 478, y: 262, w: 86, h: 14 },
+                        { x: 557, y: 238, w: 68, h: 14 },
+                        { x: 240, y: 205, w: 56, h: 14 },
+                        { x: 690, y: 206, w: 72, h: 14 },
+                        { x: 850, y: 174, w: 72, h: 14 },
+                        { x: 1105, y: 286, w: 88, h: 14 },
+                        { x: 1395, y: 252, w: 78, h: 14 }
+                    ]
+                }
+            ];
+
+            const roleState = {
+                playerRole: "lux",
+                survivorId: "lux",
+                gameState: GAME.MENU
+            };
+
+            const world = {
+                gravity: 1900,
+                frictionGround: 0.84,
+                frictionAir: 0.93,
+                maxTime: 180,
+                timeLeft: 180,
+                winner: "",
+                flash: 0,
+                cameraX: 0,
+
+                lux: null,
+                bots: [],
+                evil: null,
+                gate: { x: 2240, y: 430, w: 58, h: 70, active: false },
+                gens: [],
+                gensRequired: 3,
+                gensDone: 0,
+                platforms: [],
+                mapName: "",
+                navNodes: [],
+                navEdges: [],
+                spectateIndex: 0
+            };
+
+            function survivorLabel(id = roleState.survivorId) {
+                const survivor = SURVIVORS[id] || SURVIVORS.lux;
+                return survivor.label;
+            }
+
+            function buildCollisionPlatforms(extraPieces = []) {
+                const platforms = [];
+                for (let tileX = LEVEL_DRAW_X; tileX < MAP_W + LEVEL_DRAW_W; tileX += LEVEL_DRAW_W) {
+                    for (const rect of LEVEL_SOLID_RECTS) {
+                        const p = {
+                            x: tileX + rect.x,
+                            y: LEVEL_DRAW_Y + rect.y,
+                            w: rect.w,
+                            h: rect.h,
+                            isExtra: false
+                        };
+                        if (p.x > MAP_W || p.x + p.w < 0) continue;
+                        platforms.push(p);
+                    }
+
+                    for (const piece of extraPieces) {
+                        const p = {
+                            x: tileX + piece.x,
+                            y: LEVEL_DRAW_Y + piece.y,
+                            w: piece.w,
+                            h: piece.h,
+                            isExtra: true
+                        };
+                        if (p.x > MAP_W || p.x + p.w < 0) continue;
+                        platforms.push(p);
+                    }
+                }
+                return platforms;
+            }
+
+            function setRole(role) {
+                roleState.playerRole = role;
+                playLuxBtn.classList.toggle("active", role === "lux");
+                playEvilBtn.classList.toggle("active", role === "evil");
+            }
+
+            function setSurvivor(id) {
+                if (id === "blux" && !bluxSecret.unlocked) return;
+                roleState.survivorId = SURVIVORS[id] ? id : "lux";
+                survivorLuxBtn.classList.toggle("active", roleState.survivorId === "lux");
+                survivorTokoBtn.classList.toggle("active", roleState.survivorId === "toko");
+                if (roleState.gameState === GAME.MENU) {
+                    status.textContent = `Survivor selected: ${survivorLabel()}.`;
+                }
+            }
+
+            function pickMapVariant() {
+                return MAP_VARIANTS[Math.floor(Math.random() * MAP_VARIANTS.length)];
+            }
+
+            function applyMapVariant(variant) {
+                world.mapName = variant.name;
+                world.platforms = buildCollisionPlatforms(variant.extras || []);
+                world.gate = placeGate(variant.gate);
+                const picks = pickGeneratorPoints(variant.gens || [], 3);
+                world.gens = picks.map((g, i) => {
+                    const w = 28;
+                    const h = 32;
+                    const floorY = findGroundYForX(g.x + w * 0.5);
+                    return {
+                        id: `${variant.name}-${i}-${Math.round(g.x)}`,
+                        x: g.x,
+                        y: Math.max(40, floorY - h),
+                        w,
+                        h,
+                        active: false,
+                        progress: 0
+                    };
+                });
+                world.gensRequired = world.gens.length;
+            }
+
+            function placeGate(gateDef) {
+                const w = gateDef.w;
+                const h = gateDef.h;
+                const baseX = Math.max(40, Math.min(MAP_W - w - 40, gateDef.x));
+                const offsets = [0, -90, 90, -180, 180, -270, 270, -360, 360];
+                for (const off of offsets) {
+                    const x = Math.max(40, Math.min(MAP_W - w - 40, baseX + off));
+                    const floorY = findGroundYForX(x + w * 0.5);
+                    const y = Math.max(20, floorY - h);
+                    const rect = { x, y, w, h };
+                    const blocked = world.platforms.some(p => rectsOverlap(rect, p));
+                    if (!blocked) return { x, y, w, h, active: false };
+                }
+                const fallbackY = Math.max(20, findGroundYForX(baseX + w * 0.5) - h);
+                return { x: baseX, y: fallbackY, w, h, active: false };
+            }
+
+            function pickGeneratorPoints(points, count = 3) {
+                const pool = [...points];
+                for (let i = pool.length - 1; i > 0; i -= 1) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    const tmp = pool[i];
+                    pool[i] = pool[j];
+                    pool[j] = tmp;
+                }
+                const picks = [];
+                for (const g of pool) {
+                    const x = Math.max(60, Math.min(MAP_W - 60, g.x + Math.round((Math.random() - 0.5) * 48)));
+                    if (picks.some(p => Math.abs(p.x - x) < 170)) continue;
+                    picks.push({ x });
+                    if (picks.length >= count) break;
+                }
+                if (picks.length < count) {
+                    for (const g of pool) {
+                        if (picks.length >= count) break;
+                        if (picks.some(p => Math.abs(p.x - g.x) < 30)) continue;
+                        picks.push({ x: g.x });
+                    }
+                }
+                return picks;
+            }
+
+            function findGroundYForX(worldX) {
+                const x = Math.max(0, Math.min(MAP_W, worldX));
+                let bestY = MAP_H - 2;
+                for (const p of world.platforms) {
+                    if (x < p.x || x > p.x + p.w) continue;
+                    if (p.y < bestY) bestY = p.y;
+                }
+                return bestY;
+            }
+
+            function survivors() {
+                return [world.lux, ...world.bots].filter(Boolean);
+            }
+
+            function aliveSurvivors() {
+                return survivors().filter(a => a.hp > 0 && !a.escaped);
+            }
+
+            function nearestSurvivor(fromActor, pool = aliveSurvivors()) {
+                if (!pool.length) return null;
+                let best = pool[0];
+                let bestScore = Number.POSITIVE_INFINITY;
+                const fx = fromActor.x + fromActor.w * 0.5;
+                const fy = fromActor.y + fromActor.h * 0.5;
+                for (const s of pool) {
+                    const sx = s.x + s.w * 0.5;
+                    const sy = s.y + s.h * 0.5;
+                    const score = Math.abs(sx - fx) + Math.abs(sy - fy) * 1.7;
+                    if (score < bestScore) {
+                        bestScore = score;
+                        best = s;
+                    }
+                }
+                return best;
+            }
+
+            function spectateTargets() {
+                const targets = [];
+                for (const b of world.bots) {
+                    if (!b || b.hp <= 0 || b.escaped) continue;
+                    targets.push(b);
+                }
+                if (!targets.length && world.evil && world.evil.hp > 0) {
+                    targets.push(world.evil);
+                }
+                return targets;
+            }
+
+            function currentCameraTarget() {
+                if (roleState.playerRole === "lux" && world.lux && (world.lux.hp <= 0 || world.lux.escaped)) {
+                    const targets = spectateTargets();
+                    if (targets.length) {
+                        world.spectateIndex = ((world.spectateIndex % targets.length) + targets.length) % targets.length;
+                        return targets[world.spectateIndex];
+                    }
+                }
+                return roleState.playerRole === "lux" ? world.lux : world.evil;
+            }
+
+            function makeActor(type, x, y) {
+                if (type === "lux" || type === "toko" || type === "blux") {
+                    const survivor = SURVIVORS[type] || SURVIVORS.lux;
+                    return {
+                        type: "lux",
+                        survivorId: type,
+                        x, y,
+                        w: 28,
+                        h: 36,
+                        vx: 0,
+                        vy: 0,
+                        speed: survivor.speed,
+                        sprintBonus: survivor.sprintBonus,
+                        jump: survivor.jump,
+                        hp: survivor.hp,
+                        maxHp: survivor.hp,
+                        stamina: survivor.stamina,
+                        sprinting: false,
+                        hitboxTime: 0,
+                        onGround: false,
+                        coyote: 0,
+                        facing: 1,
+                        m1Cd: 0,
+                        ability1Cd: 0,
+                        ability2Cd: 0,
+                        chargeTime: 0,
+                        luxDashTime: 0,
+                        tokoSlashTime: 0,
+                        parryTime: 0,
+                        dashHitDone: false,
+                        slashHitDone: false,
+                        bluxPhaseTime: 0,
+                        bluxHealGlow: 0,
+                        escaped: false,
+                        cowerTime: 0,
+                        regenTime: 0,
+                        boostTime: 0,
+                        boostDuration: survivor.boostDuration,
+                        boostBonus: survivor.boostBonus,
+                        boostBurst: survivor.boostBurst,
+                        boostStaminaGain: survivor.boostStaminaGain,
+                        ability1BaseCd: survivor.ability1Cd,
+                        ability2BaseCd: survivor.ability2Cd,
+                        landed: false,
+                        invuln: 0,
+                        color: survivor.color
+                    };
+                }
+                return {
+                    type,
+                    x, y,
+                    w: 34,
+                    h: 40,
+                    vx: 0,
+                    vy: 0,
+                    speed: 285,
+                    jump: 560,
+                    hp: 760,
+                    maxHp: 760,
+                    onGround: false,
+                    coyote: 0,
+                    facing: -1,
+                    m1Cd: 0,
+                    ability1Cd: 0,
+                    ability2Cd: 0,
+                    chargeTime: 0,
+                    regenTime: 0,
+                    landed: false,
+                    enraged: 0,
+                    stunned: 0,
+                    stuckTime: 0,
+                    invuln: 0,
+                    color: "#ff6a89"
+                };
+            }
+
+            function resetMatch() {
+                const map = pickMapVariant();
+                applyMapVariant(map);
+                world.lux = makeActor(roleState.survivorId, map.survivorSpawn.x, map.survivorSpawn.y);
+                world.bots = [];
+                const b1 = makeActor("toko", map.botSpawn.x, map.botSpawn.y);
+                b1.isBot = true;
+                world.bots.push(b1);
+                const bot2X = Math.max(60, Math.min(MAP_W - 60, map.botSpawn.x + 180));
+                const bot2Y = Math.max(100, map.botSpawn.y - 24);
+                const b2 = makeActor("lux", bot2X, bot2Y);
+                b2.isBot = true;
+                world.bots.push(b2);
+                world.evil = makeActor("evil", map.killerSpawn.x, map.killerSpawn.y);
+                world.timeLeft = world.maxTime;
+                world.winner = "";
+                world.flash = 0;
+                world.cameraX = 0;
+                world.gensDone = 0;
+                world.spectateIndex = 0;
+            }
+
+            function startMatch() {
+                resetMatch();
+                roleState.gameState = GAME.PLAYING;
+                document.body.classList.add("playing");
+                enterFullscreen();
+                startMusic();
+                status.textContent = roleState.playerRole === "lux"
+                    ? `Power generators and escape as ${survivorLabel()}. Avoid Evil Lux.`
+                    : `Track and finish ${survivorLabel()} before gate opens.`;
+            }
+
+            function pauseToggle() {
+                if (roleState.gameState === GAME.PLAYING) {
+                    roleState.gameState = GAME.PAUSED;
+                    document.body.classList.remove("playing");
+                    pauseMusic();
+                    status.textContent = "Paused.";
+                } else if (roleState.gameState === GAME.PAUSED) {
+                    roleState.gameState = GAME.PLAYING;
+                    document.body.classList.add("playing");
+                    startMusic();
+                    status.textContent = "Resumed.";
+                }
+            }
+
+            function endMatch(winner, message) {
+                world.winner = winner;
+                roleState.gameState = GAME.OVER;
+                document.body.classList.remove("playing");
+                pauseMusic();
+                status.textContent = message;
+            }
+
+            function keyDown(k) {
+                return keys.has(k);
+            }
+
+            function rectsOverlap(a, b) {
+                return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+            }
+
+            function actorRect(a) {
+                return { x: a.x, y: a.y, w: a.w, h: a.h };
+            }
+
+            function hitbox(actor, range, heightPad = 4) {
+                return {
+                    x: actor.facing > 0 ? actor.x + actor.w : actor.x - range,
+                    y: actor.y + 2,
+                    w: range,
+                    h: actor.h - heightPad
+                };
+            }
+
+            function generatorZone(g) {
+                return { x: g.x - 46, y: g.y - 72, w: g.w + 92, h: g.h + 108 };
+            }
+
+            function canRepairGenerator(actor, g) {
+                if (!actor || !g || g.active) return false;
+                return rectsOverlap(actorRect(actor), generatorZone(g));
+            }
+
+            function repairGenerator(actor, g, amount, dt) {
+                if (!canRepairGenerator(actor, g)) return false;
+                g.progress += amount * dt;
+                if (g.progress >= 100 && !g.active) {
+                    g.active = true;
+                    g.progress = 100;
+                    world.gensDone = Math.min(world.gensRequired, world.gensDone + 1);
+                    playSfx(sfx.jump, 0.14, 1.08);
+                }
+                return true;
+            }
+
+            function spendStamina(actor, amount) {
+                if (!actor || actor.type !== "lux") return true;
+                if ((actor.stamina || 0) < amount) return false;
+                actor.stamina = Math.max(0, actor.stamina - amount);
+                return true;
+            }
+
+            function tryDefensiveCounter(defender, attacker) {
+                if (!defender || !attacker) return false;
+                if (defender.type !== "lux" || attacker.type !== "evil") return false;
+
+                if (defender.survivorId === "lux" && defender.cowerTime > 0) {
+                    if (applyDamage(attacker, 25, 0.2)) {
+                        attacker.stunned = Math.max(attacker.stunned || 0, 3);
+                        attacker.vx += defender.facing * 260;
+                        attacker.vy = -240;
+                    }
+                    return true;
+                }
+
+                if (defender.survivorId === "toko" && defender.parryTime > 0) {
+                    attacker.stunned = Math.max(attacker.stunned || 0, 4);
+                    attacker.vx += defender.facing * 200;
+                    attacker.vy = -180;
+                    playSfx(sfx.ring, 0.2, 0.9);
+                    return true;
+                }
+
+                return false;
+            }
+
+            function applyPhysics(actor, dt) {
+                const wasGround = actor.onGround;
+                actor.coyote = wasGround ? 0.1 : Math.max(0, actor.coyote - dt);
+                actor.onGround = false;
+
+                let gravityScale = 1;
+                if (actor.type === "lux" && actor.survivorId === "blux" && actor.bluxPhaseTime > 0) {
+                    gravityScale = 0.08;
+                }
+                actor.vy += world.gravity * gravityScale * dt;
+                actor.vx *= wasGround ? world.frictionGround : world.frictionAir;
+
+                // Sub-stepping prevents tunneling through thin/edge surfaces.
+                const maxStepMove = Math.max(Math.abs(actor.vx * dt), Math.abs(actor.vy * dt));
+                const steps = Math.max(1, Math.ceil(maxStepMove / 6));
+                const stepDt = dt / steps;
+
+                for (let i = 0; i < steps; i += 1) {
+                    actor.x += actor.vx * stepDt;
+                    for (const p of world.platforms) {
+                        if (!rectsOverlap(actorRect(actor), p)) continue;
+                        if (actor.vx > 0) actor.x = p.x - actor.w;
+                        if (actor.vx < 0) actor.x = p.x + p.w;
+                        actor.vx = 0;
+                    }
+
+                    actor.y += actor.vy * stepDt;
+                    for (const p of world.platforms) {
+                        if (!rectsOverlap(actorRect(actor), p)) continue;
+                        if (actor.vy > 0) {
+                            actor.y = p.y - actor.h;
+                            actor.vy = 0;
+                            actor.onGround = true;
+                        } else if (actor.vy < 0) {
+                            actor.y = p.y + p.h;
+                            actor.vy = 0;
+                        }
+                    }
+                }
+
+                actor.x = Math.max(0, Math.min(MAP_W - actor.w, actor.x));
+                actor.y = Math.max(-60, Math.min(MAP_H + 60, actor.y));
+
+                if (!wasGround && actor.onGround && actor.vy >= 0) {
+                    playSfx(sfx.fall, 0.2, 1.1);
+                }
+            }
+
+            function tryJump(actor) {
+                if (actor.onGround || actor.coyote > 0) {
+                    actor.vy = -actor.jump;
+                    actor.onGround = false;
+                    actor.coyote = 0;
+                    playSfx(sfx.jump, 0.26, actor.type === "lux" ? 1.0 : 0.95);
+                }
+            }
+
+            function basicAttack(attacker, target) {
+                if (attacker.m1Cd > 0) return;
+                if (attacker.type === "lux" && !spendStamina(attacker, 8)) return;
+                attacker.m1Cd = attacker.type === "lux" ? 0.66 : 0.9;
+                attacker.hitboxTime = 0.08;
+                playSfx(sfx.hit, 0.25, attacker.type === "lux" ? 1.05 : 0.95);
+
+                const range = attacker.type === "lux" ? 40 : 52;
+                if (!rectsOverlap(hitbox(attacker, range), actorRect(target)) || target.invuln > 0) return;
+                if (tryDefensiveCounter(target, attacker)) return;
+
+                if (!applyDamage(target, attacker.type === "lux" ? 8 : 26, 0.22)) return;
+                if (attacker.type === "lux" && target.type === "evil") {
+                    target.stunned = Math.max(target.stunned || 0, 2);
+                }
+                target.vx += attacker.facing * (attacker.type === "lux" ? 220 : 280);
+                target.vy = -260;
+            }
+
+            function applyDamage(target, dmg, invuln = 0.2) {
+                if (target.invuln > 0) return false;
+                target.hp = Math.max(0, target.hp - dmg);
+                target.invuln = invuln;
+                world.flash = Math.max(world.flash, 0.2);
+                playSfx(sfx.hit, 0.16, 0.9);
+                if (target.type === "lux" && target.hp <= 0) playSfx(sfx.fall, 0.22, 0.78);
+                return true;
+            }
+
+            function useAbility1(actor, target) {
+                if (actor.ability1Cd > 0) return;
+
+                if (actor.type === "lux") {
+                    if (actor.survivorId === "toko") {
+                        if (!spendStamina(actor, 34)) return;
+                        // Toko Slash: windup slash that heavily stuns/damages if it lands.
+                        actor.ability1Cd = actor.ability1BaseCd || 7.2;
+                        actor.tokoSlashTime = 0.55;
+                        actor.chargeTime = 0.55;
+                        actor.slashHitDone = false;
+                        actor.vx = 0;
+                        playSfx(sfx.dash, 0.22, 0.92);
+                    } else if (actor.survivorId === "blux") {
+                        if (!spendStamina(actor, 28)) return;
+                        // Blux dev ability: flight phase with flashing.
+                        actor.ability1Cd = actor.ability1BaseCd || 13;
+                        actor.bluxPhaseTime = 3.25;
+                        actor.chargeTime = 0.2;
+                        actor.boostTime = 1.6;
+                        actor.vx = actor.facing * 520;
+                        actor.vy = -180;
+                        playSfx(sfx.dash, 0.24, 1.16);
+                    } else {
+                        if (!spendStamina(actor, 26)) return;
+                        // Lux Dash: burst forward, hit deals 25 and stuns 3s.
+                        actor.ability1Cd = actor.ability1BaseCd || 8;
+                        actor.luxDashTime = 0.32;
+                        actor.chargeTime = 0.32;
+                        actor.dashHitDone = false;
+                        actor.boostTime = 0.45;
+                        actor.vx = actor.facing * 700;
+                        playSfx(sfx.dash, 0.2, 1.03);
+                    }
+                    return;
+                }
+
+                actor.ability1Cd = 6;
+                actor.enraged = 3.5;
+                actor.chargeTime = 0.28;
+                actor.vx = actor.facing * 680;
+                playSfx(sfx.dash, 0.22, 0.9);
+                if (rectsOverlap(hitbox(actor, 76), actorRect(target))) {
+                    if (tryDefensiveCounter(target, actor)) return;
+                    if (applyDamage(target, 22, 0.28)) {
+                        target.vx += actor.facing * 340;
+                        target.vy = -300;
+                    }
+                }
+            }
+
+            function useAbility2(actor) {
+                if (actor.ability2Cd > 0) return;
+
+                if (actor.type === "lux") {
+                    if (actor.survivorId === "toko") {
+                        if (!spendStamina(actor, 20)) return;
+                        // Toko Parry: block incoming attacks for 4 seconds.
+                        actor.ability2Cd = actor.ability2BaseCd || 10.2;
+                        actor.parryTime = 4;
+                        actor.vx = 0;
+                        playSfx(sfx.ring, 0.2, 0.88);
+                    } else if (actor.survivorId === "blux") {
+                        if (!spendStamina(actor, 24)) return;
+                        // Blux dev ability: huge self-heal.
+                        actor.ability2Cd = actor.ability2BaseCd || 18;
+                        actor.hp = Math.min(actor.maxHp, actor.hp + 500);
+                        actor.bluxHealGlow = 2.4;
+                        playSfx(sfx.jump, 0.26, 1.26);
+                    } else {
+                        if (!spendStamina(actor, 18)) return;
+                        // Lux Cover: cower counter stance.
+                        actor.ability2Cd = actor.ability2BaseCd || 11;
+                        actor.cowerTime = 3;
+                        actor.vx = 0;
+                        playSfx(sfx.ring, 0.2, 1);
+                    }
+                    return;
+                }
+
+                actor.ability2Cd = 10;
+                actor.regenTime = 4;
+                actor.hp = Math.min(actor.maxHp, actor.hp + 35);
+                playSfx(sfx.jump, 0.18, 0.8);
+            }
+
+            function updateStatusTimers(actor, dt) {
+                actor.m1Cd = Math.max(0, actor.m1Cd - dt);
+                actor.ability1Cd = Math.max(0, actor.ability1Cd - dt);
+                actor.ability2Cd = Math.max(0, actor.ability2Cd - dt);
+                actor.invuln = Math.max(0, actor.invuln - dt);
+                actor.hitboxTime = Math.max(0, actor.hitboxTime - dt);
+                actor.chargeTime = Math.max(0, actor.chargeTime - dt);
+                actor.regenTime = Math.max(0, actor.regenTime - dt);
+                if (actor.type === "evil") {
+                    actor.enraged = Math.max(0, actor.enraged - dt);
+                    actor.stunned = Math.max(0, actor.stunned - dt);
+                }
+                if (actor.type === "lux") {
+                    actor.cowerTime = Math.max(0, actor.cowerTime - dt);
+                    actor.parryTime = Math.max(0, actor.parryTime - dt);
+                    actor.luxDashTime = Math.max(0, actor.luxDashTime - dt);
+                    actor.tokoSlashTime = Math.max(0, actor.tokoSlashTime - dt);
+                    actor.bluxPhaseTime = Math.max(0, actor.bluxPhaseTime - dt);
+                    actor.bluxHealGlow = Math.max(0, actor.bluxHealGlow - dt);
+                    actor.boostTime = Math.max(0, actor.boostTime - dt);
+                    if (actor.survivorId === "toko") {
+                        actor.hp = Math.max(0, actor.hp - 0.55 * dt);
+                    }
+                    if (actor.regenTime > 0) {
+                        actor.hp = Math.min(actor.maxHp, actor.hp + 7 * dt);
+                    }
+                } else if (actor.regenTime > 0) {
+                    actor.hp = Math.min(actor.maxHp, actor.hp + 20 * dt);
+                }
+            }
+
+            function updateHuman(actor, target, dt) {
+                const left = keyDown("a") || keyDown("arrowleft");
+                const right = keyDown("d") || keyDown("arrowright");
+                const jump = keyDown("w") || keyDown(" ") || keyDown("arrowup");
+                const down = keyDown("s") || keyDown("arrowdown");
+                const sprint = keyDown("shift");
+                const attack = keyDown("j") || keyDown("/");
+                const ability1 = keyDown("k");
+                const ability2 = keyDown("l");
+
+                let dir = 0;
+                if (left) dir -= 1;
+                if (right) dir += 1;
+                if (dir !== 0) actor.facing = dir;
+
+                if (actor.type === "lux") {
+                    actor.sprinting = false;
+                    let speed = actor.speed;
+                    if (actor.boostTime > 0) speed += actor.boostBonus || 120;
+                    if (sprint && actor.stamina > 0 && dir !== 0) {
+                        speed += actor.sprintBonus;
+                        actor.sprinting = true;
+                        actor.stamina = Math.max(0, actor.stamina - 33 * dt);
+                    } else {
+                        actor.stamina = Math.min(100, actor.stamina + 24 * dt);
+                    }
+                    if (actor.cowerTime > 0 || actor.parryTime > 0 || actor.tokoSlashTime > 0) {
+                        actor.vx = 0;
+                    } else {
+                        actor.vx = dir * speed;
+                    }
+                    if (actor.survivorId === "blux" && actor.bluxPhaseTime > 0) {
+                        let vdir = 0;
+                        if (jump) vdir -= 1;
+                        if (down) vdir += 1;
+                        actor.vy += vdir * 1700 * dt;
+                        actor.vx = dir * (speed + 220);
+                        actor.invuln = Math.max(actor.invuln, 0.08);
+                    }
+
+                    // Proximity repair: standing near a generator repairs it.
+                    for (const g of world.gens) {
+                        if (g.active) continue;
+                        if (repairGenerator(actor, g, 14, dt)) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (actor.stunned > 0) dir = 0;
+                    const rageBoost = actor.enraged > 0 ? 110 : 0;
+                    actor.vx = dir * (actor.speed + rageBoost);
+                }
+
+                const isStunned = (actor.stunned || 0) > 0;
+                if (jump && !actor._jumpLatch && !isStunned) tryJump(actor);
+                if (attack && !actor._atkLatch && !isStunned) basicAttack(actor, target);
+                if (ability1 && !actor._ab1Latch && !isStunned) useAbility1(actor, target);
+                if (ability2 && !actor._ab2Latch && !isStunned) useAbility2(actor);
+
+                actor._jumpLatch = jump;
+                actor._atkLatch = attack;
+                actor._ab1Latch = ability1;
+                actor._ab2Latch = ability2;
+                updateStatusTimers(actor, dt);
+            }
+
+            function updateAI(actor, target, dt) {
+                if (!actor || actor.hp <= 0) return;
+                if (actor.type === "evil" && Array.isArray(target)) {
+                    target = nearestSurvivor(actor, target);
+                }
+                if (!target || target.hp <= 0) {
+                    updateStatusTimers(actor, dt);
+                    return;
+                }
+                const tx = target.x + target.w / 2;
+                const ax = actor.x + actor.w / 2;
+                const dx = tx - ax;
+                const dir = dx > 14 ? 1 : dx < -14 ? -1 : 0;
+
+                if (dir !== 0) actor.facing = dir;
+
+                if (actor.type === "evil") {
+                    if (actor.stunned > 0) {
+                        actor.vx = 0;
+                        updateStatusTimers(actor, dt);
+                        return;
+                    }
+                    const leadX = tx + target.vx * 0.28;
+                    const chaseDir = leadX > ax + 12 ? 1 : leadX < ax - 12 ? -1 : 0;
+                    actor.vx = chaseDir * (actor.speed + (actor.enraged > 0 ? 100 : 0)) * 0.96;
+                    if (chaseDir !== 0) actor.facing = chaseDir;
+
+                    const wallProbe = {
+                        x: actor.x + (actor.facing > 0 ? 6 : -6),
+                        y: actor.y + 2,
+                        w: actor.w,
+                        h: actor.h - 4
+                    };
+                    const blocked = world.platforms.some(p => rectsOverlap(wallProbe, p));
+                    if (actor.onGround && (blocked || target.y + 4 < actor.y || Math.random() < 0.01)) tryJump(actor);
+
+                    if (Math.abs(dx) < 70 && Math.abs(target.y - actor.y) < 30) basicAttack(actor, target);
+                    if (Math.abs(dx) < 120 && actor.ability1Cd <= 0 && Math.random() < 0.015) useAbility1(actor, target);
+                    if (actor.ability2Cd <= 0 && actor.hp < actor.maxHp * 0.6 && Math.random() < 0.004) useAbility2(actor);
+                } else {
+                    const nearest = world.gens.filter(g => !g.active).sort((a, b) => Math.abs(a.x - actor.x) - Math.abs(b.x - actor.x))[0];
+                    const goalX = nearest ? nearest.x + nearest.w * 0.5 : world.gate.x + world.gate.w * 0.5;
+                    const axc = actor.x + actor.w * 0.5;
+                    const gdir = goalX > axc + 10 ? 1 : goalX < axc - 10 ? -1 : 0;
+                    const locked = actor.cowerTime > 0 || actor.parryTime > 0 || actor.tokoSlashTime > 0;
+                    if (locked) {
+                        actor.vx = 0;
+                    } else {
+                        actor.facing = gdir || actor.facing;
+                        const distGoal = Math.abs(goalX - axc);
+                        const nearThreat = Math.abs((target.x + target.w * 0.5) - axc) < 240;
+                        const shouldSprint = actor.stamina > 16 && (distGoal > 260 || nearThreat);
+                        let moveSpeed = actor.speed * 0.9;
+                        if (shouldSprint) {
+                            moveSpeed += actor.sprintBonus * 0.72;
+                            actor.stamina = Math.max(0, actor.stamina - 26 * dt);
+                        } else {
+                            actor.stamina = Math.min(100, actor.stamina + 22 * dt);
+                        }
+                        actor.vx = gdir * moveSpeed;
+                    }
+
+                    if (target.x > actor.x - 40 && target.x < actor.x + 60 && Math.abs(target.y - actor.y) < 40) {
+                        basicAttack(actor, target);
+                    }
+
+                    const nearGoal = Math.abs(goalX - axc) < 18;
+                    if (actor.onGround && (Math.random() < 0.012 || target.y + 8 < actor.y || (nearest && nearest.y + 8 < actor.y && Math.abs(goalX - axc) < 120))) {
+                        tryJump(actor);
+                    }
+                    if (actor.ability1Cd <= 0 && Math.random() < 0.005) useAbility1(actor, target);
+                    if (actor.ability2Cd <= 0 && actor.hp < actor.maxHp * 0.75 && Math.random() < 0.004) useAbility2(actor);
+
+                    if (!locked && nearest && nearGoal && rectsOverlap(actorRect(actor), generatorZone(nearest))) {
+                        actor.vx = 0;
+                        repairGenerator(actor, nearest, 10, dt);
+                    }
+                }
+
+                updateStatusTimers(actor, dt);
+            }
+
+            function updateWinConditions() {
+                const team = survivors();
+                const alive = team.filter(a => a.hp > 0 && !a.escaped);
+                if (team.some(a => a.hp <= 0 && !a.escaped)) {
+                    endMatch("Evil Lux", "A survivor was eliminated. All survivors must escape.");
+                    return;
+                }
+
+                if (world.gensDone >= world.gensRequired) {
+                    world.gate.active = true;
+                    for (const s of alive) {
+                        if (!rectsOverlap(actorRect(s), world.gate)) continue;
+                        s.escaped = true;
+                        s.invuln = Math.max(s.invuln, 999);
+                        s.vx = 0;
+                        s.vy = 0;
+                        if (s === world.lux) {
+                            status.textContent = "You escaped. Spectating teammates (Tab to switch).";
+                        }
+                    }
+
+                    if (team.length && team.every(a => a.escaped)) {
+                        endMatch("Survivors", "All survivors escaped.");
+                        return;
+                    }
+                }
+
+                if (world.timeLeft <= 0) {
+                    endMatch("Evil Lux", "Time up. Survivors could not escape.");
+                }
+            }
+
+            function updateGame(dt) {
+                if (roleState.gameState !== GAME.PLAYING) return;
+                animTime += dt;
+
+                world.timeLeft = Math.max(0, world.timeLeft - dt);
+
+                if (roleState.playerRole === "lux") {
+                    if (world.lux.hp > 0 && !world.lux.escaped) {
+                        updateHuman(world.lux, world.evil, dt);
+                    }
+                    for (const b of world.bots) {
+                        if (b && b.hp > 0 && !b.escaped) updateAI(b, world.evil, dt);
+                    }
+                    updateAI(world.evil, aliveSurvivors(), dt);
+                } else {
+                    const chase = nearestSurvivor(world.evil) || world.lux;
+                    updateHuman(world.evil, chase, dt);
+                    if (world.lux.hp > 0 && !world.lux.escaped) updateAI(world.lux, world.evil, dt);
+                    for (const b of world.bots) {
+                        if (b && b.hp > 0 && !b.escaped) updateAI(b, world.evil, dt);
+                    }
+                }
+
+                if (!world.lux.escaped) applyPhysics(world.lux, dt);
+                for (const b of world.bots) {
+                    if (!b.escaped) applyPhysics(b, dt);
+                }
+                applyPhysics(world.evil, dt);
+
+                const dashAttack = s => {
+                    if (!s || s.hp <= 0 || s.escaped) return;
+                    if (s.survivorId === "lux" && s.luxDashTime > 0 && !s.dashHitDone) {
+                        if (rectsOverlap(hitbox(s, 58), actorRect(world.evil))) {
+                            s.dashHitDone = true;
+                            if (applyDamage(world.evil, 25, 0.2)) {
+                                world.evil.stunned = Math.max(world.evil.stunned || 0, 3);
+                                world.evil.vx += s.facing * 320;
+                                world.evil.vy = -240;
+                            }
+                        }
+                    }
+                    if (s.survivorId === "toko" && s.tokoSlashTime > 0 && !s.slashHitDone) {
+                        if (rectsOverlap(hitbox(s, 66), actorRect(world.evil))) {
+                            s.slashHitDone = true;
+                            if (applyDamage(world.evil, 50, 0.24)) {
+                                world.evil.stunned = Math.max(world.evil.stunned || 0, 5);
+                                world.evil.vx += s.facing * 360;
+                                world.evil.vy = -280;
+                            }
+                        }
+                    }
+                };
+                dashAttack(world.lux);
+                for (const b of world.bots) dashAttack(b);
+
+                if (world.evil.chargeTime > 0) {
+                    for (const s of aliveSurvivors()) {
+                        if (!rectsOverlap(hitbox(world.evil, 70), actorRect(s))) continue;
+                        if (tryDefensiveCounter(s, world.evil)) continue;
+                        if (applyDamage(s, 14, 0.2)) {
+                            s.vx += world.evil.facing * 300;
+                            s.vy = -250;
+                        }
+                    }
+                }
+
+                if (world.gensDone > world.gensRequired) world.gensDone = world.gensRequired;
+
+                const follow = currentCameraTarget();
+                world.cameraX = Math.max(0, Math.min(MAP_W - W, follow.x - W * 0.5));
+
+                updateWinConditions();
+
+                if (world.flash > 0) world.flash = Math.max(0, world.flash - dt);
+            }
+
+            function drawBackdrop() {
+                if (imageReady(art.sky)) {
+                    const speed = 0.16;
+                    const tileW = 1280;
+                    const base = -((world.cameraX * speed) % tileW);
+                    for (let x = base - tileW; x < W + tileW; x += tileW) {
+                        ctx.drawImage(art.sky, x, 0, tileW, H);
+                    }
+                } else {
+                    ctx.fillStyle = "#220f2a";
+                    ctx.fillRect(0, 0, W, H);
+                }
+            }
+
+            function drawWorldLayer() {
+                for (let x = LEVEL_DRAW_X; x < MAP_W + LEVEL_DRAW_W; x += LEVEL_DRAW_W) {
+                    const sx = x - world.cameraX;
+                    if (sx + LEVEL_DRAW_W < -50 || sx > W + 50) continue;
+                    if (imageReady(art.levelVisual)) {
+                        ctx.drawImage(art.levelVisual, sx, LEVEL_DRAW_Y, LEVEL_DRAW_W, LEVEL_DRAW_H);
+                    } else {
+                        ctx.fillStyle = "#a3a083";
+                        ctx.fillRect(sx, LEVEL_DRAW_Y, LEVEL_DRAW_W, LEVEL_DRAW_H);
+                    }
+                }
+            }
+
+            function drawPlatform(p) {
+                if (!p.isExtra) return;
+                const x = p.x - world.cameraX;
+                if (x + p.w < -20 || x > W + 20) return;
+                ctx.fillStyle = "rgba(166, 162, 140, 0.92)";
+                ctx.fillRect(x, p.y, p.w, p.h);
+                ctx.strokeStyle = "rgba(86, 80, 66, 0.95)";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x + 1, p.y + 1, p.w - 2, p.h - 2);
+            }
+
+            function drawGenerators() {
+                for (const g of world.gens) {
+                    const x = g.x - world.cameraX;
+                    if (x + g.w < -20 || x > W + 20) continue;
+
+                    ctx.fillStyle = g.active ? "#8fd7f0" : "#7f5e55";
+                    ctx.fillRect(x, g.y, g.w, g.h);
+
+                    if (!g.active) {
+                        ctx.fillStyle = "rgba(24, 24, 24, 0.5)";
+                        ctx.fillRect(x - 2, g.y - 8, g.w + 4, 5);
+                        ctx.fillStyle = "#6cd4ff";
+                        ctx.fillRect(x - 1, g.y - 7, (g.w + 2) * (g.progress / 100), 3);
+                    }
+                }
+            }
+
+            function drawGate() {
+                const g = world.gate;
+                const x = g.x - world.cameraX;
+                if (x + g.w < 0 || x > W) return;
+                ctx.strokeStyle = g.active ? "#ffe57b" : "#6f6440";
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, g.y, g.w, g.h);
+                if (g.active) {
+                    ctx.fillStyle = "rgba(255,229,123,0.22)";
+                    ctx.fillRect(x, g.y, g.w, g.h);
+                }
+            }
+
+            function drawActor(a) {
+                if (!a) return;
+                if (a.type === "lux" && a.escaped) return;
+                if (roleState.playerRole === "lux" && a === world.lux && a.hp <= 0) return;
+                const x = a.x - world.cameraX;
+                const set = a.type === "evil"
+                    ? art.evil
+                    : (a.survivorId === "toko" ? art.toko : art.lux);
+                let frame = set.stand;
+                if (a.hp <= 0 && a.type === "lux" && set.dead) {
+                    frame = set.dead;
+                } else if (a.type === "lux" && a.cowerTime > 0 && set.cower) {
+                    frame = set.cower[Math.floor(animTime * 6) % set.cower.length];
+                } else if (a.chargeTime > 0 && (set.dash || set.charge)) {
+                    frame = set.dash || set.charge;
+                } else if (a.type === "evil" && a.regenTime > 0 && set.regen) {
+                    frame = set.regen;
+                } else if (!a.onGround) {
+                    frame = a.vy < 0 ? set.jump : set.fall;
+                } else if (Math.abs(a.vx) > 35) {
+                    frame = set.walk[Math.floor(animTime * 12) % set.walk.length];
+                }
+
+                // Keep all characters on the same render box to avoid stretch mismatch.
+                const drawH = 82;
+                const drawW = 82;
+                const drawX = x + a.w * 0.5 - drawW * 0.5;
+                const drawY = a.y + a.h - drawH;
+                if (imageReady(frame)) {
+                    ctx.save();
+                    if (a.facing < 0) {
+                        ctx.translate(drawX + drawW / 2, 0);
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(frame, -drawW / 2, drawY, drawW, drawH);
+                    } else {
+                        ctx.drawImage(frame, drawX, drawY, drawW, drawH);
+                    }
+                    ctx.restore();
+                } else {
+                    ctx.fillStyle = a.color;
+                    ctx.fillRect(x, a.y, a.w, a.h);
+                }
+
+                if (a.type === "evil" && (a.stunned || 0) > 0) {
+                    const alpha = 0.25 + 0.25 * Math.sin(animTime * 18);
+                    ctx.fillStyle = `rgba(255, 24, 24, ${Math.max(0.2, alpha)})`;
+                    ctx.fillRect(drawX + 6, drawY + 4, drawW - 12, drawH - 8);
+                } else if (a.type === "evil") {
+                    const pulse = 0.14 + 0.08 * Math.sin(animTime * 5);
+                    ctx.fillStyle = `rgba(255, 48, 86, ${Math.max(0.08, pulse)})`;
+                    ctx.fillRect(drawX + 4, drawY + 2, drawW - 8, drawH - 4);
+                }
+
+                if (a.invuln > 0) {
+                    ctx.strokeStyle = "rgba(255,255,255,0.6)";
+                    ctx.strokeRect(x - 1, a.y - 1, a.w + 2, a.h + 2);
+                }
+
+                if (a.isBot) {
+                    ctx.fillStyle = "rgba(16, 24, 38, 0.82)";
+                    ctx.fillRect(drawX + 18, drawY - 14, 44, 14);
+                    ctx.fillStyle = "#9cffba";
+                    ctx.font = "700 11px Trebuchet MS, sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText("BOT", drawX + 40, drawY - 3);
+                }
+
+                if (a.hitboxTime > 0) {
+                    const hb = hitbox(a, a.type === "lux" ? 40 : 52);
+                    ctx.strokeStyle = "rgba(255,255,255,0.3)";
+                    ctx.strokeRect(hb.x - world.cameraX, hb.y, hb.w, hb.h);
+                }
+            }
+
+            function drawBottomBars() {
+                // Blue meter is sprint stamina only.
+                const isToko = world.lux && world.lux.survivorId === "toko";
+                const healthSet = isToko ? (art.hud.healthToko || art.hud.healthLux) : art.hud.healthLux;
+                const abilitySet = isToko ? (art.hud.abilityToko || art.hud.abilityLux) : art.hud.abilityLux;
+                const healthFrame = healthSet[0] || art.hud.healthLux[0];
+                const staminaRatio = Math.max(0, Math.min(1, world.lux.stamina / 100));
+
+                let abilityFrame = abilitySet.ready;
+                if (world.lux.ability1Cd > 0 && world.lux.ability2Cd > 0) abilityFrame = abilitySet.both;
+                else if (world.lux.ability1Cd > 0) abilityFrame = abilitySet.a1;
+                else if (world.lux.ability2Cd > 0) abilityFrame = abilitySet.a2;
+
+                const healthX = -8;
+                const healthW = 248;
+                const healthH = 148;
+                const healthY = H - healthH + 2;
+                if (imageReady(healthFrame)) {
+                    ctx.drawImage(healthFrame, healthX, healthY, healthW, healthH);
+                }
+
+                // Overlay stamina bar on top of original health HUD art.
+                const barX = healthX + 95;
+                const barY = healthY + 43;
+                const barW = 104;
+                const barH = 13;
+                ctx.fillStyle = "rgba(15, 33, 56, 0.86)";
+                ctx.fillRect(barX, barY, barW, barH);
+                ctx.fillStyle = "#6cd4ff";
+                ctx.fillRect(barX, barY, barW * staminaRatio, barH);
+                ctx.strokeStyle = "rgba(193, 240, 255, 0.9)";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(barX, barY, barW, barH);
+
+                // HP text on top of original health HUD.
+                ctx.fillStyle = "#efe8ff";
+                ctx.font = "700 46px Trebuchet MS, sans-serif";
+                ctx.textAlign = "left";
+                ctx.fillText(String(Math.ceil(world.lux.hp)), healthX + 88, healthY + 132);
+
+                const abilityW = 250;
+                const abilityH = 104;
+                const abilityX = W - abilityW + 4;
+                const abilityY = H - abilityH + 4;
+                if (imageReady(abilityFrame)) {
+                    ctx.drawImage(abilityFrame, abilityX, abilityY, abilityW, abilityH);
+                }
+            }
+
+            function drawOverlay(title, subtitle) {
+                ctx.fillStyle = "rgba(0,0,0,0.5)";
+                ctx.fillRect(0, 0, W, H);
+                ctx.fillStyle = "#eef3ff";
+                ctx.textAlign = "center";
+                ctx.font = "700 52px Trebuchet MS, sans-serif";
+                ctx.fillText(title, W / 2, H / 2 - 8);
+                ctx.font = "18px Trebuchet MS, sans-serif";
+                ctx.fillStyle = "#b6c8ee";
+                ctx.fillText(subtitle, W / 2, H / 2 + 24);
+            }
+
+            function drawRoundTimer() {
+                const total = Math.max(0, Math.ceil(world.timeLeft));
+                const mm = Math.floor(total / 60).toString().padStart(2, "0");
+                const ss = (total % 60).toString().padStart(2, "0");
+                const urgent = total <= 30;
+                ctx.textAlign = "center";
+                ctx.font = "700 34px Trebuchet MS, sans-serif";
+                ctx.fillStyle = urgent ? "#ff6f6f" : "#f2f6ff";
+                ctx.fillText(`${mm}:${ss}`, W * 0.5, 44);
+            }
+
+            function drawRosterHud() {
+                const roster = [
+                    { label: survivorLabel(world.lux?.survivorId), actor: world.lux },
+                    ...world.bots.map((b, i) => ({ label: `${survivorLabel(b.survivorId)} Bot ${i + 1}`, actor: b })),
+                    { label: "Evil Lux", actor: world.evil }
+                ];
+
+                const x = 14;
+                let y = 56;
+                const rowH = 24;
+                const boxW = 256;
+                const boxH = roster.length * rowH + 14;
+                ctx.fillStyle = "rgba(8, 12, 20, 0.72)";
+                ctx.fillRect(x - 10, y - 8, boxW, boxH);
+                ctx.strokeStyle = "rgba(110, 132, 168, 0.9)";
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(x - 10, y - 8, boxW, boxH);
+
+                ctx.font = "700 12px Trebuchet MS, sans-serif";
+                ctx.textAlign = "left";
+                for (const row of roster) {
+                    const a = row.actor;
+                    if (!a) continue;
+                    const hp = Math.max(0, Math.ceil(a.hp));
+                    const stamina = a.type === "lux" ? Math.max(0, Math.ceil(a.stamina || 0)) : "--";
+                    const dead = a.escaped ? " [ESCAPED]" : (a.hp <= 0 ? " [DOWN]" : "");
+                    ctx.fillStyle = a.type === "evil" ? "#ff8ea6" : "#c9f1ff";
+                    ctx.fillText(`${row.label}${dead}`, x, y + 10);
+                    ctx.fillStyle = "#f0f6ff";
+                    ctx.fillText(`HP ${hp} | STA ${stamina}`, x + 132, y + 10);
+                    y += rowH;
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                drawBackdrop();
+                drawWorldLayer();
+
+                for (const p of world.platforms) drawPlatform(p);
+                drawGenerators();
+                drawGate();
+
+                drawActor(world.lux);
+                for (const b of world.bots) drawActor(b);
+                drawActor(world.evil);
+                drawRoundTimer();
+                drawRosterHud();
+                drawBottomBars();
+
+                if (world.flash > 0) {
+                    ctx.fillStyle = `rgba(255, 82, 120, ${Math.min(0.35, world.flash * 2)})`;
+                    ctx.fillRect(0, 0, W, H);
+                }
+
+                if (roleState.gameState === GAME.MENU) {
+                    drawOverlay("Party Crashers", "ASYM mode: start match");
+                } else if (roleState.gameState === GAME.PAUSED) {
+                    drawOverlay("Paused", "Press Pause to continue");
+                } else if (roleState.gameState === GAME.OVER) {
+                    drawOverlay(`${world.winner} Wins`, "Press Start Match for a new round");
+                }
+
+                syncHud();
+            }
+
+            function syncHud() {
+                const player = roleState.playerRole === "lux" ? world.lux : world.evil;
+                if (!player) return;
+                hudRole.textContent = roleState.playerRole === "lux"
+                    ? `Survivor (${survivorLabel(world.lux.survivorId)})`
+                    : "Killer (Evil Lux)";
+                hudState.textContent = roleState.gameState[0].toUpperCase() + roleState.gameState.slice(1);
+                hudObjective.textContent = `Gen ${world.gensDone}/${world.gensRequired} | A1 ${player.ability1Cd.toFixed(1)}s | A2 ${player.ability2Cd.toFixed(1)}s`;
+                hudTime.textContent = Math.ceil(world.timeLeft).toString();
+            }
+
+            window.addEventListener("keydown", e => {
+                const key = e.key.toLowerCase();
+                keys.add(key);
+                if (key === "tab" && roleState.gameState === GAME.PLAYING && roleState.playerRole === "lux" && world.lux && (world.lux.hp <= 0 || world.lux.escaped)) {
+                    const targets = spectateTargets();
+                    if (targets.length > 1) {
+                        world.spectateIndex = (world.spectateIndex + 1) % targets.length;
+                        const t = targets[world.spectateIndex];
+                        status.textContent = `Spectating ${t.type === "evil" ? "Evil Lux" : survivorLabel(t.survivorId)}.`;
+                    }
+                }
+                if (["arrowup", "arrowdown", "arrowleft", "arrowright", " ", "tab"].includes(key)) e.preventDefault();
+            });
+
+            window.addEventListener("keyup", e => {
+                keys.delete(e.key.toLowerCase());
+            });
+
+            playLuxBtn.addEventListener("click", () => setRole("lux"));
+            playEvilBtn.addEventListener("click", () => setRole("evil"));
+            survivorLuxBtn.addEventListener("click", () => setSurvivor("lux"));
+            survivorTokoBtn.addEventListener("click", () => setSurvivor("toko"));
+            startBtn.addEventListener("click", startMatch);
+            pauseBtn.addEventListener("click", pauseToggle);
+            restartBtn.addEventListener("click", () => {
+                resetMatch();
+                roleState.gameState = GAME.MENU;
+                document.body.classList.remove("playing");
+                pauseMusic();
+                bgMusic.currentTime = 0;
+                status.textContent = "Match reset.";
+            });
+
+            let last = performance.now();
+            function loop(now) {
+                const dt = Math.min(0.033, (now - last) / 1000);
+                last = now;
+                try {
+                    updateGame(dt);
+                    draw();
+                } catch (err) {
+                    console.error("Game loop error:", err);
+                    status.textContent = `Runtime error: ${err && err.message ? err.message : err}`;
+                    roleState.gameState = GAME.PAUSED;
+                }
+                requestAnimationFrame(loop);
+            }
+
+            setSurvivor("lux");
+            resetMatch();
+            requestAnimationFrame(loop);
+        })();
+    </script>
+</body>
+
+</html>
