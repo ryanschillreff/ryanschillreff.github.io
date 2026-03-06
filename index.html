@@ -36,6 +36,21 @@
         header {
             background-color: #3d52d5
         }
+
+        #article1 {
+            background-color: #0444b9;
+            padding: 10px;
+        }
+
+        .emp {
+            color: #00c3ff;
+            font-weight: bold;
+        }
+
+        .blue {
+            color: #3d52d5;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -48,93 +63,79 @@
         <a href="game/index.html">RPGMaker Game</a> |
         <a href="partycrashers.html">Party Crashers Wiki</a>
     </nav>
+    <div id="article1">
+        <article>
+            <header>
+                <h2>welcome to my website</h2>
+                <p>hi! my name is ryan and this is my website, I am 14 and enjoy making video games!</p>
+            </header>
+            <p>
+                Heres some more info...
+            </p>
+            <p>Creator of <span id="emp">PARTY</span> <span id="blue">CRASHERS</span>, a work in progress 2D ASYM game,
+                see some more info
+                <a href="partycrashers.html">here!</a>
+            </p>
+            <p>Creator of <strong>LUX AND THE LIGHTSHARD</strong>, its just a <span id="emp">demo</span> though so be
+                careful.
+                Will likely never
+                be finished. Play <a href="lux.html">here!</a></p>
+            <p>all in all i am the best coder of all time.</p>
 
-    <article>
-        <header>
-            <h2>welcome to my website</h2>
-            <p>hi! my name is ryan and this is my website, I am 14 and enjoy making video games!</p>
-        </header>
-        <p>
-            Heres some more info...
-        </p>
-        <p>Creator of <strong>PARTY CRASHERS</strong>, a work in progress 2D ASYM game, see some more info <a
-                href="partycrashers.html">here!</a></p>
-        <p>Creator of <strong>LUX AND THE LIGHTSHARD</strong>, its just a demo though so be careful. Will likely never
-            be finished. Play <a href="lux.html">here!</a></p>
-        <p>all in all i am the best coder of all time.</p>
+            <a href="https://asa-db.github.io/evilryanschillreff/"><img src="joebart.jpg" alt="The Bart"
+                    width="device-width" height="500"></a>
+        </article>
+    </div>
 
-        <a href="https://asa-db.github.io/evilryanschillreff/"><img src="joebart.jpg" alt="The Bart"
-                width="device-width" height="500"></a>
-    </article>
-
-    <!-- fly img -->
     <script>
-        let animationFrames = [];
-        let imageCount = 0;
+        function createFly(x, y) {
+            const fly = document.createElement('div');
+            fly.style.width = '75px';
+            fly.style.height = '110px';
+            fly.style.backgroundImage = 'url("./partycrasherimg/blux.png")';
+            fly.style.backgroundSize = 'cover';
+            fly.style.position = 'absolute';
+            fly.style.top = `${y}px`;
+            fly.style.left = `${x}px`;
+            document.body.appendChild(fly);
 
-        function createAndMoveImage() {
-            const image = document.createElement('img');    
-            image.src = 'partycrasherimg/blux.png';
-            image.alt = 'flying blux';
-            image.style.position = 'absolute';
-            image.style.width = '100px';
-            image.style.height = '100px';
-            image.style.left = '50%';
-            image.style.top = '50%';
-            image.style.transform = 'translate(-50%, -50%)';
-            document.body.appendChild(image);
+            let posX = x;
+            let posY = y;
+            let velocityX = (Math.random() - 0.5) * 10;
+            let velocityY = (Math.random() - 0.5) * 10;
+            const gravity = 0.2;
+            const bounceFactor = 1.01;
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
 
-            let x = Math.random() * (window.innerWidth - 100);
-            let y = Math.random() * (window.innerHeight - 100);
-            let dx = Math.random() * 6 - 3;
-            let dy = Math.random() * 6 - 3;
+            function animateFly() {
+                velocityY += gravity;
+                posX += velocityX;
+                posY += velocityY;
 
-            function moveImage() {
-                x += dx;
-                y += dy;
-
-                if (x + image.offsetWidth >= window.innerWidth || x <= 0) {
-                    dx = -dx;
+                if (posX <= 0 || posX + 40 >= screenWidth) {
+                    velocityX = -velocityX
+                    posX = Math.max(0, Math.min(posX, screenWidth - 40));
                 }
-                if (y + image.offsetHeight >= window.innerHeight || y <= 0) {
-                    dy = -dy;
+
+                if (posY <= 0 || posY + 40 >= screenHeight) {
+                    velocityY = -velocityY
+                    posY = Math.max(0, Math.min(posY, screenHeight - 40));
                 }
 
-                image.style.left = `${x}px`;
-                image.style.top = `${y}px`;
+                fly.style.left = `${posX}px`;
+                fly.style.top = `${posY}px`;
 
-                animationFrames[imageCount] = requestAnimationFrame(moveImage);
+                requestAnimationFrame(animateFly);
             }
 
-            moveImage();
-
-
-            image.addEventListener('click', () => {
-                cancelAnimationFrame(animationFrames[imageCount]);
-
-
-                image.src = `partycrasherimg/explosion.gif`;
-
-
-                setTimeout(() => {
-                    image.remove();
-                }, 800);
-            });
-
-            imageCount++;
+            animateFly();
         }
 
-        document.addEventListener('keydown', (event) => {
-            if (event.code === 'Space') {
-                createAndMoveImage();
-            }
+        document.addEventListener('click', (event) => {
+            createFly(event.clientX, event.clientY);
         });
-
-        createAndMoveImage();
     </script>
-</body>
-
-</html>
 </body>
 
 </html>
