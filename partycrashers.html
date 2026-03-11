@@ -1,59 +1,142 @@
- 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>PARTY CRASHERS Wiki</title>
+
     <style>
         body {
-            background-image: url("arcadefloor.jpg");
-            background-color: black;
-            background-repeat: repeat-x;
+            margin: 0;
+            background: url("arcadefloor.jpg") repeat;
             background-size: cover;
             background-attachment: fixed;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            color: aliceblue;
+            font-family: Verdana, Arial, sans-serif;
+        }
+
+        .layout {
+            display: flex;
+            max-width: 1300px;
+            margin: auto;
+            background: white;
+            border: 3px solid #3d52d5;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #090C9B;
+            color: white;
+            padding: 15px;
+            border-right: 3px solid #3d52d5;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            border-bottom: 1px solid #4f63ff;
+            padding-bottom: 5px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #B4C5E4;
+            text-decoration: none;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            background: #ffffff;
+        }
+
+        header {
+            background: #3d52d5;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 4px solid #090C9B;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #00c3ff;
+        }
+
+        .topnav {
+            background: #090C9B;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .topnav a {
+            color: #B4C5E4;
+            margin: 0 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .topnav a:hover {
+            text-decoration: underline;
         }
 
         h1 {
             color: #00c3ff;
-            background-color: #3d52d5;
         }
 
         h2 {
-            color: hsl(194, 100%, 63%);
-            background-color: #7184ff;
+            background: #7184ff;
+            color: white;
+            padding: 6px;
+            border-left: 6px solid #3d52d5;
         }
 
-
-        nav {
-            background-color: #090C9B;
+        .character {
+            border: 1px solid #aaa;
+            background: #f7f9ff;
+            padding: 15px;
+            margin-bottom: 30px;
         }
 
-        a {
-            color: #B4C5E4;
+        .char-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        article {
-            background-color: #b2d0ff;
+        .mainart {
+            max-width: 250px;
+            border: 1px solid #aaa;
         }
 
-        header {
-            background-color: #3d52d5
+        .gameicon {
+            width: 48px;
+            height: 150px;
+            border: 1px solid #aaa;
+        }
+
+        .infobox {
+            border-collapse: collapse;
+            font-size: 14px;
+            background: #f9f9f9;
+        }
+
+        .infobox td {
+            border: 1px solid #aaa;
+            padding: 6px;
         }
 
         .lmsaudio {
             border: 1px solid #aaa;
             background: #f6f6f6;
-            color: #000;
-            padding: 8px;
+            padding: 10px;
             margin-top: 10px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 90%;
         }
 
         .lmsaudio h3 {
@@ -62,121 +145,267 @@
             padding: 4px;
         }
 
-        .lmsaudio audio {
+        audio {
             width: 220px;
-            display: block;
-            margin-bottom: 6px;
         }
 
-        .charimg {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 6px;
+        /* Text Glitch */
+        .glitch {
+            position: relative;
+            color: #00c3ff;
         }
 
-        .charimg .mainart {
-            max-width: 250px;
-            border: 1px solid #aaa;
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
         }
 
-        .charimg .gameicon {
-            width: 48px;
-            height: 145px;
-            border: 1px solid #aaa;
-            background: #fff;
+        .glitch::before {
+            color: red;
+            animation: glitchTop 2s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            color: cyan;
+            animation: glitchBottom 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitchTop {
+            0% {
+                clip-path: inset(0 0 80% 0);
+                transform: translate(-2px, -2px);
+            }
+
+            50% {
+                clip-path: inset(10% 0 60% 0);
+                transform: translate(2px, 2px);
+            }
+
+            100% {
+                clip-path: inset(0 0 85% 0);
+                transform: translate(-1px, 1px);
+            }
+        }
+
+        @keyframes glitchBottom {
+            0% {
+                clip-path: inset(80% 0 0 0);
+                transform: translate(2px, 2px);
+            }
+
+            50% {
+                clip-path: inset(60% 0 10% 0);
+                transform: translate(-2px, -2px);
+            }
+
+            100% {
+                clip-path: inset(85% 0 0 0);
+                transform: translate(1px, -1px);
+            }
+        }
+
+        img:hover {
+            filter: contrast(200%) hue-rotate(180deg);
+        }
+
+
+
+        /* random glitch state */
+
+        .glitching {
+            transform: skew(2deg);
+            filter: contrast(160%);
+        }
+
+        .glitching img {
+            transform: translateX(3px);
+            filter: hue-rotate(90deg);
+        }
+
+        .glitching h1,
+        .glitching h2 {
+            text-shadow:
+                -3px 0 red,
+                3px 0 cyan;
         }
     </style>
 </head>
+<script>
+
+
+    /* Random glitch trigger */
+
+    function randomGlitch() {
+
+        let chance = Math.random();
+
+        if (chance < 0.15) {   // 15% chance
+
+            document.body.classList.add("glitching");
+
+            setTimeout(() => {
+                document.body.classList.remove("glitching");
+            }, 400);
+
+        }
+
+    }
+
+    setInterval(randomGlitch, 4000);
+
+    function rareGlitch() {
+
+        let chance = Math.random();
+
+        if (chance < 0.02) {  // 2% chance
+
+            document.body.style.transform = "scale(1.01) skew(5deg)";
+            document.body.style.filter = "invert(1)";
+
+            setTimeout(() => {
+                document.body.style.transform = "";
+                document.body.style.filter = "";
+            }, 200);
+
+        }
+
+    }
+
+    setInterval(rareGlitch, 8000);
+    function randomStatic() {
+
+        if (Math.random() < 0.12) {
+
+            let s = document.getElementById("staticLayer");
+
+            s.classList.add("static");
+
+            setTimeout(() => {
+                s.classList.remove("static");
+            }, 300);
+
+        }
+
+    }
+
+
+    function textGlitch() {
+
+        if (Math.random() < 0.1) {
+
+            let characters = document.querySelectorAll(".character p");
+
+            let randomChar = characters[Math.floor(Math.random() * characters.length)];
+
+            let original = randomChar.innerText;
+
+            randomChar.innerText = creepyMessages[Math.floor(Math.random() * creepyMessages.length)];
+
+            setTimeout(() => {
+                randomChar.innerText = original;
+            }, 2000);
+
+        }
+
+    }
+
+    setInterval(textGlitch, 5000);
+
+</script>
 
 <body>
 
-    <body>
-        <h1>Welcome to the PARTY CRASHERS Wiki!</h1>
+    <header>
+        <h1>Welcome to the PARTY CRASHERS Wiki</h1>
+        <p><i>The OFFICIAL Wiki for Party Crashers</i></p>
+    </header>
 
-        <nav>
-            <a href="index.html">home</a> |
-            <a href="about.html">about</a> |
-            <a href="lux.html">Lux and the Lightshard [DEMO]</a> |
-            <a href="game/index.html">RPGMaker Game</a> |
-            <a href="partycrashers.html">Party Crashers Wiki</a>
-        </nav>
-        <article>
-            <h1>here you will find info on characters, maps, abilities and more!</h1>
-            <p><i>The OFFICIAL Wiki for Party Crashers!</i></p>
-            <p>This is under reconstruction! Please be warned!</p>
-            <div
-                style="font-family: Arial, Helvetica, sans-serif; background:#ffffff; color:#000000; padding:10px; border:1px solid #aaa; max-width:900px;">
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="lux.html">Lux Demo</a>
+        <a href="game/index.html">RPGMaker Game</a>
+        <a href="partycrashers.html">Wiki</a>
+    </div>
 
-                <h1>Characters</h1>
-                <h2>Survivors</h2>
-                <p>Lux</p>
-                <p>Toko</p>
-                <p>Medic</p>
-                <p>[error 404: could not find <a href="partyassets/archive.html" style="color: #000;">/survivor4.html]</a></p>
-                <p>Astra</p>
-                <p>Runi</p>
-                <h2>Killers</h2>
-                <p>Evil Lux</p>
-                <h2>Other</h2>
-                <p>Blux</p>
+    <div class="layout">
 
-                <hr>
+        <aside class="sidebar">
 
-                <!-- ================= LUX ================= -->
+            <h2>Navigation</h2>
+            <a href="#characters">Characters</a>
+            <a href="#killers">Killers</a>
+            <a href="#other">Dev Characters</a>
+
+            <h2>Survivors</h2>
+            <a href="#lux">Lux</a>
+            <a href="#toko">Toko</a>
+            <a href="#medic">Medic</a>
+            <a href="partyassets/archive.html">ERR404: Could not find Survivor4.html</a>
+            <a href="#astra">Astra</a>
+            <a href="#runi">Runi</a>
+            <a href="#null">NULL&VOID</a>
+
+            <h2>Killers</h2>
+            <a href="#evil-lux">404 / Evil Lux</a>
+
+            <h2>Dev Characters</h2>
+            <a href="#blux">Blux</a>
+            <a href="#rux">Rux</a>
+
+        </aside>
+
+        <main class="content">
+
+            <h1 id="characters">Characters</h1>
+            <p>DEV NOTE: Secrets broken, working on it.</p>
+            <!-- ================= LUX ================= -->
+
+            <div class="character" id="lux">
 
                 <h2>Lux</h2>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">CharacterInfo</a></th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Lux</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Survivor</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>V1</td>
-                    </tr>
-                </table>
+                <div class="char-top">
 
-                <div class="charimg">
+                    <a href="/partyassets/confront.html"><img src="partycrasherimg/lux.png" class="mainart"></a>
+                    <img src="partycrasherimg/lux_icons.png" class="gameicon">
 
-                    <a href="partyassets/confront.html">
-                        <img src="partycrasherimg/lux.png" alt="Lux character artwork" class="mainart">
-                    </a>
-                    <img src="partycrasherimg/juggernaut.png" alt="Lux (NULL AND VOID)" class="mainart">
-
-                    <img src="partycrasherimg/lux_icons.png" alt="Lux game icon" class="gameicon">
+                    <table class="infobox">
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>Lux</td>
+                        </tr>
+                        <tr>
+                            <td><b>HP</b></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td><b>Role</b></td>
+                            <td>Survivor</td>
+                        </tr>
+                        <tr>
+                            <td><b>Release</b></td>
+                            <td>V1</td>
+                        </tr>
+                    </table>
 
                 </div>
-                <p style="font-size:85%; color:#555;">[Dialog removed by moderator.]</p>
-                <!--I know you want to say it, but you can't. You just can't.-->
 
+                <p style="font-size:85%;color:#555;">[Dialog removed by moderator]</p>
 
-                <p><b>Overview:</b> Lux <a href="partycrasherimg/forum.html" style="color: #000;">is a small child
-                        trapped inside PARTY CRASHERS</a> after entering through a dream.
-                    They rely on hope and survival instincts rather than strength, shown by their survivalist kit.</p>
-
-
-                <p>[EDIT NOTE: this is incorrect]</p> <!--Don't you remember?-->
-                <p>[EDIT NOTE REMOVED BY ADMIN]</p> <!--How long has it been?-->
-                <p>[EDIT NOTE: stop changing this]</p> <!--Hey, You. What are you looking at?-->
-                <!--I see you.-->
-
+                <p><b>Overview:</b> Lux is a small child trapped inside PARTY CRASHERS after entering through a dream.
+                </p>
 
                 <p><b>Lore:</b> Lux believes this world is not real and holds onto the idea that escape is possible
-                    someday...</p>
+                    someday.</p>
+
+                <p>[EDIT NOTE: this is incorrect]</p>
+                <p>[EDIT NOTE REMOVED BY ADMIN]</p>
+                <p>[EDIT NOTE: stop changing this]</p>
 
                 <ul>
                     <li><b>Dash:</b> A boost that makes Lux fly forward, if the killer is put in their path, deal 25 HP
@@ -184,72 +413,55 @@
                     <li><b>Cover:</b> Stands still and cowers in fear. If attacked during this peirod, stun for 3
                         seconds and deal 25 HP.</li>
                 </ul>
+
                 <div class="lmsaudio">
 
-                    <h3>Last Man Standing Theme / Misc.</h3>
+                    <h3>Last Man Standing Theme</h3>
 
-                    <p style="font-size:85%; color:#555;">
-                        "We need to <b>reset once more.</b>"
-                    </p>
-
-                    <b>LMS Theme:</b><br>
                     <audio controls>
-                        <source src="lmsthemes/Reset Once More (PARTY CRASHERS OST).mp3" type="audio/mpeg">
+                        <source src="lmsthemes/Reset Once More (PARTY CRASHERS OST).mp3">
                     </audio>
-
-                    <b>LMS Theme 2: (Used for juggernaut mode)</b><br>
-                    <audio controls>
-                        <source src="lmsthemes/VOID STAR.mp3" type="audio/mpeg">
-                    </audio>
-
-
-                    <p><b>Notes:</b> This LMS has been revised, and will be added to the wiki soon!</p>
 
                 </div>
-                <a href="partycrasherimg/devlog.html" style="color: #000000;">TODO: remove reset dialog???</a>
-                <!--Why aren't you listening to me? Ava, this isn't real!-->
+
+            </div>
 
 
+            <!-- ================= TOKO ================= -->
 
-
-
-                <hr style="clear:both;">
-
-                <!-- ================= TOKO ================= -->
+            <div class="character" id="toko">
 
                 <h2>Toko</h2>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Toko</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>150</td>
-                    </tr>
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Fighter</td>
+                <div class="char-top">
 
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>V1</td>
-                    </tr>
-                </table>
+                    <img src="partycrasherimg/toko.png" class="mainart">
 
-                <img src="partycrasherimg/toko.png" alt="Toko character artwork"
-                    style="border:1px solid #aaa; max-width:250px;">
-                <p style="font-size:85%; color:#555;">"I'm not afraid of you!"</p>
+                    <table class="infobox">
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>Toko</td>
+                        </tr>
+                        <tr>
+                            <td><b>HP</b></td>
+                            <td>150</td>
+                        </tr>
+                        <tr>
+                            <td><b>Role</b></td>
+                            <td>Fighter</td>
+                        </tr>
+                        <tr>
+                            <td><b>Release</b></td>
+                            <td>V1</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <p style="font-size:85%;color:#555;">"I'm not afraid of you!"</p>
 
                 <p><b>Overview:</b> Toko is yet another character that is stuck in PARTY CRASHERS. Unlike Lux, he is not
                     afraid of the dangers that are here...</p>
-
                 <p><b>Lore:</b> Instead of hoping for escape, Toko focuses on finding flaws of this dream and fighting
                     their way out.</p>
 
@@ -261,76 +473,49 @@
                     <li><b>(PASSIVE) Bleed:</b> Due to the scars on Toko, he will constantly take tick damage. Make sure
                         you have a Medic on your team, or you wont survive.</li>
                 </ul>
-                </ul>
-                <div class="lmsaudio">
 
-                    <h3>Last Man Standing Theme / Misc.</h3>
-
-                    <p style="font-size:85%; color:#555;">
-                        Music associated with this character during gameplay events.
-                    </p>
-
-                    <b>LMS Theme:</b><br>
-                    <audio controls>
-                        <source
-                            src="lmsthemes/DEAD_OR_ALIVE_V2_METAL_SONIC_-_Sonic_EXE_Outcome_Memories_OST_Metal_Sonic_Solo_KLICKAUD.mp3"
-                            type="audio/mpeg">
-                    </audio>
+            </div>
 
 
+            <!-- ================= MEDIC ================= -->
 
-                    <p><b>Notes:</b>THIS LMS IS A PLACEHOLDER AND WILL NOT BE USED IN THE FINAL GAME
-                    <p>
-
-                </div>
-                <hr style="clear:both;">
-
-                <!-- ================= MEDIC ================= -->
+            <div class="character" id="medic">
 
                 <a href="/game/conversation.txt">
                     <h2>Medic</h2>
                 </a>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Medic</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Support</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>V1</td>
-                    </tr>
-                </table>
+                <div class="char-top">
 
-                <div class="charimg">
+                    <img src="partycrasherimg/medic.png" class="mainart">
+                    <img src="partycrasherimg/medic_icons.png" class="gameicon">
 
-                    <a href="/partyassets/confront.html">
-                        <img src="partycrasherimg/medic.png" alt="Medic character artwork" class="mainart">
-                    </a>
-
-                    <img src="partycrasherimg/medic_icons.png" alt="Medic game icon" class="gameicon">
-
+                    <table class="infobox">
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>Medic</td>
+                        </tr>
+                        <tr>
+                            <td><b>HP</b></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td><b>Role</b></td>
+                            <td>Support</td>
+                        </tr>
+                        <tr>
+                            <td><b>Release</b></td>
+                            <td>V1</td>
+                        </tr>
+                    </table>
 
                 </div>
-                <p style="font-size:85%; color:#555;">"Where...am...I?"</p>
+
+                <p>"Where...am...I?"</p>
+
                 <p><b>Overview:</b> Medic is a vessel in PARTY CRASHERS that keeps others alive using heals, relying on
                     speed and awareness
                     rather than combat.</p>
-
-                <p><b>Lore:</b> Fear drives Medic forward. They believe teamwork is the
-                    only path to escape.</p>
 
                 <ul>
                     <li><b>Heal:</b> Heals other survivors near you. If hit during this peirod, deal 2X damage.</li>
@@ -338,60 +523,48 @@
                     <li><b>(PASSIVE) Terrified:</b> Medic has lower cooldowns and has a faster walk speed, but takes
                         1.15X Damage.</li>
                 </ul>
+
                 <div class="lmsaudio">
 
-                    <h3>Last Man Standing Theme / Misc.</h3>
+                    <h3>Last Man Standing Theme</h3>
 
-                    <p style="font-size:85%; color:#555;">
-                        "Please... Stop!</b>"
-                    </p>
-
-                    <b>LMS Theme:</b><br>
                     <audio controls>
-                        <source src="lmsthemes/TEA-TIME WALTZ Outcome Memories OST.mp3" type="audio/mpeg">
+                        <source src="lmsthemes/MedicLMS.mp3">
                     </audio>
-
-                    <b>LMS Theme (OLD):</b><br>
-                    <audio controls>
-                        <source src="lmsthemes/TheAngel.mp3" type="audio/mpeg">
-                    </audio>
-
-
-                    <p><b>Notes:</b>This LMS is a <b>placeholder</b> and will not be used ingame.</p>
 
                 </div>
-                <!--=============================MAGE===============================-->
-                <hr style="clear:both;">
+
+            </div>
+            <!-- ================= ASTRA ================= -->
+
+            <div class="character" id="astra">
+
                 <h2>Astra</h2>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Astra</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>90</td>
-                    </tr>
+                <div class="char-top">
 
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Fighter</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>V1-V2</td>
-                    </tr>
-                </table>
+                    <img src="partycrasherimg/magecenterforrealthistime.png" class="mainart">
 
-                <img src="partycrasherimg/magecenterforrealthistime.png" alt="PLACEHOLDER!"
-                    style="border:1px solid #aaa; max-width:250px;">
-                <p style="font-size:85%; color:#555;">"Begone!"</p>
+                    <table class="infobox">
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>Astra</td>
+                        </tr>
+                        <tr>
+                            <td><b>HP</b></td>
+                            <td>90</td>
+                        </tr>
+                        <tr>
+                            <td><b>Role</b></td>
+                            <td>Fighter</td>
+                        </tr>
+                        <tr>
+                            <td><b>Release</b></td>
+                            <td>V1-V2</td>
+                        </tr>
+                    </table>
 
+                </div>
                 <p><b>Overview:</b> Astra is a fighter who controls match tempo by shortening the game clock and
                     teleporting to chosen positions, using stuns to create openings and disrupt opponents.</p>
 
@@ -404,485 +577,266 @@
                     <li><b>Wandbang:</b> This ability will teleport you where you click, if hit on killer, stun for 3
                         seconds.</li>
                 </ul>
-                <div class="lmsaudio">
 
-                    <h3>Last Man Standing Theme / Misc.</h3>
 
-                    <p style="font-size:85%; color:#555;">
-                        "It's time...To bend time! Get it???"</b>
+                <!-- ================= RUNI ================= -->
+
+                <div class="character" id="runi">
+
+                    <h2>Runi</h2>
+
+                    <div class="char-top">
+
+                        <img src="partycrasherimg/newruni.png" class="mainart">
+
+                        <table class="infobox">
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>Runi</td>
+                            </tr>
+                            <tr>
+                                <td><b>HP</b></td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td><b>Role</b></td>
+                                <td>Survivor</td>
+                            </tr>
+                            <tr>
+                                <td><b>Release</b></td>
+                                <td>V2</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <p><b>Overview:</b> Runi will be a character that uses flight and invisibillity to get away from the
+                        killer.</p>
+
+                    <p><b>Lore:</b> Not much is known about Runi, and how they got here.</p>
+
+                    <ul>
+                        <li><b>Cover: </b>Runi will cover themselves with their wings, causing them to be invisible to
+                            the
+                            killer.</li>
+                        <li><b>Flight: </b>Runi will fly upward and dodge any attacks for the tim(double-u) they are
+                            flying.</li>
+                        <li><b>(PASSIVE) Flutter </b> Runi will have lower gravity than anyone else.</li>
+                    </ul>
+                </div>
+                <!-- ================= LUX ================= -->
+
+                <div class="character" id="null">
+
+                    <h2>NULL AND VOID</h2>
+
+                    <div class="char-top">
+
+                        <img src="partycrasherimg/juggernaut.png" class="mainart">
+                        <img src="partycrasherimg/lux_icons.png" class="gameicon">
+
+                        <table class="infobox">
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>Lux(?)</td>
+                            </tr>
+                            <tr>
+                                <td><b>HP</b></td>
+                                <td>800</td>
+                            </tr>
+                            <tr>
+                                <td><b>Role</b></td>
+                                <td>Sole Survivor</td>
+                            </tr>
+                            <tr>
+                                <td><b>Release</b></td>
+                                <td>V1-V2</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <p style="font-size:85%;color:#555;">"R0VUIE1FIE9VVCBPRiBIRVJF"</p>
+
+                    <p><b>Overview:</b> Null And Void (or N&V) is what happens after someone uses the LIGHTSHARDS, the
+                        one seen here is Lux.
                     </p>
 
-                    <b>LMS Theme Preview:</b><br>
-                    <audio controls>
-                        <source src="lmsthemes/oldrkaidlms.mp3" type="audio/mpeg">
-                    </audio>
+                    <p><b>Lore:</b> Lux stole the LIGHTSHARDS for theirself, in hopes that they could use them to
+                        escape. Little do they know that [info removed.]</p>
 
-                    <b>LMS Theme Ingame (PLACEHOLDER):</b><br>
-                    <audio controls>
-                        <source src="lmsthemes/TheAngel.mp3" type="audio/mpeg">
-                    </audio>
+                    <ul>
+                        <li><b>Ultradash:</b> A boost that makes Lux fly forward, if the killer is put in their path,
+                            deal 75
+                            HP
+                            and stun for 6 seconds.</li>
+                        <li><b>Parry:</b> Parries any attack dealt to them for 4 seconds. If attacked during this
+                            peirod, stun for 7
+                            seconds and deal 100 HP.</li>
+                        <li><b>Fight:</b> A simple punch that deals 90 HP and stuns for 3 seconds if hit.</li>
 
+                    </ul>
 
-                    <p><b>Notes:</b>This LMS is a <b>preview</b> and will not be used ingame.</p>
+                    <div class="lmsaudio">
 
-                </div>
-                <!--=============================RUNI===============================-->
-                <hr style="clear:both;">
-                <h2>Runi</h2>
+                        <h3>Last Man Standing Theme</h3>
+                        <audio controls>
+                            <source src="lmsthemes/VOID STAR.mp3">
+                        </audio>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Runi</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>100</td>
-                    </tr>
-
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Survivor</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>V2</td>
-                    </tr>
-                </table>
-
-                <img src="partycrasherimg/newruni.png" alt="PLACEHOLDER!"
-                    style="border:1px solid #aaa; max-width:250px;">
-                <p style="font-size:85%; color:#555;">"..."</p>
-
-                <p><b>Overview:</b> Runi will be a character that uses flight and invisibillity to get away from the
-                    killer.</p>
-
-                <p><b>Lore:</b> Not much is known about Runi, and how they got here.</p>
-
-                <ul>
-                    <li><b>Cover: </b>Runi will cover themselves with their wings, causing them to be invisible to the
-                        killer.</li>
-                    <li><b>Flight: </b>Runi will fly upward and dodge any attacks for the tim(double-u) they are flying.</li>
-                    <li><b>(PASSIVE) Flutter </b> Runi will have lower gravity than anyone else.</li>
-                </ul>
-                <div class="lmsaudio">
-
-                    <h3>Last Man Standing Theme / Misc.</h3>
-
-                    <p style="font-size:85%; color:#555;">
-                        "..."</b>
-                    </p>
-
-                    <b>LMS Theme: </b><br>
-                    <audio controls>
-                        <source src="lmsthemes/CLIPPED.mp3" type="audio/mpeg">
-                    </audio>
-
-                    <b>LMS Theme Ingame (PLACEHOLDER):</b><br>
-                    <audio controls>
-                        <source src="lmsthemes/TheAngel.mp3" type="audio/mpeg">
-                    </audio>
-
-
-                    <p><b>Notes:</b> N/A</p>
+                    </div>
 
                 </div>
-
-                <hr style="clear:both;">
-
+<h1 id="killers">Killers</h1>
                 <!-- ================= EVIL LUX (KILLER) ================= -->
 
-                <h2>404/EVIL Lux</h2>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>404/Evil Lux</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>666 (EVIL)</td>
-                    </tr>
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Killer</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>V1</td>
-                    </tr>
-                </table>
+                <div class="character" id="evil-lux">
 
-                <div class="charimg">
+                    <h2>Evil Lux</h2>
 
+                    <div class="char-top">
 
-                    <img src="partycrasherimg/elux.png" alt="Evil Lux character artwork" class="mainart">
-                    </a>
+                        <img src="partycrasherimg/elux.png" class="mainart">
 
-                    <img src="partycrasherimg/elux_icons.png" alt="Evil Lux game icon" class="gameicon">
+                        <img src="partycrasherimg/elux_icons.png" class="gameicon" height=>
 
-                </div>
-                <p style="font-size:85%; color:#555;">"That almost stung!"</p>
+                        <table class="infobox">
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>Lux</td>
+                            </tr>
+                            <tr>
+                                <td><b>HP</b></td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td><b>Role</b></td>
+                                <td>Survivor</td>
+                            </tr>
+                            <tr>
+                                <td><b>Release</b></td>
+                                <td>V1</td>
+                            </tr>
+                        </table>
 
-                <p><b>Overview:</b> Evil lux (also known as 404) is an EVIL version of Lux that hunts down players and kills them, causing
-                    the game to reset once more.</p>
+                    </div>
 
-                <p><b>Lore:</b> Not much is known about this guy. Some believe he is a creation of the dream, others
-                    believe he is just a joke character, yet nothing has been directly stated by developers.</p>
+                    <p style="font-size:85%;color:#555;">That almost stung!</p>
 
-                <ul>
-                    <li><b>M1:</b> Hits any player for 25 HP.</li>
-                    <li><b>Beatdown:</b> Rushes foward and attacks anyone in his path for 40 HP.</li>
-                    <li><b>Self Regen:</b> Stands still and regenerates for 5 seconds. During this time, any stuns deal
-                        twice the damage.</li>
-                    <li><b>Peekaboo:</b> Teleports behind a random survivor.</li>
-                </ul>
-                <div class="lmsaudio">
+                    <p><b>Overview:</b> Evil lux (also known as 404) is an EVIL version of Lux that hunts down players
+                        and kills them, causing
+                        the game to reset once more.</p>
 
-                    <h3>Chase Theme / Misc.</h3>
+                    <p><b>Lore:</b> Not much is known about this guy. Some believe he is a creation of the dream, others
+                        believe he is just a joke character, yet nothing has been directly stated by developers.</p>
 
-                    <p style="font-size:85%; color:#555;">
-                        "HERE I COME!"
-                    </p>
-
-                    <b>Chase Theme:</b><br>
-                    <audio controls>
-                        <source src="lmsthemes/chase.mp3" type="audio/mpeg">
-                    </audio>
-
-
-                    <p><b>Notes:</b>I hate this guy...</p>
-
+                    <ul>
+                        <li><b>M1:</b> Hits any player for 25 HP.</li>
+                        <li><b>Beatdown:</b> Rushes foward and attacks anyone in his path for 40 HP.</li>
+                        <li><b>Self Regen:</b> Stands still and regenerates for 5 seconds. During this time, any stuns
+                            deal
+                            twice the damage.</li>
+                        <li><b>Peekaboo:</b> Teleports behind a random survivor.</li>
+                    </ul>
                 </div>
 
                 <hr style="clear:both;">
+      <h1 id="other">Dev Characters</h1>          
+                <!-- ================= BLUX ================= -->
 
 
-                <hr style="clear:both;">
-                <!-- ================= BLUX (DEV ONLY JOKE CHARACTER) ================= -->
+                <div class="character" id="blux">
 
-                <h2>Blux (DEV ONLY)</h2>
+                    <h2>Blux</h2>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Blux</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>250-1250 (Unknown)</td>
-                    </tr>
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Blue</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>Dev/Contributor Only</td>
-                    </tr>
-                </table>
+                    <div class="char-top">
 
-                <div class="charimg">
+                        <img src="partycrasherimg/blux.png" class="mainart">
 
+                        <img src="partycrasherimg/blux_icons.png" class="gameicon" height=>
 
-                    <img src="partycrasherimg/blux.png" alt="Blue Lux character artwork" class="mainart">
-                    </a>
+                        <table class="infobox">
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>Blux</td>
+                            </tr>
+                            <tr>
+                                <td><b>HP</b></td>
+                                <td>1500</td>
+                            </tr>
+                            <tr>
+                                <td><b>Role</b></td>
+                                <td>Survivor</td>
+                            </tr>
+                            <tr>
+                                <td><b>Release</b></td>
+                                <td>N/A</td>
+                            </tr>
+                        </table>
 
-                    <img src="partycrasherimg/blux_icons.png" alt="Blue Lux game icon" class="gameicon">
+                    </div>
 
+                    <p style="font-size:85%; color:#555;">"I'm Blue!"</p>
+
+                    <p><b>Overview:</b> This is a developer only character used to test the juggernaut mode.</p>
+
+                    <p><b>Lore:</b><img src="partycrasherimg/thesludge.jpg" alt="the sludge"></p>
+
+                    <ul>
+                        <li><b>Ability 1 (Name Unknown)</b> Blux will fly around the map and flash black and white.</li>
+                        <li><b>Ability 2 (Name Unknown)</b> Blux will glow green and heal himself around 500 HP.</li>
+                    </ul>
+
+                    <hr style="clear:both;">
                 </div>
-                <p style="font-size:85%; color:#555;">"I'm Blue!"</p>
+                <!-- ================= RUX ================= -->
 
-                <p><b>Overview:</b> This is a developer only character used to test the juggernaut mode.</p>
 
-                <p><b>Lore:</b><img src="partycrasherimg/thesludge.jpg" alt="the sludge"></p>
+                <div class="character" id="blux">
 
-                <ul>
-                    <li><b>Ability 1 (Name Unknown)</b> Blux will fly around the map and flash black and white.</li>
-                    <li><b>Ability 2 (Name Unknown)</b> Blux will glow green and heal himself around 500 HP.</li>
-                </ul>
+                    <h2>Rux</h2>
 
-                <hr style="clear:both;">
+                    <div class="char-top">
 
-                <!-- ================= RUX (DEV ONLY JOKE CHARACTER) ================= -->
+                        <img src="partycrasherimg/rlux.png" class="mainart">
 
-                <h2>Rux</h2>
+                        <img src="partycrasherimg/rlux.png" class="gameicon" height=>
 
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Character Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Rux</td>
-                    </tr>
-                    <tr>
-                        <td><b>HP</b></td>
-                        <td>25500</td>
-                    </tr>
-                    <tr>
-                        <td><b>Role</b></td>
-                        <td>Killer/Red</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>Dev/Contributor Only</td>
-                    </tr>
-                </table>
+                        <table class="infobox">
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>Rux</td>
+                            </tr>
+                            <tr>
+                                <td><b>HP</b></td>
+                                <td>25500</td>
+                            </tr>
+                            <tr>
+                                <td><b>Role</b></td>
+                                <td>Killer</td>
+                            </tr>
+                            <tr>
+                                <td><b>Release</b></td>
+                                <td>N/A</td>
+                            </tr>
+                        </table>
 
-                <div class="charimg">
+                    </div>
 
+                    <p style="font-size:85%; color:#555;">"I'm Red..."</p>
 
-                    <img src="partycrasherimg/rlux.png" alt="Red Lux character artwork" class="mainart">
-                    </a>
+                    <p><b>Overview:</b> This is a developer only character. Hes very red, are you?</p>
 
-                    <img src="partycrasherimg/elux_icons.png" alt="Blue Lux game icon" class="gameicon">
+                    <p><b>Lore:</b><img src="partycrasherimg/thered.jpg" alt="the sludge"></p>
 
-                </div>
-                <p style="font-size:85%; color:#555;">"I'm Red..."</p>
+                    <ul>
+                        <li><b>M1:</b> Hits any player for 255 HP.</li>
+                        <li><b>Beatdown:</b> Rushes foward and attacks anyone in his path for 90 HP.</li>
+                        <li><b>Self Regen:</b> Stands still and regenerates for 0.3 seconds. During this time, any stuns
+                            deal
+                            twice the damage.</li>
+                        <li><b>Peekaboo:</b> Teleports behind a random survivor.</li>
+                    </ul>
 
-                <p><b>Overview:</b> This is a developer only character that is red. Are you? Extremely powerful.</p>
-
-                <p><b>Lore:</b><img src="partycrasherimg/thered.jpg" alt="the sludge"></p>
-
-                <ul>
-                    <li><b>M1:</b> Rux will hit you and take 255HP.</li>
-                    <li><b>Charge:</b> Rux will charge foward, hitting anyone in his way for 85 HP.</li>
-                    <li><b>Peekaboo</b> Rux will teleport to a player, hitting anyone in his way for 50 HP.</li>
-                    <li><b>Self Heal:</b> Rux will heal himself for 500 HP.</li>
-                </ul>
-
-                <hr style="clear:both;">
-
-
-                <h2>Style Notes</h2>
-
-                <p style="font-size:85%; color:#555;">
-                    This section contains player observations, fan theories, and archived community discussion.
-                    Some information may be speculative or outdated due to resets. [citation needed]
-                </p>
-
-                <ul>
-
-                    <li><b>Lux & Medic:</b> Early strategy threads frequently recommend pairing Lux with Medic due to
-                        strong defensive synergy.
-                        Fans often describe the duo as representing “hope protecting fear,” though developer intent is
-                        unknown. [citation needed]</li>
-
-                    <li><b>Lux & Toko:</b> Considered gameplay opposites by many players. Lux avoids confrontation while
-                        Toko actively seeks it,
-                        leading to a balanced dynamic when used together. Some discussions suggest this contrast may
-                        reflect deeper narrative themes.</li>
-
-                    <li><b>Toko & Medic:</b> A high-risk pairing where Medic supports aggressive engagements initiated
-                        by Toko.
-                        Veteran players joke that Medic mains become experts at pathing simply from following Toko
-                        across maps.</li>
-
-                    <li><b>Evil Lux & Lux:</b> One of the oldest fan theories claims Evil Lux is a corrupted future
-                        version of Lux created through repeated resets.
-                        Alternative theories suggest the dream world copies survivors into hostile forms. No official
-                        confirmation exists.</li>
-
-                    <li><b>Evil Lux Behavior:</b> Players frequently report that Evil Lux appears more aware than other
-                        killers,
-                        especially when teleporting toward targets. Some believe this is intentional lore design rather
-                        than AI behavior. [citation needed]</li>
-
-                    <li><b>Team Symbolism Theory:</b> A common interpretation assigns emotional archetypes to survivors:
-                        hope (Lux), defiance (Toko), and fear-driven care (Medic).</li>
-
-                    <li><b>Reset Theory:</b> Certain fans claim subtle animation or behavioral changes imply characters
-                        retain memories across resets.
-                        Evidence remains anecdotal but widely discussed.</li>
-
-                    <li><b>Unknown Connection:</b> Popular speculation suggests Lux, Toko, and Medic may have known each
-                        other before entering PARTY CRASHERS,
-                        though no confirmed lore supports this.</li>
-
-                    <li><b>Blux (Developer Character):</b> Confirmed developer-only test character.
-                        Sightings in public matches are generally assumed to be developer testing or bugs.</li>
-
-                    <li><b>Blux Rumors:</b> Claims of secret unlock methods or hidden codes continue to circulate
-                        despite repeated developer denials.</li>
-
-                </ul>
-                <details style="margin-top:10px; border:1px solid #aaa; background:#f6f6f6; padding:6px;">
-
-                    <summary style="cursor:pointer; font-weight:bold;">
-                        ⚠ Hidden Theories & Archived Speculation (Click to Expand)
-                    </summary>
-
-                    <p style="font-size:90%;">
-
-                        Some archived discussions suggest Evil Lux may react differently depending on which survivor
-                        remains alive last.
-                        Others claim certain animations only appear after multiple resets, though these reports remain
-                        unverified.
-
-                        A recurring rumor states that Lux and Evil Lux share identical internal identifiers within early
-                        builds,
-                        leading to speculation that they were originally the same character.
-
-                        None of these theories have been officially confirmed.
-
-                    </p>
-
-                </details>
-
-
-                </ul>
-
-                <h2>Community Speculation</h2>
-
-                <p style="font-size:85%; color:#555;">
-                    This section collects popular fan theories, player observations, and general community discussion.
-                    Nothing here is officially confirmed, and some ideas come from old forum posts or player
-                    experiences,
-                    so take everything with a grain of salt. <!--You gotta help me.-->
-                </p>
-
-                <ul>
-
-                    <li><b>Punishment Theory:</b> Some players think Evil Lux was designed to counter people who rely
-                        too heavily on Lux strategies.
-                        The idea is that the game “pushes back” when players get too comfortable, though nobody has
-                        proven this.</li>
-
-                    <li><b>Dream Creation Debate:</b> A long-running argument in the community asks whether killers are
-                        created by the dream
-                        or if they used to be survivors. Both sides have fans, and the game hasn’t given a clear answer
-                        yet.</li>
-
-                    <li><b>Four Character Event:</b> There’s a rumor that something special happens when Lux, Toko,
-                        Medic, and Evil Lux all appear
-                        in the same match. Players sometimes report weird pacing or tension during these games, but it
-                        might just be coincidence.</li>
-
-                    <li><b>Observer Theory:</b> Some fans believe something (or someone) is watching the events of the
-                        game from outside.
-                        This mostly comes from developer jokes and strange lore hints, but people still debate it.</li>
-
-                    <li><b>Reset Awareness:</b> [EDIT NOTE: theory removed]
-                        <!--Remember what I told you before? You would always feel guilty. Ignorance leads to hate.-->
-                    </li>
-
-                    <li><b>Blux Rumors:</b> Even though Blux is confirmed as a developer-only character, rumors about
-                        secret unlock methods
-                        or rare sightings keep popping up. Most players assume these are just myths or dev testing.</li>
-
-                </ul>
-
-                <details style="margin-top:10px; border:1px solid #aaa; background:#f6f6f6; padding:6px;">
-
-                    <summary style="cursor:pointer; font-weight:bold;">
-                        Hidden Theories & Older Discussions
-                    </summary>
-                    <p>Moderator Notice:
-                        Please stop adding reset-related theories without evidence.
-                    </p>
-
-                    <p style="font-size:90%;">
-
-                        Older forum threads mention chase music changing after multiple resets, though nobody has been
-                        able
-                        to recreate it consistently.
-
-                        Another idea floating around is that the dream world rewrites itself between matches,
-                        which could explain why certain lore details feel inconsistent.
-
-                        Some players also claim Evil Lux occasionally hesitates before attacking,
-                        leading to speculation that the character might recognize certain survivors.
-
-                        None of these ideas are confirmed, but they continue to show up in discussions.
-
-                    </p>
-
-                </details>
-
-                <p style="font-size:85%; color:#555;">
-                    This section reflects community discussion and may change as new discoveries are made.
-                </p>
-                <h1>Maps</h1>
-
-                <h2>TestMap</h2>
-
-                <table border="1" cellpadding="6" cellspacing="0"
-                    style="float:right; margin:10px; font-size:90%; background:#f9f9f9;">
-                    <tr>
-                        <th colspan="2" style="background:#e0e0e0;">Map Info</th>
-                    </tr>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td>Test Map</td>
-                    </tr>
-                    <tr>
-                        <td><b>Acts</b></td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td><b>Size</b></td>
-                        <td>Tiny</td>
-                    </tr>
-                    <tr>
-                        <td><b>Release</b></td>
-                        <td>N/A</td>
-                    </tr>
-                </table>
-
-                <div class="charimg">
-
-
-                    <img src="partycrasherimg/mapplaceholder.png" alt="Placeholder artwork." class="mainart">
-                    </a>
-
-
-                </div>
-                <p style="font-size:85%; color:#555;">"Some king of...Testmap..."</p>
-
-                <p><b>Overview:</b> The Test Map is a place where devs test movesets before they are released to the public. Unplayable for public matches, but can be selected by a developer.</p>
-
-                <p><b>Lore:</b> There is no official lore for this map.</p>
-
-                <ul>
-                    <li><b>Normal:</b> The normal variation of the test map.</li>
-                    <li><b>Rainy:</b> Adds a rain effect to the map. Cosmetic only.</li>
-                    <li><b>Snowy:</b> Adds a snow effect to the map. Cosmetic only.</li>
-                    <li><b>Mist:</b> Adds the mist effect to the map. Killer has a speed and attack buff, while survivors are weaker.</li>
-                </ul>
-                <div class="lmsaudio">
-
-                    <h3>Map Music</h3>
-
-                    <p style="font-size:85%; color:#555;">
-                        "I don't know if this is a real map, but it sure is a testy one!"
-                    </p>
-                    <b>Map Music (Default):</b><br>
-                    <audio controls>
-                        <source src="mapthemes/03 - Tidal Tempest Zone Past - Masafumi Ogata.mp3" type="audio/mpeg">
-                    </audio>
-
-                    <b>Map Music (Mist):</b><br>
-                    <audio controls>
-                        <source src="mapthemes/1-17 Tidal Tempest 'B' Mix JP.mp3" type="audio/mpeg">
-                    </audio>
-
-
-                    <p><b>Notes:</b> This map music is going to be repurposed for a diffrent map in the future.</p>
-
-                </div>
-
-                <hr style="clear:both;">
+                    <hr style="clear:both;">
