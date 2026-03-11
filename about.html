@@ -2,111 +2,207 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>my about page</title>
-    <style>
-        body {
-            background-image: url("arcadefloor.jpg");
-            background-color: black;
-            background-repeat: repeat-x;
-            background-size: cover;
-            background-attachment: fixed;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            color: aliceblue;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>about</title>
 
-        h1 {
-            color: #00c3ff;
-            background-color: #3d52d5;
-            border-color: rgb(4, 30, 112);
-            border-width: 10px;
-            border-style: solid;
-            flex-wrap: wrap;
-        }
+<style>
+body {
+background-image: url("arcadefloor.jpg");
+background-color: black;
+background-repeat: repeat-x;
+background-size: cover;
+background-attachment: fixed;
 
-        nav {
-            background-color: #090C9B;
-            border-color: rgb(4, 30, 112);
-            border-width: 10px;
-            border-style: solid;
-            flex-wrap: wrap;
-        }
+font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+color: aliceblue;
 
-        a {
-            color: #B4C5E4;
-        }
+margin: 0;
+}
 
-        article {
-            background-color: #090C9B;
-            border-width: 10px;
-            border-color: #090C9B;
-            border-style: solid;
-            background-color: #B4C5E4;
-            flex-wrap: wrap;
-            margin: 10px;
-            color: black;
-        }
+h1 {
+color: #00c3ff;
+background-color: #3d52d5;
+padding: 10px;
+}
 
-        header {
-            background-color: #3d52d5;
-            color: aliceblue;
-            
-        }
+nav {
+background: #090C9B;
+padding: 10px;
+}
 
-        #article1 {
-            border-width: 10px;
-            border-color: #090C9B;
-            border-style: solid;
-            background-color: #B4C5E4;
-            flex-wrap: wrap;
-            margin: 10px;
-        }
+nav a {
+color: #B4C5E4;
+text-decoration: none;
+font-weight: bold;
+margin-right: 10px;
+}
 
-        .emp {
-            color: #00c3ff;
-            font-weight: bold;
-        }
+nav a:hover {
+color: white;
+}
 
-        .blue {
-            color: #3d52d5;
-            font-weight: bold;
-        }
+article {
+background: #b2d0ff;
+color: black;
 
-        #joe {
-            border-width: 10px;
-            border-color: #B4C5E4;
-            border-style: solid;
-            background-color: #090C9B;
-            flex-wrap: wrap;
-            margin: 10px;
-        }
-    </style>
+max-width: 900px;
+margin: auto;
+padding: 15px;
+
+border: 1px solid #888;
+}
+
+.infobox {
+float: right;
+margin: 10px;
+border: 1px solid #aaa;
+background: #f9f9f9;
+font-size: 90%;
+}
+
+.infobox th {
+background: #e0e0e0;
+}
+
+.charcard {
+border: 1px solid #aaa;
+background: white;
+padding: 10px;
+margin: 15px 0;
+}
+
+.charcard img {
+max-width: 150px;
+}
+
+.arcadebtn {
+background: #3d52d5;
+color: white;
+padding: 8px 12px;
+border-radius: 4px;
+text-decoration: none;
+font-weight: bold;
+}
+
+.arcadebtn:hover {
+background: #00c3ff;
+}
+
+.devnote {
+background: #fff7cc;
+border: 1px solid #e0c200;
+padding: 10px;
+}
+
+.clear {
+clear: both;
+}
+</style>
 </head>
 
 <body>
-    <h1>about</h1>
-    <nav>
-        <a href="index.html">home</a> |
-        <a href="about.html">about</a> |
 
-        <a href="game/index.html">RPGMaker Game</a> |
-        <a href="partycrashers.html">Party Crashers Wiki</a>
-    </nav>
+<h1>About</h1>
 
-    <article>
-        <header>
-            <h2>welcome to the about page</h2>
-            <p>hello! this is the about page for my website. here, you can find out more about me and the projects i am
-                working on. i am a game developer and writer, and i am passionate about creating immersive and engaging
-                experiences for players. i have been working on various projects, including a demo for a game called
-                "Lux and the Lightshard" and an RPGMaker game that is currently in development. i also run a wiki for a
-                game called "Party Crashers". thank you for visiting my website, and feel free to explore the different
-                sections to learn more about my work!
-            </p>
-            <p>Some more info about me, My favorite color is blue!</p>
-        </header>
-    </article>
+<nav>
+<a href="index.html">home</a> |
+<a href="about.html">about</a> |
+<a href="lux.html">Lux and the Lightshard</a> |
+<a href="game/index.html">RPGMaker Game</a> |
+<a href="partycrashers.html">Party Crashers Wiki</a>
+</nav>
+
+<article>
+
+<h2>About Me</h2>
+
+<table class="infobox">
+<tr><th colspan="2">Developer Info</th></tr>
+<tr><td><b>Name</b></td><td>Ryan</td></tr>
+<tr><td><b>Age</b></td><td>14</td></tr>
+<tr><td><b>Favorite Color</b></td><td>Blue</td></tr>
+<tr><td><b>Main Project</b></td><td>Party Crashers</td></tr>
+</table>
+
+<p>
+Hello! I'm Ryan and I enjoy making video games and experimenting with new ideas.
+</p>
+
+<p>
+This website is where I host my projects and the Party Crashers Wiki.
+</p>
+
+<div class="clear"></div>
+
+<hr>
+
+<h2>My Projects</h2>
+<div class="charcard">
+
+<img src="partycrasherimg/lux.png">
+
+<b>PARTY CRASHERS</b>
+
+<p>
+A 2D asymmetrical game where survivors try to escape while killers hunt them down.
+</p>
+
+<a class="arcadebtn" href="partycrashers.html">Open Wiki</a>
+
+</div>
+
+
+<div class="charcard">
+
+<img src="partycrasherimg/elux.png">
+
+<b>Lux and the Lightshard</b>
+
+<p>
+A small experimental demo game.
+</p>
+
+<a class="arcadebtn" href="lux.html">Play Demo</a>
+
+</div>
+
+
+<div class="charcard">
+
+<b>RPGMaker Game</b>
+
+<p>
+A separate RPGMaker project currently being developed.
+</p>
+
+<a class="arcadebtn" href="game/index.html">Play Game</a>
+
+</div>
+
+<hr>
+
+<h2>Developer Notes</h2>
+
+<div class="devnote">
+
+<p>
+This website is still being worked on and some pages may change.
+</p>
+
+<p>
+The Party Crashers Wiki currently has the most information about my main project.
+</p>
+
+</div>
+
+<hr>
+
+<p>
+Fun fact: my favorite color is blue.
+</p>
+
+</article>
+
 </body>
-
 </html>
