@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PARTY CRASHERS Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Comic+Relief:wght@400;700&display=swap"
+        rel="stylesheet">
 
     <style>
         body {
@@ -13,7 +17,7 @@
             background: url("arcadefloor.jpg") repeat;
             background-size: cover;
             background-attachment: fixed;
-            font-family: Verdana, Arial, sans-serif;
+            font-family: "Comic Neue", "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Comic Relief", "Trebuchet MS", Verdana, Arial, sans-serif;
         }
 
         .layout {
@@ -97,6 +101,39 @@
             border-left: 6px solid #3d52d5;
         }
 
+        .notice {
+            border: 2px solid #3d52d5;
+            background: #f1f4ff;
+            padding: 10px 12px;
+            font-size: 14px;
+            margin: 12px 0 18px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .notice b {
+            color: #090C9B;
+        }
+
+        .notice-icon {
+            width: 22px;
+            height: 22px;
+            flex: 0 0 22px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23090C9B' d='M1 21h22L12 2 1 21zm12-3h-2v2h2v-2zm0-8h-2v6h2v-6z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .map-thumb {
+            width: 140px;
+            height: 80px;
+            object-fit: cover;
+            border: 1px solid #aaa;
+            background: #f2f2f2;
+            display: block;
+        }
+
         .character {
             border: 1px solid #aaa;
             background: #f7f9ff;
@@ -109,6 +146,30 @@
             background: #f7f9ff;
             padding: 15px;
             margin-bottom: 30px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: #ffffff;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #e8edff;
+            color: #090C9B;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #555;
         }
 
         .skin-index {
@@ -143,6 +204,15 @@
             border: 1px solid #aaa;
             background: #ffffff;
             padding: 10px;
+        }
+
+        .skin-audio {
+            margin-top: 8px;
+        }
+
+        .skin-audio audio {
+            width: 100%;
+            height: 32px;
         }
 
         .skin-thumb {
@@ -424,6 +494,9 @@
             <a href="#killers">Killers</a>
             <a href="#other">Dev Characters</a>
             <a href="#skins">Skins</a>
+            <a href="#modes">Game Modes</a>
+            <a href="#maps">Map List</a>
+            <a href="#patch-notes">Patch Notes</a>
 
             <h2>Survivors</h2>
             <a href="#lux">Lux</a>
@@ -444,6 +517,13 @@
         </aside>
 
         <main class="content">
+
+            <div class="notice">
+                <span class="notice-icon" aria-hidden="true"></span>
+                <div>
+                    <b>This wiki is unfinished!</b> Some sections are incomplete or may contain placeholder details.
+                </div>
+            </div>
 
             <h1 id="characters">Characters</h1>
             <p>DEV NOTE: Secrets broken, working on it.</p>
@@ -613,7 +693,7 @@
                     <h3>Last Man Standing Theme</h3>
 
                     <audio controls>
-                        <source src="lmsthemes/MedicLMS.mp3">
+                        <source src="lmsthemes/TEA-TIME WALTZ Outcome Memories OST.mp3">
                     </audio>
 
                 </div>
@@ -951,6 +1031,13 @@
                             <p class="skin-meta">Unlock: Starter</p>
                             <span class="tag">Common</span>
                             <span class="tag">0 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/Reset Once More (PARTY CRASHERS OST).mp3">
+                                </audio>
+                            </div>
                         </div>
 
                         <div class="skin-card">
@@ -959,6 +1046,13 @@
                             <p class="skin-meta">Unlock: Shop</p>
                             <span class="tag">Rare</span>
                             <span class="tag">1000 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/Reset Once More (PARTY CRASHERS OST).mp3">
+                                </audio>
+                            </div>
                         </div>
 
                         <div class="skin-card">
@@ -967,6 +1061,13 @@
                             <p class="skin-meta">Unlock: Shop</p>
                             <span class="tag">Common</span>
                             <span class="tag">500 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/Reset Once More (PARTY CRASHERS OST).mp3">
+                                </audio>
+                            </div>
                         </div>
                         <div class="skin-card">
                             <img class="skin-thumb" src="skins/teto.png" alt="Teto">
@@ -974,6 +1075,13 @@
                             <p class="skin-meta">Unlock: Shop</p>
                             <span class="tag">Rare</span>
                             <span class="tag">3500 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme (Credits to Starshot!)</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/MESMERIZER [remixed by ~starshot~] ／／ INSTRUMENTAL - ~starshot~.mp3">
+                                </audio>
+                            </div>
                         </div>
                         <div class="skin-card">
                             <img class="skin-thumb" src="skins/blue.png" alt="Blue">
@@ -981,6 +1089,13 @@
                             <p class="skin-meta">Unlock: Shop</p>
                             <span class="tag">Super-Duper-Rare</span>
                             <span class="tag">40000 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/Reset Once More (PARTY CRASHERS OST).mp3">
+                                </audio>
+                            </div>
                         </div>
                     </div>
 
@@ -992,6 +1107,14 @@
                             <p class="skin-meta">Unlock: Starter</p>
                             <span class="tag">Common</span>
                             <span class="tag">0 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source
+                                        src="lmsthemes/DEAD_OR_ALIVE_V2_METAL_SONIC_-_Sonic_EXE_Outcome_Memories_OST_Metal_Sonic_Solo_KLICKAUD.mp3">
+                                </audio>
+                            </div>
                         </div>
 
                     </div>
@@ -1004,6 +1127,13 @@
                             <p class="skin-meta">Unlock: Starter</p>
                             <span class="tag">Common</span>
                             <span class="tag">0 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/TEA-TIME WALTZ Outcome Memories OST.mp3">
+                                </audio>
+                            </div>
                         </div>
                             <div class="skin-card">
                                 <img class="skin-thumb" src="skins/legacymedic.png" alt="Medic (Default skin)">
@@ -1011,6 +1141,13 @@
                                 <p class="skin-meta">Unlock: Shop</p>
                                 <span class="tag">Common</span>
                                 <span class="tag">500 Chips</span>
+                                <div class="skin-audio">
+                                    <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                    <audio controls>
+                                        <source src="lmsthemes/TEA-TIME WALTZ Outcome Memories OST.mp3">
+                                    </audio>
+                                </div>
                             </div>
 
                             <div class="skin-card">
@@ -1019,10 +1156,17 @@
                                 <p class="skin-meta">Unlock: Shop</p>
                                 <span class="tag">Really-Rare</span>
                                 <span class="tag">5000 Chips</span>
+                                <div class="skin-audio">
+                                    <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                    <audio controls>
+                                        <source src="lmsthemes/TEA-TIME WALTZ Outcome Memories OST.mp3">
+                                    </audio>
+                                </div>
                             </div>
                         </div>
 
-                        <h2 id="skins-astra">Astra</h2>
+                    <h2 id="skins-astra">Astra</h2>
                         <div class="skin-grid">
                             <div class="skin-card">
                                 <img class="skin-thumb" src="partycrasherimg/magecenterforrealthistime.png"
@@ -1031,12 +1175,19 @@
                                 <p class="skin-meta">Unlock: Starter</p>
                                 <span class="tag">Common</span>
                                 <span class="tag">0 Chips</span>
+                                <div class="skin-audio">
+                                    <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                    <audio controls>
+                                        <source src="lmsthemes/CLIPPED.mp3">
+                                    </audio>
+                                </div>
                             </div>
 
 
                         </div>
 
-                        <h2 id="skins-runi">Runi</h2>
+                    <h2 id="skins-runi">Runi</h2>
                         <div class="skin-grid">
                             <div class="skin-card">
                                 <img class="skin-thumb" src="partycrasherimg/newruni.png" alt="Runi (Default skin)">
@@ -1044,10 +1195,17 @@
                                 <p class="skin-meta">Unlock: Starter</p>
                                 <span class="tag">Common</span>
                                 <span class="tag">0 Chips</span>
+                                <div class="skin-audio">
+                                    <p class="skin-meta">LMS Theme</p>
+                                <!-- Edit the source below -->
+                                    <audio controls>
+                                        <source src="lmsthemes/CLIPPED.mp3">
+                                    </audio>
+                                </div>
                             </div>
                         </div>
 
-                        <h2 id="skins-null">NULL&amp;VOID</h2>
+                    <h2 id="skins-null">NULL&amp;VOID</h2>
                         <div class="skin-grid">
                             <div class="skin-card">
                                 <img class="skin-thumb" src="partycrasherimg/juggernaut.png"
@@ -1056,10 +1214,17 @@
                                 <p class="skin-meta">Unlock: Starter</p>
                                 <span class="tag">Common</span>
                                 <span class="tag">0 Chips</span>
+                                <div class="skin-audio">
+                                    <p class="skin-meta">LMS Theme (Credits to RundownSD!)</p>
+                                <!-- Edit the source below -->
+                                    <audio controls>
+                                        <source src="lmsthemes/VOID STAR.mp3">
+                                    </audio>
+                                </div>
                             </div>
                         </div>
 
-                        <h2 id="skins-evil-lux">Evil Lux</h2>
+                    <h2 id="skins-evil-lux">Evil Lux</h2>
                         <div class="skin-grid">
                             <div class="skin-card">
                                 <img class="skin-thumb" src="partycrasherimg/elux.png" alt="Evil Lux (Default skin)">
@@ -1067,6 +1232,13 @@
                                 <p class="skin-meta">Unlock: Starter</p>
                                 <span class="tag">Commom</span>
                                 <span class="tag">0 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">Chase Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/chase.mp3">
+                                </audio>
+                            </div>
                             </div>
 
                             <div class="skin-card">
@@ -1075,6 +1247,13 @@
                                 <p class="skin-meta">Unlock: Shop</p>
                                 <span class="tag">Rare</span>
                                 <span class="tag">4000 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">Chase Theme</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/chase.mp3">
+                                </audio>
+                            </div>
                             </div>
                             <div class="skin-card">
                                 <img class="skin-thumb" src="skins/jimmy.png" alt="Jimmy">
@@ -1082,11 +1261,60 @@
                                 <p class="skin-meta">Unlock: Shop</p>
                                 <span class="tag">Rare</span>
                                 <span class="tag">2000 Chips</span>
+                            <div class="skin-audio">
+                                <p class="skin-meta">Chase Theme (Credits to Valisto!)</p>
+                                <!-- Edit the source below -->
+                                <audio controls>
+                                    <source src="lmsthemes/Unknown Sighting.mp3">
+                                </audio>
+                            </div>
                             </div>
                         </div>
 
 
-                    </div>
+                </div>
+
+                <h1 id="modes">Game Modes</h1>
+                <div class="sectionbox">
+                    <p><b>Overview:</b> Modes define win conditions, round length, and special rules.</p>
+                    <ul>
+                        <li><b>Classic:</b> Standard round with one killer and multiple survivors. <i>Details
+                                TBD</i></li>
+                        <li><b>Juggernaut:</b> A single ultra-strong survivor faces 8 killers. <i>Details
+                                TBD</i></li>
+                        <li><b>Sudden Death:</b></li>TBD</li>
+                    </ul>
+                </div>
+
+
+                <h1 id="maps">Map List</h1>
+                <div class="sectionbox">
+                    <p><b>Overview:</b> Known arenas and notable hazards or mechanics.</p>
+                    <table class="data-table">
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Map</th>
+                            <th>Layout Notes</th>
+                            <th>Hazards / Mechanics</th>
+                        </tr>
+                        <tr>
+                            <td><img class="map-thumb" src="partycrasherimg/mapplaceholder.png"
+                                    alt="Map thumbnail placeholder"></td>
+                            <td><i>TBD</i></td>
+                            <td>Describe choke points or open areas.</td>
+                            <td>List hazards if any.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h1 id="patch-notes">Patch Notes</h1>
+                <div class="sectionbox">
+                    <p><b>Overview:</b> Recent changes and balance tweaks.</p>
+                    <ul>
+                        <li><b>V2 (date TBD):</b> Add updates here.</li>
+                        <li><b>V1 (date TBD):</b> Initial release.</li>
+                    </ul>
+                </div>
 
         </main>
     </div>
