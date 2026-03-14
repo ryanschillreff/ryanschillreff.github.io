@@ -6,70 +6,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>projects</title>
     <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Comic+Relief:wght@400;700&display=swap"
+        rel="stylesheet">
 
     <style>
         body {
-            background-image: url("arcadefloor.jpg");
-            background-color: black;
-            background-repeat: repeat-x;
+            margin: 0;
+            background: url("arcadefloor.jpg") repeat;
             background-size: cover;
             background-attachment: fixed;
+            font-family: "Comic Neue", "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Comic Relief", "Trebuchet MS", Verdana, Arial, sans-serif;
+        }
 
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
-            color: aliceblue;
+        .layout {
+            display: flex;
+            max-width: 1300px;
+            margin: auto;
+            background: white;
+            border: 3px solid #3d52d5;
+        }
 
+        .sidebar {
+            width: 220px;
+            background: #090C9B;
+            color: white;
+            padding: 15px;
+            border-right: 3px solid #3d52d5;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            border-bottom: 1px solid #4f63ff;
+            padding-bottom: 5px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #B4C5E4;
+            text-decoration: none;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            background: #ffffff;
+            color: #111;
+        }
+
+        header {
+            background: #3d52d5;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 4px solid #090C9B;
+        }
+
+        header h1 {
             margin: 0;
+            color: #00c3ff;
+        }
+
+        .topnav {
+            background: #090C9B;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .topnav a {
+            color: #B4C5E4;
+            margin: 0 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .topnav a:hover {
+            text-decoration: underline;
         }
 
         h1 {
             color: #00c3ff;
-            background-color: #3d52d5;
-            padding: 10px;
         }
 
-        nav {
-            background: #090C9B;
-            padding: 10px;
-        }
-
-        nav a {
-            color: #B4C5E4;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        nav a:hover {
+        h2 {
+            background: #7184ff;
             color: white;
-        }
-
-        article {
-            background: #b2d0ff;
-            color: black;
-
-            max-width: 900px;
-            margin: auto;
-            padding: 15px;
-
-            border: 1px solid #888;
+            padding: 6px;
+            border-left: 6px solid #3d52d5;
         }
 
         .infobox {
+            border-collapse: collapse;
+            font-size: 14px;
+            background: #f9f9f9;
             float: right;
             margin: 10px;
-            border: 1px solid #aaa;
-            background: #f9f9f9;
-            font-size: 90%;
         }
 
+        .infobox td,
         .infobox th {
-            background: #e0e0e0;
+            border: 1px solid #aaa;
+            padding: 6px;
         }
 
         .charcard {
             border: 1px solid #aaa;
-            background: white;
-            padding: 10px;
+            background: #f7f9ff;
+            padding: 15px;
             margin: 15px 0;
         }
 
@@ -90,12 +141,6 @@
             background: #00c3ff;
         }
 
-        .devnote {
-            background: #fff7cc;
-            border: 1px solid #e0c200;
-            padding: 10px;
-        }
-
         .clear {
             clear: both;
         }
@@ -104,167 +149,142 @@
 
 <body>
 
-    <h1>Projects</h1>
+    <header>
+        <h1>Projects</h1>
+        <p><i>Games, demos, and experiments</i></p>
+    </header>
 
-    <nav>
-        <a href="index.html">home</a> |
-        <a href="about.html">about</a> |
-        <a href="lux.html">Lux and the Lightshard</a> |
-        <a href="game/index.html">RPGMaker Game</a> |
-        <a href="partycrashers.html">Party Crashers Wiki</a>
-    </nav>
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="about.html">Projects</a>
+        <a href="partycrashers.html">Wiki</a>
+    </div>
 
-    <article>
+    <div class="layout">
 
-        <h2>About Me</h2>
+        <aside class="sidebar">
+            <h2>Navigation</h2>
+            <a href="#about">About Me</a>
+            <a href="#projects">My Projects</a>
 
-        <table class="infobox">
-            <tr>
-                <th colspan="2">Developer Info</th>
-            </tr>
-            <tr>
-                <td><b>Name</b></td>
-                <td>Ryan</td>
-            </tr>
-            <tr>
-                <td><b>Age</b></td>
-                <td>14</td>
-            </tr>
-            <tr>
-                <td><b>Favorite Color</b></td>
-                <td>Blue</td>
-            </tr>
-            <tr>
-                <td><b>Main Project</b></td>
-                <td>Party Crashers</td>
-            </tr>
-        </table>
+            <h2>Projects</h2>
+            <a href="partycrashers.html">Party Crashers</a>
+            <a href="lux.html">Lux and the Lightshard</a>
+            <a href="game/index.html">RPGMaker Game</a>
+            <a href="assets/LONGFACE.EXE.html">LongFace.EXE</a>
+            <a href="class_sites/javascript.html">Cookie Clicker</a>
+        </aside>
 
-        <p>
-            Hello! I'm Ryan and I enjoy making video games and experimenting with new ideas.
-        </p>
+        <main class="content">
 
-        <p>
-            This website is where I host my projects and the Party Crashers Wiki.
-        </p>
+            <h1 id="about">About Me</h1>
 
-        <div class="clear"></div>
-
-        <hr>
-
-        <h2>My Projects</h2>
-        <div class="charcard">
-
-            <img src="partycrasherimg/blux.png">
-
-            <b>PARTY CRASHERS</b>
+            <table class="infobox">
+                <tr>
+                    <th colspan="2">Developer Info</th>
+                </tr>
+                <tr>
+                    <td><b>Name</b></td>
+                    <td>Ryan</td>
+                </tr>
+                <tr>
+                    <td><b>Age</b></td>
+                    <td>14</td>
+                </tr>
+                <tr>
+                    <td><b>Favorite Color</b></td>
+                    <td>Blue</td>
+                </tr>
+                <tr>
+                    <td><b>Main Project</b></td>
+                    <td>Party Crashers</td>
+                </tr>
+            </table>
 
             <p>
-                A 2D asymmetrical game where survivors try to escape while killers hunt them down.
-            </p>
-
-            <a class="arcadebtn" href="partycrashers.html">Open Wiki</a>
-
-        </div>
-
-
-        <div class="charcard">
-
-            <img src="partycrasherimg/stand2.png">
-
-            <b>Lux and the Lightshard</b>
-
-            <p>
-                A small experimental demo game.
-            </p>
-
-            <a class="arcadebtn" href="lux.html">Play Demo</a>
-
-        </div>
-
-
-        <div class="charcard">
-
-            <b>RPGMaker Game</b>
-
-            <p>
-                A separate RPGMaker project that I made for a programming class. very unfinished prototype.
-            </p>
-
-            <a class="arcadebtn" href="game/index.html">Play Game</a>
-
-        </div>
-
-        <div class="charcard">
-            <img src="/partycrasherimg/long.png" alt="Longface">
-
-            <b>LongFace.EXE</b>
-
-            <p>
-                A game I made for my friend based off of an inside joke.
-            </p>
-
-            <a class="arcadebtn" href="assets/LONGFACE.EXE.html">Play Game</a>
-
-        </div>
-        <div class="charcard">
-
-            <img src="class_sites/class_assets/cookie.png">
-
-            <b>Cookie Clicker</b>
-
-            <p>
-                A "game" I made to try some basic javascript.
-            </p>
-
-            <a class="arcadebtn" href="class_sites/javascript.html">Play Here</a>
-
-        </div>
-        <div class="charcard">
-
-            <b>Flex</b>
-
-            <p>
-                HTML to test flex elements.
-            </p>
-
-            <a class="arcadebtn" href="class_sites/flex.html">Open Here</a>
-
-        </div>
-                <div class="charcard">
-
-            <b>Boxes</b>
-
-            <p>
-                A separate HTML to test div boxes.
-            </p>
-
-            <a class="arcadebtn" href="class_sites/boxes.html">Open Here</a>
-
-        </div>
-        <hr>
-
-        <h2>Developer Notes</h2>
-
-        <div class="devnote">
-
-            <p>
-                This website is still being worked on and some pages may change.
+                Hello! I'm Ryan and I enjoy making video games and experimenting with new ideas.
             </p>
 
             <p>
-                The Party Crashers Wiki currently has the most information about my main project.
+                This website is where I host my projects and the Party Crashers Wiki.
             </p>
 
-        </div>
+            <div class="clear"></div>
 
-        <hr>
+            <hr>
 
-        <p>
-            Fun fact: my favorite color is blue.
-        </p>
+            <h2 id="projects">My Projects</h2>
 
-    </article>
+            <div class="charcard">
+
+                <img src="partycrasherimg/blux.png" alt="Blux">
+
+                <b>PARTY CRASHERS</b>
+
+                <p>
+                    A 2D asymmetrical game where survivors try to escape while killers hunt them down.
+                </p>
+
+                <a class="arcadebtn" href="partycrashers.html">Open Wiki</a>
+
+            </div>
+
+            <div class="charcard">
+
+                <img src="partycrasherimg/stand2.png" alt="Lux">
+
+                <b>Lux and the Lightshard</b>
+
+                <p>
+                    A small experimental demo game.
+                </p>
+
+                <a class="arcadebtn" href="lux.html">Play Demo</a>
+
+            </div>
+
+            <div class="charcard">
+
+                <b>RPGMaker Game</b>
+
+                <p>
+                    A separate RPGMaker project that I made for a programming class. very unfinished prototype.
+                </p>
+
+                <a class="arcadebtn" href="game/index.html">Play Game</a>
+
+            </div>
+
+            <div class="charcard">
+                <img src="/partycrasherimg/long.png" alt="Longface">
+
+                <b>LongFace.EXE</b>
+
+                <p>
+                    A game I made for my friend based off of an inside joke.
+                </p>
+
+                <a class="arcadebtn" href="assets/LONGFACE.EXE.html">Play Game</a>
+
+            </div>
+
+            <div class="charcard">
+
+                <img src="class_sites/class_assets/cookie.png" alt="Cookie Clicker">
+
+                <b>Cookie Clicker</b>
+
+                <p>
+                    A "game" I made to try some basic javascript.
+                </p>
+
+                <a class="arcadebtn" href="class_sites/javascript.html">Play Here</a>
+
+            </div>
+
+        </main>
+
+    </div>
 
 </body>
 
