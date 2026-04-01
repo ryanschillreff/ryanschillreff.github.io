@@ -15,146 +15,241 @@
     <style>
         body {
             margin: 0;
-            background: url("arcadefloor.jpg") repeat;
-            background-size: cover;
+            background: #000000 url("arcadefloor.jpg") repeat;
             background-attachment: fixed;
-            font-family: "Comic Neue", "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Comic Relief", "Trebuchet MS", Verdana, Arial, sans-serif;
+            font-family: "Comic Sans MS", Verdana, Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        a {
+            color: #00ffff;
+        }
+
+        a:visited {
+            color: #ff99ff;
+        }
+
+        a:hover {
+            color: #ffff00;
+        }
+
+        header {
+            max-width: 980px;
+            margin: 12px auto 0 auto;
+            text-align: center;
+            background: #000080;
+            color: #ffffff;
+            border: 4px solid #ffffff;
+            padding: 12px;
+        }
+
+        header h1 {
+            margin: 8px 0 4px 0;
+            color: #ffff00;
+            font-size: 38px;
+        }
+
+        header p {
+            margin: 4px 0;
+        }
+
+        .topnav {
+            max-width: 980px;
+            margin: 8px auto;
+            text-align: center;
+            background: #000000;
+            border: 3px solid #00ffff;
+            padding: 8px;
+        }
+
+        .topnav a {
+            display: inline-block;
+            margin: 2px 6px;
+            padding: 4px 10px;
+            text-decoration: none;
+            color: #ffffff;
+            background: #0000cc;
+            border: 2px solid #ffffff;
+            font-weight: bold;
         }
 
         .layout {
             display: flex;
-            max-width: 1300px;
-            margin: auto;
-            background: white;
-            border: 3px solid #3d52d5;
+            max-width: 980px;
+            margin: 0 auto 24px auto;
+            gap: 10px;
+            align-items: flex-start;
         }
 
         .sidebar {
             width: 220px;
-            background: #090C9B;
+            background: #003366;
             color: white;
-            padding: 15px;
-            border-right: 3px solid #3d52d5;
+            padding: 12px;
+            border: 3px solid #ffffff;
         }
 
         .sidebar h2 {
             font-size: 18px;
-            border-bottom: 1px solid #4f63ff;
-            padding-bottom: 5px;
+            margin: 14px 0 8px 0;
+            padding: 4px 6px;
+            background: #000080;
+            color: #ffff00;
+            border: 2px solid #ffffff;
         }
 
         .sidebar a {
             display: block;
-            color: #B4C5E4;
+            color: #99ffff;
             text-decoration: none;
             padding: 4px 0;
             font-size: 14px;
         }
 
-        .sidebar a:hover {
-            text-decoration: underline;
-        }
-
         .content {
             flex: 1;
-            padding: 20px;
+            padding: 16px;
             background: #ffffff;
-            color: #111;
-        }
-
-        header {
-            background: #3d52d5;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 4px solid #090C9B;
-        }
-
-        header h1 {
-            margin: 0;
-            color: #00c3ff;
-        }
-
-        .topnav {
-            background: #090C9B;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .topnav a {
-            color: #B4C5E4;
-            margin: 0 8px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .topnav a:hover {
-            text-decoration: underline;
+            color: #000000;
+            border: 3px solid #0000cc;
         }
 
         h1 {
-            color: #00c3ff;
+            color: #0000cc;
+            margin-top: 0;
         }
 
         h2 {
-            background: #7184ff;
-            color: white;
+            background: #0000cc;
+            color: #ffffff;
             padding: 6px;
-            border-left: 6px solid #3d52d5;
+            border: 2px solid #000000;
         }
 
         .infobox {
             border-collapse: collapse;
             font-size: 14px;
-            background: #f9f9f9;
+            background: #ffffcc;
             float: right;
-            margin: 10px;
+            margin: 0 0 14px 14px;
+            width: 240px;
         }
 
         .infobox td,
         .infobox th {
-            border: 1px solid #aaa;
+            border: 1px solid #000000;
             padding: 6px;
         }
 
+        .infobox th {
+            background: #ffcc00;
+        }
+
+        .charcard, .devnote, .secretbox, .noticebox {
+            border: 2px dashed #0000cc;
+            background: #f6f6ff;
+            padding: 12px;
+            margin: 14px 0;
+        }
+
         .charcard {
-            border: 1px solid #aaa;
-            background: #f7f9ff;
-            padding: 15px;
-            margin: 15px 0;
+            overflow: hidden;
         }
 
         .charcard img {
+            display: block;
+            width: 150px;
             max-width: 150px;
+            height: auto;
+            float: right;
+            margin-left: 12px;
+            border: 2px solid #000000;
+            background: #ffffff;
+            object-fit: contain;
         }
 
         .arcadebtn {
-            background: #3d52d5;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
+            display: inline-block;
+            background: #0000cc;
+            color: #ffffff;
+            padding: 6px 10px;
             text-decoration: none;
             font-weight: bold;
-        }
-
-        .arcadebtn:hover {
-            background: #00c3ff;
-        }
-
-        .devnote {
-            border: 2px solid #3d52d5;
-            background: #f1f4ff;
-            padding: 10px 12px;
-            font-size: 14px;
-            margin: 12px 0 18px 0;
+            border: 2px solid #000000;
         }
 
         .devnote b {
-            color: #090C9B;
+            color: #cc0000;
+        }
+
+        .badge-row {
+            text-align: center;
+            margin: 6px 0 10px 0;
+        }
+
+        .badge-row img {
+            vertical-align: middle;
+            margin: 2px 4px;
+            max-height: 40px;
+        }
+
+        .marquee-wrap {
+            margin: 8px 0;
+            background: #000000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 4px;
+        }
+
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        .counter {
+            display: inline-block;
+            background: #000000;
+            color: #00ff00;
+            border: 2px solid #808080;
+            padding: 3px 8px;
+            font-family: "Courier New", monospace;
+            letter-spacing: 2px;
         }
 
         .clear {
             clear: both;
+        }
+
+        hr {
+            border: 0;
+            border-top: 2px dotted #0000cc;
+            margin: 16px 0;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 860px) {
+            .layout {
+                flex-direction: column;
+                padding: 0 10px;
+            }
+
+            .sidebar {
+                width: auto;
+            }
+
+            .infobox, .charcard img {
+                float: none;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 0 12px 0;
+            }
+
+            header, .topnav {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
         }
     </style>
 </head>
@@ -164,12 +259,16 @@
     <header>
         <h1>my website</h1>
         <p><i>Ryan's game experiments and projects</i></p>
+        <div class="marquee-wrap">
+            <marquee scrollamount="6">WELCOME TO MY WEBSITE!!! BEST VIEWED ON A BIG OLD MONITOR!!! CLICK AROUND AND HAVE FUN!!!</marquee>
+        </div>
     </header>
 
     <div class="topnav">
         <a href="index.html">Home</a>
         <a href="about.html">Projects</a>
         <a href="partycrashers.html">Wiki</a>
+        <a href="partycrashers-download.html">Download</a>
     </div>
 
     <div class="layout">
@@ -185,15 +284,21 @@
             <a href="partycrashers.html">Party Crashers Wiki</a>
             <a href="lux.html">Lux and the Lightshard</a>
             <a href="game/index.html">RPGMaker Game</a>
+            <a href="partycrashers-download.html">Saturn Download</a>
         </aside>
 
         <main class="content">
 
             <h1 id="welcome">Welcome!</h1>
 
+            <div class="noticebox">
+                <marquee behavior="alternate">THIS SITE IS ALWAYS UNDER CONSTRUCTION!!!</marquee>
+                <p><span class="blink"><b>Latest update:</b></span> still making weird game stuff.</p>
+            </div>
+
             <table class="infobox">
                 <tr>
-                    <th colspan="2">Developer Info</th>
+                    <th colspan="2">Developer Info <span style="color:#cc0000;">[NEW]</span></th>
                 </tr>
                 <tr>
                     <td><b>Name</b></td>
@@ -239,6 +344,7 @@
                 </p>
 
                 <a class="arcadebtn" href="partycrashers.html">Open Wiki</a>
+                <a class="arcadebtn" href="partycrashers-download.html" style="margin-left:8px;">Download Game</a>
 
             </div>
 
@@ -264,9 +370,10 @@
 
             <h2 id="secret">Secret</h2>
 
-            <p>
-                Press <b>SPACE</b> to spawn Blux.
-            </p>
+            <div class="secretbox">
+                <p><b>SECRET CODE:</b> Press <b>SPACE</b> to spawn Blux.</p>
+                <p>Visitor Counter: <span class="counter" data-counter-key="ryan_site_visits" data-counter-base="421">000421</span></p>
+            </div>
 
             <p style="font-size:85%;color:#444;">
                 Blux is a developer-only character and should not appear in normal gameplay.
@@ -278,6 +385,19 @@
 
     </div>
 
+<script>
+(function () {
+    var counters = document.querySelectorAll('[data-counter-key]');
+    counters.forEach(function (counter) {
+        var key = counter.getAttribute('data-counter-key');
+        var base = parseInt(counter.getAttribute('data-counter-base') || '0', 10);
+        var current = parseInt(localStorage.getItem(key) || String(base), 10);
+        current += 1;
+        localStorage.setItem(key, String(current));
+        counter.textContent = String(current).padStart(6, '0');
+    });
+}());
+</script>
 </body>
 
 </html>

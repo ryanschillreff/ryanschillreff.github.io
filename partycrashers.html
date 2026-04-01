@@ -21,138 +21,154 @@
     <style>
         body {
             margin: 0;
-            background: url("arcadefloor.jpg") repeat;
-            background-size: cover;
+            background: #000000 url("arcadefloor.jpg") repeat;
             background-attachment: fixed;
-            font-family: "Comic Neue", "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Comic Relief", "Trebuchet MS", Verdana, Arial, sans-serif;
+            font-family: "Comic Sans MS", Verdana, Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        a {
+            color: #00ffff;
+        }
+
+        a:visited {
+            color: #ff99ff;
+        }
+
+        a:hover {
+            color: #ffff00;
+        }
+
+        header {
+            max-width: 980px;
+            margin: 12px auto 0 auto;
+            text-align: center;
+            background: #000080;
+            color: #ffffff;
+            border: 4px solid #ffffff;
+            padding: 12px;
+        }
+
+        header h1 {
+            margin: 8px 0 4px 0;
+            color: #ffff00;
+            font-size: 38px;
+        }
+
+        header p {
+            margin: 4px 0;
+        }
+
+        .topnav {
+            max-width: 980px;
+            margin: 8px auto;
+            text-align: center;
+            background: #000000;
+            border: 3px solid #00ffff;
+            padding: 8px;
+        }
+
+        .topnav a {
+            display: inline-block;
+            margin: 2px 6px;
+            padding: 4px 10px;
+            text-decoration: none;
+            color: #ffffff;
+            background: #0000cc;
+            border: 2px solid #ffffff;
+            font-weight: bold;
         }
 
         .layout {
             display: flex;
-            max-width: 1300px;
-            margin: auto;
-            background: white;
-            border: 3px solid #3d52d5;
+            max-width: 980px;
+            margin: 0 auto 24px auto;
+            gap: 10px;
+            align-items: flex-start;
         }
 
         .sidebar {
             width: 220px;
-            background: #090C9B;
+            background: #003366;
             color: white;
-            padding: 15px;
-            border-right: 3px solid #3d52d5;
+            padding: 12px;
+            border: 3px solid #ffffff;
         }
 
         .sidebar h2 {
             font-size: 18px;
-            border-bottom: 1px solid #4f63ff;
-            padding-bottom: 5px;
+            margin: 14px 0 8px 0;
+            padding: 4px 6px;
+            background: #000080;
+            color: #ffff00;
+            border: 2px solid #ffffff;
         }
 
         .sidebar a {
             display: block;
-            color: #B4C5E4;
+            color: #99ffff;
             text-decoration: none;
             padding: 4px 0;
             font-size: 14px;
         }
 
-        .sidebar a:hover {
-            text-decoration: underline;
-        }
-
         .content {
             flex: 1;
-            padding: 20px;
+            padding: 16px;
             background: #ffffff;
-        }
-
-        header {
-            background: #3d52d5;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 4px solid #090C9B;
-        }
-
-        header h1 {
-            margin: 0;
-            color: #00c3ff;
-        }
-
-        .topnav {
-            background: #090C9B;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .topnav a {
-            color: #B4C5E4;
-            margin: 0 8px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .topnav a:hover {
-            text-decoration: underline;
+            color: #000000;
+            border: 3px solid #0000cc;
         }
 
         h1 {
-            color: #00c3ff;
+            color: #0000cc;
+            margin-top: 0;
         }
 
         h2 {
-            background: #7184ff;
-            color: white;
+            background: #0000cc;
+            color: #ffffff;
             padding: 6px;
-            border-left: 6px solid #3d52d5;
+            border: 2px solid #000000;
         }
 
-        .notice {
-            border: 2px solid #3d52d5;
-            background: #f1f4ff;
-            padding: 10px 12px;
+        .infobox {
+            border-collapse: collapse;
             font-size: 14px;
-            margin: 12px 0 18px 0;
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            background: #ffffcc;
+            float: right;
+            margin: 0 0 14px 14px;
+            width: 240px;
         }
 
-        .notice b {
-            color: #090C9B;
+        .infobox td,
+        .infobox th {
+            border: 1px solid #000000;
+            padding: 6px;
         }
 
-        .notice-icon {
-            width: 22px;
-            height: 22px;
-            flex: 0 0 22px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23090C9B' d='M1 21h22L12 2 1 21zm12-3h-2v2h2v-2zm0-8h-2v6h2v-6z'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-repeat: no-repeat;
+        .infobox th {
+            background: #ffcc00;
         }
 
-        .map-thumb {
-            width: 140px;
-            height: 80px;
-            object-fit: cover;
-            border: 1px solid #aaa;
-            background: #f2f2f2;
-            display: block;
+        .charcard, .devnote, .secretbox, .noticebox, .character, .sectionbox, .skin-card, .lmsaudio, details.skin-help {
+            border: 2px dashed #0000cc;
+            background: #f6f6ff;
+            padding: 12px;
+            margin: 14px 0;
         }
 
-        .character {
-            border: 1px solid #aaa;
-            background: #f7f9ff;
-            padding: 15px;
-            margin-bottom: 30px;
+        .charcard img, .mainart, .skin-thumb, .map-thumb, .gameicon {
+            border: 2px solid #000000;
+            background: #ffffff;
         }
 
-        .sectionbox {
-            border: 1px solid #aaa;
-            background: #f7f9ff;
-            padding: 15px;
-            margin-bottom: 30px;
+        .charcard img {
+            max-width: 160px;
+            float: right;
+            margin-left: 12px;
+            border: 2px solid #000000;
+            background: #ffffff;
         }
 
         .data-table {
@@ -163,20 +179,16 @@
         }
 
         .data-table th,
-        .data-table td {
-            border: 1px solid #aaa;
+        .data-table td,
+        .infobox td {
+            border: 1px solid #000000;
             padding: 8px;
             text-align: left;
         }
 
         .data-table th {
-            background: #e8edff;
-            color: #090C9B;
-        }
-
-        .note {
-            font-size: 12px;
-            color: #555;
+            background: #ffcc00;
+            color: #000000;
         }
 
         .skin-index {
@@ -186,18 +198,15 @@
             margin: 10px 0 18px 0;
         }
 
-        .skin-index a {
+        .skin-index a,
+        .tag {
             display: inline-block;
-            padding: 6px 10px;
-            border: 1px solid #3d52d5;
-            background: #ffffff;
-            color: #090C9B;
+            padding: 4px 8px;
+            background: #0000cc;
+            color: #ffffff;
+            border: 1px solid #000000;
             text-decoration: none;
-            font-size: 13px;
-        }
-
-        .skin-index a:hover {
-            text-decoration: underline;
+            font-size: 12px;
         }
 
         .skin-grid {
@@ -207,63 +216,17 @@
             margin: 10px 0 22px 0;
         }
 
-        .skin-card {
-            border: 1px solid #aaa;
-            background: #ffffff;
-            padding: 10px;
-        }
-
-        .skin-audio {
-            margin-top: 8px;
-        }
-
-        .skin-audio audio {
+        .skin-audio audio,
+        audio {
             width: 100%;
+            max-width: 260px;
             height: 32px;
         }
 
-        .skin-thumb {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            border: 1px solid #aaa;
-            background: #f2f2f2;
-            display: block;
-        }
-
-        .skin-card h3 {
-            margin: 10px 0 6px 0;
-            font-size: 15px;
-            color: #090C9B;
-        }
-
+        .note,
         .skin-meta {
             font-size: 12px;
-            color: #444;
-            margin: 0 0 8px 0;
-        }
-
-        .tag {
-            display: inline-block;
-            border: 1px solid #3d52d5;
-            padding: 2px 6px;
-            margin: 0 6px 6px 0;
-            font-size: 11px;
-            background: #f7f9ff;
-            color: #090C9B;
-        }
-
-        details.skin-help {
-            border: 1px dashed #3d52d5;
-            background: #ffffff;
-            padding: 10px;
-            margin-top: 12px;
-        }
-
-        details.skin-help summary {
-            cursor: pointer;
-            font-weight: bold;
-            color: #090C9B;
+            color: #333333;
         }
 
         .char-top {
@@ -274,47 +237,30 @@
 
         .mainart {
             max-width: 250px;
-            border: 1px solid #aaa;
         }
 
         .gameicon {
             width: 48px;
             height: 150px;
-            border: 1px solid #aaa;
         }
 
-        .infobox {
-            border-collapse: collapse;
-            font-size: 14px;
-            background: #f9f9f9;
+        .skin-thumb {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            display: block;
         }
 
-        .infobox td {
-            border: 1px solid #aaa;
-            padding: 6px;
+        .map-thumb {
+            width: 140px;
+            height: 80px;
+            object-fit: cover;
+            display: block;
         }
 
-        .lmsaudio {
-            border: 1px solid #aaa;
-            background: #f6f6f6;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .lmsaudio h3 {
-            background: #e0e0e0;
-            margin: 0 0 6px 0;
-            padding: 4px;
-        }
-
-        audio {
-            width: 220px;
-        }
-
-        /* Text Glitch */
         .glitch {
             position: relative;
-            color: #00c3ff;
+            color: #0000cc;
         }
 
         .glitch::before,
@@ -337,46 +283,20 @@
         }
 
         @keyframes glitchTop {
-            0% {
-                clip-path: inset(0 0 80% 0);
-                transform: translate(-2px, -2px);
-            }
-
-            50% {
-                clip-path: inset(10% 0 60% 0);
-                transform: translate(2px, 2px);
-            }
-
-            100% {
-                clip-path: inset(0 0 85% 0);
-                transform: translate(-1px, 1px);
-            }
+            0% { clip-path: inset(0 0 80% 0); transform: translate(-2px, -2px); }
+            50% { clip-path: inset(10% 0 60% 0); transform: translate(2px, 2px); }
+            100% { clip-path: inset(0 0 85% 0); transform: translate(-1px, 1px); }
         }
 
         @keyframes glitchBottom {
-            0% {
-                clip-path: inset(80% 0 0 0);
-                transform: translate(2px, 2px);
-            }
-
-            50% {
-                clip-path: inset(60% 0 10% 0);
-                transform: translate(-2px, -2px);
-            }
-
-            100% {
-                clip-path: inset(85% 0 0 0);
-                transform: translate(1px, -1px);
-            }
+            0% { clip-path: inset(80% 0 0 0); transform: translate(2px, 2px); }
+            50% { clip-path: inset(60% 0 10% 0); transform: translate(-2px, -2px); }
+            100% { clip-path: inset(85% 0 0 0); transform: translate(1px, -1px); }
         }
 
         img:hover {
             filter: contrast(200%) hue-rotate(180deg);
         }
-
-
-
-        /* random glitch state */
 
         .glitching {
             transform: skew(2deg);
@@ -390,9 +310,102 @@
 
         .glitching h1,
         .glitching h2 {
-            text-shadow:
-                -3px 0 red,
-                3px 0 cyan;
+            text-shadow: -3px 0 red, 3px 0 cyan;
+        }
+
+        .arcadebtn {
+            display: inline-block;
+            background: #0000cc;
+            color: #ffffff;
+            padding: 6px 10px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid #000000;
+        }
+
+        .devnote b {
+            color: #cc0000;
+        }
+
+        .badge-row {
+            text-align: center;
+            margin: 6px 0 10px 0;
+        }
+
+        .badge-row img {
+            vertical-align: middle;
+            margin: 2px 4px;
+            max-height: 32px;
+        }
+
+        .marquee-wrap {
+            margin: 8px 0;
+            background: #000000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 4px;
+        }
+
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        .counter {
+            display: inline-block;
+            background: #000000;
+            color: #00ff00;
+            border: 2px solid #808080;
+            padding: 3px 8px;
+            font-family: "Courier New", monospace;
+            letter-spacing: 2px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        hr {
+            border: 0;
+            border-top: 2px dotted #0000cc;
+            margin: 16px 0;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 860px) {
+            .layout {
+                flex-direction: column;
+                padding: 0 10px;
+            }
+
+            .sidebar {
+                width: auto;
+            }
+
+            .infobox,
+            .charcard img,
+            .mainart,
+            .skin-thumb,
+            .map-thumb {
+                float: none;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 0 12px 0;
+            }
+
+            .gameicon {
+                width: 48px;
+                max-width: 48px;
+                height: 150px;
+                margin: 0 0 12px 0;
+            }
+
+            header, .topnav {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
         }
     </style>
 </head>
@@ -483,13 +496,17 @@
 
     <header>
         <h1>Welcome to the PARTY CRASHERS Wiki</h1>
-        <p><i>The OFFICIAL Wiki for Party Crashers</i></p>
+        <p><i>The OFFICIAL Wiki for the Sega Saturn release of Party Crashers</i></p>
+        <div class="marquee-wrap">
+            <marquee scrollamount="6">PARTY CRASHERS INFO ZONE!!! SEGA SATURN OWNERS CLICK HERE!!! 32-BIT HORROR ACTION!!! SPOILERS!!! SECRET LORE!!!</marquee>
+        </div>
     </header>
 
     <div class="topnav">
         <a href="index.html">Home</a>
         <a href="about.html">Projects</a>
         <a href="partycrashers.html">Wiki</a>
+        <a href="partycrashers-download.html">Download</a>
     </div>
 
     <div class="layout">
@@ -503,7 +520,9 @@
             <a href="#skins">Skins</a>
             <a href="#modes">Game Modes</a>
             <a href="#maps">Map List</a>
-            <a href="#patch-notes">Patch Notes</a>
+            <a href="#revision-history">Revision History</a>
+            <a href="#saturn-release">Saturn Release</a>
+            <a href="partycrashers-download.html">Download</a>
 
             <h2>Survivors</h2>
             <a href="#lux">Lux</a>
@@ -525,15 +544,20 @@
 
         <main class="content">
 
+            <div class="noticebox">
+                <marquee behavior="alternate">UNFINISHED WIKI!!! SPOILERS!!! ADMINS ARE PROBABLY ASLEEP!!!</marquee>
+                <p><b>Need the disc archive?</b> <a href="partycrashers-download.html">Visit the official download center.</a></p>
+            </div>
+
             <div class="notice">
                 <span class="notice-icon" aria-hidden="true"></span>
                 <div>
-                    <b>This wiki is unfinished!</b> Some sections are incomplete or may contain placeholder details.
+                    <b>This wiki is unfinished!</b> Some sections are incomplete or may contain placeholder details from the Saturn discs, manuals, and promo material. <span class="blink">Use at your own risk.</span>
                 </div>
             </div>
 
             <h1 id="characters">Characters</h1>
-            <p>DEV NOTE: Secrets broken, working on it.</p>
+            <p>DEV NOTE: Saturn magazine scans, disc text, and memory-card notes are still being sorted out.</p>
             <!-- ================= LUX ================= -->
 
             <div class="character" id="lux">
@@ -560,7 +584,7 @@
                         </tr>
                         <tr>
                             <td><b>Release</b></td>
-                            <td>V1</td>
+                            <td>Launch Disc</td>
                         </tr>
                     </table>
 
@@ -623,7 +647,7 @@
                         </tr>
                         <tr>
                             <td><b>Release</b></td>
-                            <td>V1</td>
+                            <td>Launch Disc</td>
                         </tr>
                     </table>
 
@@ -676,7 +700,7 @@
                         </tr>
                         <tr>
                             <td><b>Release</b></td>
-                            <td>V1</td>
+                            <td>Launch Disc</td>
                         </tr>
                     </table>
 
@@ -731,7 +755,7 @@
                         </tr>
                         <tr>
                             <td><b>Release</b></td>
-                            <td>V1-V2</td>
+                            <td>Rev A / Rev B</td>
                         </tr>
                     </table>
 
@@ -821,7 +845,7 @@
                             </tr>
                             <tr>
                                 <td><b>Release</b></td>
-                                <td>V1-V2</td>
+                                <td>Rev A / Rev B</td>
                             </tr>
                         </table>
 
@@ -888,7 +912,7 @@
                             </tr>
                             <tr>
                                 <td><b>Release</b></td>
-                                <td>V1</td>
+                                <td>Launch Disc</td>
                             </tr>
                         </table>
 
@@ -1017,7 +1041,7 @@
                 <h1 id="skins">Skins</h1>
                 <div class="sectionbox">
                     <p><b>Overview:</b> Skins are cosmetic variants for characters. This section lists known skins and
-                        how to unlock them. (If an unlock method is unknown, it is marked as <i>???</i>.)</p>
+                        how to unlock them. Saturn save data stores unlocked skins per memory block, and several costumes only appear after clearing Arcade or Last Man Standing with specific characters. Early Japanese strategy guides also note that some costume flags do not display correctly unless a Backup RAM Cartridge is present.</p>
 
 
                     <div class="skin-index">
@@ -1284,13 +1308,12 @@
 
                 <h1 id="modes">Game Modes</h1>
                 <div class="sectionbox">
-                    <p><b>Overview:</b> Modes define win conditions, round length, and special rules.</p>
+                    <p><b>Overview:</b> Modes define win conditions, round length, and special rules. The Saturn port keeps the arcade-style menu names shown on the back of the box.</p>
                     <ul>
-                        <li><b>Classic:</b> Standard round with one killer and multiple survivors. <i>Details
-                                TBD</i></li>
-                        <li><b>Juggernaut:</b> A single ultra-strong survivor faces 8 killers. <i>Details
-                                TBD</i></li>
-                        <li><b>Sudden Death:</b></li>TBD</li>
+                        <li><b>Classic:</b> Standard round with one killer and multiple survivors. This is the default Saturn mode and the one used for most memory-card records.</li>
+                        <li><b>Juggernaut:</b> A single ultra-strong survivor faces 8 killers. On Saturn this mode unlocks after clearing Classic five times.</li>
+                        <li><b>Sudden Death:</b> A faster ruleset with shortened timers, reduced healing, and more aggressive spawn tables.</li>
+                        <li><b>Last Man Standing:</b> A special late-round state with unique music and alternate UI colors on Saturn hardware.</li>
                     </ul>
                 </div>
 
@@ -1308,20 +1331,80 @@
                         <tr>
                             <td><img class="map-thumb" src="partycrasherimg/mapplaceholder.png"
                                     alt="Map thumbnail placeholder"></td>
-                            <td><i>TBD</i></td>
-                            <td>Describe choke points or open areas.</td>
-                            <td>List hazards if any.</td>
+                            <td>Dream Arcade</td>
+                            <td>Large central floor with narrow machine aisles. Saturn players remember the parallax floor reflections here.</td>
+                            <td>Flickering cabinet lights, looping announcement audio, and several blind corner ambush routes.</td>
+                        </tr>
+                        <tr>
+                            <td><img class="map-thumb" src="partycrasherimg/mapplaceholder.png"
+                                    alt="Map thumbnail placeholder"></td>
+                            <td>Glass Hall</td>
+                            <td>Open lanes with long sightlines. Strong for ranged pressure and weak for slow supports. The Saturn build is especially known for its reflective floor shimmer here.</td>
+                            <td>Breakable panels and mirrored walls that make killer silhouettes hard to read on CRTs.</td>
                         </tr>
                     </table>
                 </div>
 
-                <h1 id="patch-notes">Patch Notes</h1>
+                <h1 id="revision-history">Revision History</h1>
                 <div class="sectionbox">
-                    <p><b>Overview:</b> Recent changes and balance tweaks.</p>
+                    <p><b>Overview:</b> Saturn copies are usually identified by disc revision rather than downloadable patches. Collectors also distinguish between the early longbox promo print, the standard jewel-case retail issue, and the later reprint with the Rev B disc.</p>
                     <ul>
-                        <li><b>V2 (date TBD):</b> Add updates here.</li>
-                        <li><b>V1 (date TBD):</b> Initial release.</li>
+                        <li><b>Rev A (November 27, 1997):</b> Launch disc. Includes the original menu font, slower round transitions, and the earliest Last Man Standing audio mix.</li>
+                        <li><b>Rev B (March 12, 1998):</b> Reprint revision. Reduced loading between scenes, adjusted Lux dash hit detection, corrected several text errors in survivor bios, and cleaned up controller detection for the 3D Pad.</li>
+                        <li><b>NetLink Promo Demo:</b> Rare sampler build with a trimmed character roster, an alternate title screen logo, and a shorter attract sequence intended for kiosk units.</li>
+                        <li><b>Magazine Trial Disc:</b> A cut-down preview build distributed through import coverage, recognizable by its unfinished announcer clips and missing skin descriptions.</li>
                     </ul>
+                </div>
+
+                <h1 id="saturn-release">Saturn Release</h1>
+                <div class="sectionbox">
+                    <p><b>Overview:</b> PARTY CRASHERS released on Sega Saturn as a single-disc action game with memory backup support, optional 3D Control Pad movement, and a later revision that reduced load pauses between rounds. It is usually grouped with late-era Saturn action titles because of its dithered lighting, dramatic transparency effects, and unusually dark horror presentation.</p>
+                    <table class="data-table">
+                        <tr>
+                            <th>Item</th>
+                            <th>Details</th>
+                        </tr>
+                        <tr>
+                            <td><b>Platform</b></td>
+                            <td>Sega Saturn</td>
+                        </tr>
+                        <tr>
+                            <td><b>Japanese Release</b></td>
+                            <td>November 27, 1997</td>
+                        </tr>
+                        <tr>
+                            <td><b>North American Release</b></td>
+                            <td>March 18, 1998</td>
+                        </tr>
+                        <tr>
+                            <td><b>Media</b></td>
+                            <td>1 CD-ROM</td>
+                        </tr>
+                        <tr>
+                            <td><b>Save Support</b></td>
+                            <td>Internal Memory and Backup RAM Cartridge</td>
+                        </tr>
+                        <tr>
+                            <td><b>Controller Notes</b></td>
+                            <td>Standard Pad supported. 3D Control Pad enables smoother survivor movement and slightly finer turning during chase scenes.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Display Modes</b></td>
+                            <td>240p gameplay with interlaced menu screens, plus optional screen position adjustment from the options menu.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Audio Notes</b></td>
+                            <td>Red Book CD audio is used for themes, while voice clips and alerts are handled through Saturn PCM playback.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Visual Notes</b></td>
+                            <td>The Saturn build is known for heavy dithering, transparent shadow layers, pre-rendered attract screens, and the animated menu backgrounds in Last Man Standing.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Packaging</b></td>
+                            <td>Japanese copies include a monochrome instruction booklet, while North American copies are known for the back-cover screenshots taken from an early preview build.</td>
+                        </tr>
+                    </table>
                 </div>
 
         </main>
