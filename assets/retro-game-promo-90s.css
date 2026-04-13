@@ -1,0 +1,35 @@
+/* Global cleanup: keep original page colors, restore old background, remove shadow effects */
+
+html,
+body {
+    min-height: 100%;
+    background: #05020d url("/arcadefloor.jpg") repeat fixed !important;
+}
+
+body {
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* Keep marquee text readable/static-looking */
+marquee {
+    display: block;
+    overflow: visible;
+    white-space: normal;
+    width: auto !important;
+    -webkit-marquee-style: none;
+    -webkit-marquee-repetition: 1;
+    -webkit-marquee-speed: 0;
+    marquee-style: none;
+    marquee-play-count: 1;
+}
+
+blink {
+    animation: none !important;
+}
